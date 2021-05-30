@@ -5,5 +5,5 @@ export default {
   path: '/account',
   exact: true,
   public: true,
-  component: lazy(() => import('.')),
+  component: lazy(() => import('.'))
 };
