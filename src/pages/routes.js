@@ -1,11 +1,29 @@
-const routes = [];
+const publicRoute = [];
+const studentRoute = [];
+const lecturerRoute = [];
+const administratorRoute = [];
 
-const context = require.context('.', true, /route.js$/);
+const publicContext = require.context('.', true, /public_route.js$/);
+const studentContext = require.context('.', true, /student_route.js$/);
+const lecturerContext = require.context('.', true, /lecturer_route.js$/);
+const administratorContext = require.context(
+  '.',
+  true,
+  /administrator_route.js$/
+);
 
-context.keys().forEach((path) => {
-  routes.push(require(`${path}`).default);
+publicContext.keys().forEach((path) => {
+  publicRoute.push(require(`${path}`).default);
 });
 
-console.log(routes);
+studentContext.keys().forEach((path) => {
+  studentRoute.push(require(`${path}`).default);
+});
+lecturerContext.keys().forEach((path) => {
+  lecturerRoute.push(require(`${path}`).default);
+});
+administratorContext.keys().forEach((path) => {
+  administratorRoute.push(require(`${path}`).default);
+});
 
-export default routes;
+export { publicRoute, studentRoute, lecturerRoute, administratorRoute };

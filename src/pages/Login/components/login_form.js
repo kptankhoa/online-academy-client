@@ -16,6 +16,8 @@ import { useState } from 'react';
 import useStyles from '../styles/login_form.style';
 import { Login } from '../utils/login.util';
 
+import LoginButton from './LoginButton';
+
 const LoginForm = function (props) {
   const history = useHistory();
   const { type } = props;
@@ -28,11 +30,13 @@ const LoginForm = function (props) {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const res = await Login(data);
     if (res) {
-      history.push('/home');
+      history.push('/');
     } else {
-      alert("error")
+      alert('error');
+      setLoading(false);
     }
   };
 
@@ -43,12 +47,17 @@ const LoginForm = function (props) {
 
   const [username, setUsername] = useState('');
 
+  const [loading, setLoading] = useState(false);
+
+
+
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
 
   const handleChange = (p) => (e) => {
     setPassword({ ...password, [p]: e.target.value });
+    console.log(password);
   };
 
   const handleClickShowPassword = () => {
@@ -59,13 +68,18 @@ const LoginForm = function (props) {
     event.preventDefault();
   };
 
+  const  handleKeyUp = async (e) =>{
+    if (e.keyCode === 13) {
+      await onSubmit({username, password: password.password});
+    }
+  }
+
   let compo;
   switch (type) {
     case 'admin':
       compo = (
         <form
-          className={classes.root}
-          border={3}
+          // className={classes.root}
           onSubmit={handleSubmit(onSubmit)}
         >
           <FormControl fullWidth border={1}>
@@ -73,26 +87,30 @@ const LoginForm = function (props) {
               htmlFor="username"
               className={errors.username ? classes.error : ''}
             >
-              Username {errors.username && '*'}{' '}
+              Username {errors.username && '*'}
             </InputLabel>
             <Input
               id="username"
               type="text"
+              autoFocus
               value={username}
               {...register('username', { required: true })}
               onChange={handleUsernameChange}
             />
           </FormControl>
           <FormControl fullWidth>
-            {errors.password && (
-              <span className={classes.error}>password is required</span>
-            )}
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel
+              htmlFor="password"
+              className={errors.password ? classes.error : ''}
+            >
+              Password {errors.password && '*'}
+            </InputLabel>
             <Input
               id="password"
               type={password.showPassword ? 'text' : 'password'}
               value={password.password}
               {...register('password', { required: true })}
+              onKeyUp = {handleKeyUp}
               onChange={handleChange('password')}
               endAdornment={
                 <InputAdornment position="end">
@@ -107,14 +125,13 @@ const LoginForm = function (props) {
               }
             />
           </FormControl>
-          <Button
+          <LoginButton
             type="submit"
             fullWidth
             variant="contained"
             className={classes.submit}
-          >
-            Sign In
-          </Button>
+            loading = {loading}
+          />
         </form>
       );
       break;
