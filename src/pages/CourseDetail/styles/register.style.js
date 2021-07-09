@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '100vh',
     alignItems: 'center',
     justifyContent: 'left',
-    top: 0,
+    top: 80,
     right: 20,
   },
   courseDetail: {

@@ -6,6 +6,10 @@ import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import { findDOMNode } from 'react-dom';
 import { useRef } from 'react';
+import { List } from '@material-ui/core';
+import { ListItem } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+
 
 /**
  * 
@@ -21,7 +25,7 @@ function RegisterCourseForm(props) {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root}>      
       <Card>
         <CardActionArea>
           <ReactPlayer
@@ -33,8 +37,19 @@ function RegisterCourseForm(props) {
             playing
           />
         </CardActionArea>
-        <CardHeader title="Header" />
-        <CardContent>ahd</CardContent>
+        <CardHeader title="Content" />
+        <CardContent>
+          <List>
+            <ListItem>
+              <CheckIcon/>
+              Ac
+            </ListItem>
+            <ListItem>
+              <CheckIcon/>
+              Ad
+            </ListItem>
+          </List>
+        </CardContent>
         <CardActions className={classes.registerbutton}>
           <Button className={classes.button}>Register</Button>
         </CardActions>
