@@ -8,9 +8,13 @@ import { axiosInstance } from '../../utils/auth';
 import CourseDetailContext from './CourseDetailContext';
 import reducer from './CourseDetailReducer';
 import CourseContent from './components/CourseContent';
+import FeedBack from './components/FeedBack';
+
+import { Grid } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import HeaderBar from '../../components/HeaderBar';
-import { Grid } from '@material-ui/core';
+import Rating from './components/Rating';
 
 function CourseDescription(props) {
   const { courseId } = useParams();
@@ -51,9 +55,22 @@ function CourseDescription(props) {
             />
           </Grid>
           <Grid item md={12}>
+            <Grid container className={classes.rating}>
+              <Rating num={2.5}></Rating>
+            </Grid>
+          </Grid>
+          <Grid item md={12}>
+            <Typography variant='h3'>
+              {state.course.courseName}
+            </Typography>
+          </Grid>
+          <Grid item md={12}>
             <CourseContent
               detaildescription={state.course.detailDescription}
             ></CourseContent>
+          </Grid>
+          <Grid item md={12}>
+            <FeedBack></FeedBack>
           </Grid>
         </Grid>
 

@@ -9,6 +9,7 @@ import { useRef } from 'react';
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
+import { Typography } from '@material-ui/core';
 
 
 /**
@@ -48,7 +49,28 @@ function RegisterCourseForm(props) {
               <CheckIcon/>
               Ad
             </ListItem>
+            <ListItem>
+              <CheckIcon/>
+              Ad
+            </ListItem>
+            <ListItem>
+              <CheckIcon/>
+              Ad
+            </ListItem>
+            <ListItem>
+              <CheckIcon/>
+              Ad
+            </ListItem>
+            <ListItem>
+              <CheckIcon/>
+              Ad
+            </ListItem>
+            <ListItem>
+              <CheckIcon/>
+              Ad
+            </ListItem>
           </List>
+          <Typography className={classes.price}>20000d</Typography>
         </CardContent>
         <CardActions className={classes.registerbutton}>
           <Button className={classes.button}>Register</Button>

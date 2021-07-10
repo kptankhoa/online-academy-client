@@ -10,6 +10,11 @@ const useStyles = makeStyles((theme) => ({
   },
   courseDetail: {
     display: 'inline'
+  },
+  rating: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginBottom: 20
   }
 }));
 
