@@ -5,11 +5,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     position: 'fixed',
     maxWidth: 800,
-    maxHeight: '100vh',
+    maxHeight: '85%',
     alignItems: 'center',
     justifyContent: 'left',
-    top: 0,
-    right: 20,
+    overflowX:'hidden',
+    overflowY:'scroll',
+    top: 70,
+    paddingTop: 180,
+    right: 0,
   },
   courseDetail: {
     display: 'inline',
@@ -22,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: 'blue'
     }
+  },
+  price: {
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'red'
   }
 }));
 

@@ -1,15 +1,20 @@
 import { makeStyles } from '@material-ui/core';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    width: 800,
     maxHeight: 400,
     alignItems: 'center',
     justifyContent: 'center',
   },
   courseDetail: {
     display: 'inline'
+  },
+  rating: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginBottom: 20
   }
 }));
 

@@ -1,10 +1,10 @@
 export default function reducer(state, action) {
   // action = { type, payload }
   switch (action.type) {
-    case 'setTop10New':
+    case 'setCourse':
       return {
         ...state,
-        top10New: action.payload.top10New,
+        course: action.payload.course,
       };
     default:
       return state;

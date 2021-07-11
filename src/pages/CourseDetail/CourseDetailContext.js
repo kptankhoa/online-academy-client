@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
 const defaultValue = {};
-const HomeContext = createContext(defaultValue);
+const CourseDetailContext = createContext(defaultValue);
 
-export default HomeContext;
+export default CourseDetailContext;
