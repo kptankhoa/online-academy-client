@@ -13,7 +13,6 @@ const categoriesSample = {
 export default function CategoryNav(props) {
   const [categories, setCategories] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
-  // const [showNestedDropdown, setShowNestedDropdown] = useState(false);
 
   useEffect(() => {
     setCategories(categoriesSample);
