@@ -1,18 +1,30 @@
-import { Grid, Typography } from "@material-ui/core";
-import { useState } from "react";
+import { Grid, Typography, Grow, Divider, Badge } from '@material-ui/core';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
-import Rating from "./Rating";
+import { useState } from 'react';
+import Rating from './Rating';
+import Feed from './Feed';
 
-
-function FeedBack(props){
-
-  const [point, setPoint] = useState(0);
-
+function FeedBack(props) {
   return (
-    <div style ={{padding: 20}}>
-      <Typography variant='h5'>Feedback</Typography>
+    <div style={{ display: 'block' }}>
+      <Typography variant="h5">
+        <SupervisorAccountIcon />
+        Feedback
+      </Typography>
+      <Grow in={true} timeout={5000}>
+        <Feed></Feed>
+      </Grow>
+      <Divider></Divider>
+      <Grow in={true} timeout={5000}>
+        <Feed></Feed>
+      </Grow>
+      <Divider></Divider>
+      <Grow in={true} timeout={5000}>
+        <Feed></Feed>
+      </Grow>
     </div>
-  )
+  );
 }
 
 export default FeedBack;

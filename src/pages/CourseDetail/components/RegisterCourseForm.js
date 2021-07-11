@@ -1,5 +1,11 @@
 import { Container } from 'react-bootstrap';
-import { Card, CardHeader, CardActionArea , CardActions, Button} from '@material-ui/core';
+import {
+  Card,
+  CardHeader,
+  CardActionArea,
+  CardActions,
+  Button,
+} from '@material-ui/core';
 import useStyles from '../styles/register.style';
 import { CardContent } from '@material-ui/core';
 import ReactPlayer from 'react-player';
@@ -10,64 +16,55 @@ import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import { Typography } from '@material-ui/core';
-
+import Rating from './Rating';
 
 /**
- * 
- * @param {{video}} props 
- * @returns 
+ *
+ * @param {{video}} props
+ * @returns
  */
 function RegisterCourseForm(props) {
   const classes = useStyles();
-  const ref = useRef()
+  const ref = useRef();
 
-  const toggleFullScreen = () => {
-    screenfull.request(findDOMNode(ref.current))
-  }
+  // const toggleFullScreen = () => {
+  //   screenfull.request(findDOMNode(ref.current));
+  // };
 
   return (
-    <div className={classes.root}>      
+    <div {...props}>
       <Card>
         <CardActionArea>
           <ReactPlayer
-            width={400}
-            height={220}
+            width={280}
+            height={200}
             ref={ref}
-            url="https://www.youtube.com/watch?v=CrkB58bZ9SM"
-            onPlay={toggleFullScreen}
-            playing
+            url="https://vimeo.com/292893585"
+            // onPlay={toggleFullScreen}
+            controls={true}
+            config={
+              {
+                // vimeo: {},
+              }
+            }
+            // playing
           />
         </CardActionArea>
         <CardHeader title="Content" />
         <CardContent>
+          <Rating num={4} persons={4} />
           <List>
             <ListItem>
-              <CheckIcon/>
-              Ac
+              <CheckIcon />
+              Total Time:
             </ListItem>
             <ListItem>
-              <CheckIcon/>
-              Ad
+              <CheckIcon />
+              Section
             </ListItem>
             <ListItem>
-              <CheckIcon/>
-              Ad
-            </ListItem>
-            <ListItem>
-              <CheckIcon/>
-              Ad
-            </ListItem>
-            <ListItem>
-              <CheckIcon/>
-              Ad
-            </ListItem>
-            <ListItem>
-              <CheckIcon/>
-              Ad
-            </ListItem>
-            <ListItem>
-              <CheckIcon/>
-              Ad
+              <CheckIcon />
+              Lecturers
             </ListItem>
           </List>
           <Typography className={classes.price}>20000d</Typography>
@@ -76,7 +73,6 @@ function RegisterCourseForm(props) {
           <Button className={classes.button}>Register</Button>
         </CardActions>
       </Card>
-
     </div>
   );
 }

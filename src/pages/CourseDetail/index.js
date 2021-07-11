@@ -9,19 +9,27 @@ import CourseDetailContext from './CourseDetailContext';
 import reducer from './CourseDetailReducer';
 import CourseContent from './components/CourseContent';
 import FeedBack from './components/FeedBack';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 import { Grid } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 
 import HeaderBar from '../../components/HeaderBar';
 import Rating from './components/Rating';
+import Lecturers from './components/Lecturers';
+import CarouselContainer from './components/CarouselContainer';
+import Footer from '../../components/Footer';
 
 function CourseDescription(props) {
   const { courseId } = useParams();
   const classes = useStyles();
 
   const initialState = {
-    course: {},
+    course: {
+      courseImage: '/gif/loading.gif',
+    },
+    section: {},
+    process: {},
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -43,8 +51,8 @@ function CourseDescription(props) {
     <div>
       <HeaderBar />
       <CourseDetailContext.Provider value={{ state, dispatch }}>
-        <Grid container md={8}>
-          <Grid item md={12}>
+        <Grid container justify="center">
+          <Grid item xs={12}>
             <CourseDetail
               className={classes.courseDetail}
               courseId={courseId}
@@ -54,28 +62,42 @@ function CourseDescription(props) {
               shortdescription={state.course.briefDescription}
             />
           </Grid>
-          <Grid item md={12}>
-            <Grid container className={classes.rating}>
-              <Rating num={2.5}></Rating>
+          <Grid item md={8} xs={12}>
+            <Grid container justify="flex-start">
+              <Grid item md={8} xs={12}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    {/* <Grid container className={classes.rating}>
+                      <Rating num={2.75}></Rating>
+                    </Grid> */}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h5" className={classes.courseNmame}>
+                      <DescriptionIcon />
+                      Description
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CourseContent
+                      detaildescription={state.course.detailDescription}
+                    ></CourseContent>
+                    <Grid item xs={12} style={{ marginBottom: 20 }}>
+                      <Lecturers />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} style={{ marginBottom: 20 }}>
+                  <CarouselContainer></CarouselContainer>
+                </Grid>
+                <Grid item xs={12} style={{ marginBottom: 20 }}>
+                  <FeedBack></FeedBack>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-          <Grid item md={12}>
-            <Typography variant='h3'>
-              {state.course.courseName}
-            </Typography>
-          </Grid>
-          <Grid item md={12}>
-            <CourseContent
-              detaildescription={state.course.detailDescription}
-            ></CourseContent>
-          </Grid>
-          <Grid item md={12}>
-            <FeedBack></FeedBack>
-          </Grid>
         </Grid>
-
-        <RegisterCourseForm></RegisterCourseForm>
       </CourseDetailContext.Provider>
+      <Footer></Footer>
     </div>
   );
 }
