@@ -1,32 +1,8 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Section from "../section/Section";
 import CarouselList from "../../../common/list/carouselList/CarouselList";
-import Button from "../../../common/button/Button";
 import ButtonList from "../../../common/list/buttonList/ButtonList";
-
-const courseData = {
-  courseLecturers: [
-    {
-      _id: '60b745c0925c8e4710e90c6a',
-      fullName: 'Rob Percival'
-    },
-    {
-      _id: '60b74681925c8e4710e90c6b',
-      fullName: 'Marc Stock'
-    }
-  ],
-  ratedNumber: 123,
-  ratingPoint: 4.6,
-  _id: '60b74a89925c8e4710e90c6c',
-  courseName: 'The Complete Android N Developer Course',
-  courseImage: 'https://c4.wallpaperflare.com/wallpaper/416/113/278/android-operating-system-blurred-technology-operating-system-wallpaper-preview.jpg',
-  category: {
-    _id: '60b739cc925c8e4710e90c67',
-    categoryName: 'Android Development'
-  },
-  price: 2000000,
-  promotionalPrice: 350000
-};
+import academyApi from "../../../../services/academyApi";
 
 const featuredCategories = [
   {
@@ -53,25 +29,64 @@ const featuredCategories = [
 ]
 
 export default function HomeContent() {
+  const [featuredCourses, setFeaturedCourses] = useState([]);
+  const [latestCourses, setLatestCourses] = useState([]);
+  const [mostViewedCourses, setMostViewedCourses] = useState([]);
+  // const [featuredCategory, setFeaturedCategory] = useState([]);
+
+  useEffect(() => {
+    async function getFeaturedCoursesFromApi() {
+      const courses = await academyApi.getFeaturedCourses();
+      console.log({featuredCourses: courses});
+      setFeaturedCourses(courses);
+    }
+
+    async function getLatestCoursesFromApi() {
+      const courses = await academyApi.getLatestCourses();
+      console.log({latestCourses: courses});
+      setLatestCourses(courses);
+    }
+
+    async function getMostViewedCoursesFromApi() {
+      const courses = await academyApi.getMostViewedCourses();
+      setMostViewedCourses(courses);
+    }
+
+    // async function getFeaturedCategoryFromApi() {
+    //   const courses = await getFeaturedCourses();
+    //   setFeaturedCategory(courses);
+    // }
+    getFeaturedCoursesFromApi();
+    getLatestCoursesFromApi();
+    getMostViewedCoursesFromApi();
+  }, []);
+
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid flex-fill'>
       <div className='row'>
         <div className='col-8 m-auto'>
-          <Section title='Featured Course' className='mt-4'>
-            <CarouselList courseData={courseData} className='mt-3'/>
+          {/* Top featured courses */}
+          <Section title='Featured Courses' className='mt-4'>
+            <CarouselList courseList={featuredCourses} className='mt-3'/>
           </Section>
+
+          {/* Latest courses */}
           <Section title='Latest Courses' className='mt-4'>
-            <CarouselList courseData={courseData} className='mt-3'/>
+            <CarouselList courseList={latestCourses} className='mt-3'/>
           </Section>
+
+          {/* Most viewed courses */}
           <Section title='Most Viewed Course' className='mt-4'>
-            <CarouselList courseData={courseData} className='mt-3'/>
+            <CarouselList courseList={mostViewedCourses} className='mt-3'/>
           </Section>
+
+          {/*/!* Top featured category *!/*/}
           <Section title='Featured Category' className='mt-4'>
-            {/*<CarouselList courseData={courseData}/>*/}
             <ButtonList
               className='mt-3'
               titleList={featuredCategories.map(e => e.categoryName)}/>
           </Section>
+
         </div>
       </div>
     </div>

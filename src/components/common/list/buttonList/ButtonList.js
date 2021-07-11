@@ -7,7 +7,7 @@ export default function ButtonList({titleList, className}) {
   return (
     <div className={classes}>
       {titleList.map(title => (
-        <Button title={title} className='category-button'/>
+        <Button key={title} title={title} className='category-button'/>
       ))}
     </div>
   );

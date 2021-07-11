@@ -1,5 +1,5 @@
 import React from "react";
-import Menu from '../../components/domain/menu/Menu';
+import NavBar from '../../components/domain/menu/NavBar';
 import HomeContent from "../../components/domain/home/homeContent/HomeContent";
 import Footer from "../../components/domain/footer/Footer";
 
@@ -15,8 +15,8 @@ const Home = function (props) {
   // const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <div className='home-page'>
-      <Menu/>
+    <div className='home-page d-flex flex-column'>
+      <NavBar/>
       <HomeContent/>
       <Footer/>
     </div>

@@ -4,9 +4,9 @@ import SearchBar from './searchBar/SearchBar';
 import CategoryNav from './categoryNav/CategoryNav';
 import Button from '../../common/button/Button';
 
-import './Menu.css';
+import './NavBar.css';
 
-export default function Menu(props) {
+export default function NavBar(props) {
   return (
     <div className='menu d-flex align-items-center'>
       <Logo />

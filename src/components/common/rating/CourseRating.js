@@ -9,16 +9,16 @@ export default function CourseRating({ratingPoint, ratedNumber}) {
     let ret = [];
     while (rating > 0) {
       if (rating >= 1) {
-        ret.push(<i className="fas fa-star rating-icon"/>);
+        ret.push(<i key={rating} className="fas fa-star rating-icon"/>);
       } else if (rating >= 0.5) {
-        ret.push(<i className="fas fa-star-half-alt rating-icon"/>);
+        ret.push(<i key={rating} className="fas fa-star-half-alt rating-icon"/>);
       } else {
-        ret.push(<i className="far fa-star rating-icon"/>);
+        ret.push(<i key={rating} className="far fa-star rating-icon"/>);
       }
       rating--;
     }
     while (ret.length < 5) {
-      ret.push(<i className="far fa-star rating-icon"/>);
+      ret.push(<i key={ret.length} className="far fa-star rating-icon"/>);
     }
     return ret;
   }
