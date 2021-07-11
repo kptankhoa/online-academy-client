@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Section from "../section/Section";
 import CarouselList from "../../../common/list/carouselList/CarouselList";
 import ButtonList from "../../../common/list/buttonList/ButtonList";
-import academyApi from "../../../../services/academyApi";
+import {getDataFromAcademyApi} from "../../../../services/academyApi";
 
 const featuredCategories = [
   {
@@ -36,19 +36,17 @@ export default function HomeContent() {
 
   useEffect(() => {
     async function getFeaturedCoursesFromApi() {
-      const courses = await academyApi.getFeaturedCourses();
-      console.log({featuredCourses: courses});
+      const courses = await getDataFromAcademyApi('/statistics/featuredCourses');
       setFeaturedCourses(courses);
     }
 
     async function getLatestCoursesFromApi() {
-      const courses = await academyApi.getLatestCourses();
-      console.log({latestCourses: courses});
+      const courses = await getDataFromAcademyApi('/statistics/newestCourses');
       setLatestCourses(courses);
     }
 
     async function getMostViewedCoursesFromApi() {
-      const courses = await academyApi.getMostViewedCourses();
+      const courses = await getDataFromAcademyApi('/statistics/mostViewedCourses');
       setMostViewedCourses(courses);
     }
 

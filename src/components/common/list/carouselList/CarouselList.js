@@ -1,6 +1,7 @@
 import React from "react";
 import CourseCard from "../../card/CourseCard";
 import Carousel from "react-material-ui-carousel";
+import './CarouselList.css'
 
 export default function CarouselList({courseList, className}) {
   function renderCarousel(courseList) {
@@ -24,10 +25,18 @@ export default function CarouselList({courseList, className}) {
     return ret;
   }
 
-  return (
-    <Carousel indicators={false} navButtonsAlwaysVisible={true}
-              cycleNavigation={false} autoPlay={false} className={className}>
-      {renderCarousel(courseList)}
-    </Carousel>
-  );
+  return <>
+    {courseList.length ? (
+      <Carousel indicators={false} navButtonsAlwaysVisible={true}
+                cycleNavigation={false} autoPlay={false} className={className}>
+        {renderCarousel(courseList)}
+      </Carousel>
+    ) : (
+      <div className='spinner-wrapper'>
+        <div className="spinner-grow spinner" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    )}
+  </>;
 }

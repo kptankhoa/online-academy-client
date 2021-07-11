@@ -44,9 +44,9 @@ export default function NestedDropdown({ data }) {
             <ul className='sub-menu'>
               <li className='menu-item font-weight-bold'>Popular topics</li>
               {categories.map(category => (
-                <li className='menu-item'>
+                <li key={category._id} className='menu-item'>
                   <a href='#'>
-                    {category}
+                    {category.categoryName}
                   </a>
                 </li>
               ))}
