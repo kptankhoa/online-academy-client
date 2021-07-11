@@ -1,0 +1,22 @@
+.search-bar {
+  border: 1px solid #bfbfbf;
+  border-radius: 25px;
+  background-color: #f5f5f5;
+  padding: 0 10px;
+}
+
+.search-input {
+  border: none;
+  padding: 12px 10px;
+  background-color: transparent;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.btn-search {
+  border: none;
+  background-color: transparent;
+  /*width: 100%;*/
+}

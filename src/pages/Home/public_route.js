@@ -1,8 +1,9 @@
-import { lazy } from 'react'
+import { lazy } from 'react';
+
 const route = {
   path: '/',
   name: 'Home',
-  component: lazy(()=>import('.'))
-}
+  component: lazy(() => import('.'))
+};
 
-export default route
+export default route;
