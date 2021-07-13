@@ -28,7 +28,7 @@ export default function SectionNav(props) {
   };
   const renderAccordion = (section) => {
     return (
-      <Accordion>
+      <Accordion key={section._id}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
@@ -37,7 +37,7 @@ export default function SectionNav(props) {
           <Typography>{section.title}</Typography>
         </AccordionSummary>
         {section.lessons.map(lesson => (
-          <AccordionDetails>
+          <AccordionDetails key={lesson._id}>
             <div className="d-flex align-items-center">
               {lesson.progress && lesson.progress.isFinish && <i className='fas fa-check-square' style={{color: '#2ecc71'}}></i>}
               <Button style={{ fontSize: '14px' }} className='w-100 text-left'
