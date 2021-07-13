@@ -6,7 +6,7 @@ import Button from '../../common/button/Button';
 
 import './NavBar.css';
 
-export default function NavBar(props) {
+export default function NavBar() {
   return (
     <div className='menu d-flex align-items-center'>
       <Logo />

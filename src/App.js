@@ -1,4 +1,4 @@
-import React, { Suspense, useReducer } from 'react';
+import React, {Suspense, useReducer} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,7 +6,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import { publicRoute } from './pages/routes';
+import {publicRoute} from './pages/routes';
 
 import Login from './pages/Login';
 
@@ -26,9 +26,9 @@ export default function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <UnAuthRoute path="/login" exact={true}>
-              <Login />
+              <Login/>
             </UnAuthRoute>
-            <AppContext.Provider value={{ state, dispatch }}>
+            <AppContext.Provider value={{state, dispatch}}>
               {publicRoute.map((ro, i) => {
                 return (
                   <PublicRoute
@@ -36,13 +36,13 @@ export default function App() {
                     path={ro.path}
                     component={ro.component}
                     exact={true}
-                  ></PublicRoute>
+                  />
                 );
               })}
             </AppContext.Provider>
 
             <Route path="*">
-              <Redirect to="/login"></Redirect>
+              <Redirect to="/login"/>
             </Route>
           </Switch>
         </Suspense>
@@ -51,14 +51,14 @@ export default function App() {
   );
 }
 
-function PrivateRoute({ children, component, ...rest }) {
+function PrivateRoute({children, component, ...rest}) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
   console.log('accessKey:', accessKey);
   if (accessKey) {
     console.log('accessKey', accessKey && 1);
-    return <Route {...rest} component={component} />;
+    return <Route {...rest} component={component}/>;
   } else {
     return (
       <Route
@@ -76,7 +76,7 @@ function PrivateRoute({ children, component, ...rest }) {
   }
 }
 
-function UnAuthRoute({ children, ...rest }) {
+function UnAuthRoute({children, ...rest}) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -100,6 +100,6 @@ function UnAuthRoute({ children, ...rest }) {
   );
 }
 
-function PublicRoute({ ...rest }) {
+function PublicRoute({...rest}) {
   return <Route {...rest} />;
 }
