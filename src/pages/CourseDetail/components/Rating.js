@@ -5,7 +5,8 @@ import StarHalfIcon from '@material-ui/icons/StarHalf';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import { useEffect } from 'react';
 
-function drawStar(point, persons) {
+function drawStar(raw, persons) {
+  const point = raw % 5;
   if (point >= 0 && point <= 5) {
     const arr = [0, 0, 0, 0, 0];
     const p = Math.round(point * 2) / 2;
@@ -48,7 +49,7 @@ function drawStar(point, persons) {
             }
           })}
         </div>
-        {persons && (
+        {(persons || persons === 0) && (
           <div style={{ display: 'inline', padding: '5%' }}>
             <SupervisorAccountIcon />
             {persons}

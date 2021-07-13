@@ -11,12 +11,16 @@ import { CardContent } from '@material-ui/core';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import { findDOMNode } from 'react-dom';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import { Typography } from '@material-ui/core';
 import Rating from './Rating';
+import Money from './Money';
+
+import CourseDetailContext from '../CourseDetailContext';
+import Loading from '../../../components/Loading';
 
 /**
  *
@@ -26,10 +30,17 @@ import Rating from './Rating';
 function RegisterCourseForm(props) {
   const classes = useStyles();
   const ref = useRef();
+  const { state, dispatch } = useContext(CourseDetailContext);
 
   // const toggleFullScreen = () => {
   //   screenfull.request(findDOMNode(ref.current));
   // };
+
+  const render = state.course.ratingPoint ? (
+    <Rating num={state.course.ratingPoint} persons={state.course.ratedNumber} />
+  ) : (
+    <Loading size={20} />
+  );
 
   return (
     <div {...props}>
@@ -52,22 +63,18 @@ function RegisterCourseForm(props) {
         </CardActionArea>
         <CardHeader title="Content" />
         <CardContent>
-          <Rating num={4} persons={4} />
+          {render}
           <List>
             <ListItem>
               <CheckIcon />
-              Total Time:
+              Total Time: {state.course.totalHours} h
             </ListItem>
             <ListItem>
               <CheckIcon />
               Section
             </ListItem>
-            <ListItem>
-              <CheckIcon />
-              Lecturers
-            </ListItem>
           </List>
-          <Typography className={classes.price}>20000d</Typography>
+          <Money money={20000} size={30}></Money>
         </CardContent>
         <CardActions className={classes.registerbutton}>
           <Button className={classes.button}>Register</Button>

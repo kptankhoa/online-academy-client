@@ -3,14 +3,22 @@ import MailIcon from '@material-ui/icons/Mail';
 import PhoneIcon from '@material-ui/icons/Phone';
 import HomeIcon from '@material-ui/icons/Home';
 
-function LecturerDetail(props) {
+function LecturerDetail({
+  img,
+  name,
+  description,
+  address,
+  phone,
+  email,
+  ...rest
+}) {
   return (
     <Paper style={{ padding: 1 }} variant="elevation">
       <Grid container>
         <Grid item xs={12}>
           <Link>
             <Typography variant="h6" style={{ padding: 5, fontWeight: 'bold' }}>
-              Name
+              {name}
             </Typography>
           </Link>
         </Grid>
@@ -21,7 +29,7 @@ function LecturerDetail(props) {
               width: 100,
               height: 100,
             }}
-            // src={''}
+            src={img}
           >
             N
           </Avatar>
@@ -31,23 +39,23 @@ function LecturerDetail(props) {
             <MailIcon
               style={{ fontSize: 16, marginRight: 3, color: 'orangered' }}
             />
-            Email
+            {email}
           </Typography>
           <Typography style={{ padding: 2 }}>
             <PhoneIcon
               style={{ fontSize: 16, marginRight: 3, color: 'orangered' }}
             />
-            Phone
+            {phone}
           </Typography>
           <Typography style={{ padding: 2 }}>
             <HomeIcon
               style={{ fontSize: 16, marginRight: 3, color: 'orangered' }}
             />
-            Address
+            {address}
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography>Description</Typography>
+          <Typography>{description}</Typography>
         </Grid>
       </Grid>
     </Paper>

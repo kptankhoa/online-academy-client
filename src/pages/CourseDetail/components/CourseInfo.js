@@ -10,6 +10,7 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import Rating from './Rating';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import Money from './Money';
 function CourseInfo(params) {
   const history = useHistory();
   return (
@@ -68,14 +69,7 @@ function CourseInfo(params) {
               color: 'red',
             }}
           >
-            <Typography
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}
-            >
-              10000d
-            </Typography>
+            <Money money={20000} size={20} />
           </div>
         </CardContent>
       </CardActionArea>
