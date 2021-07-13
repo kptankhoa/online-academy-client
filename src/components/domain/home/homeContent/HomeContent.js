@@ -60,7 +60,7 @@ export default function HomeContent() {
   }, []);
 
   return (
-    <div className='container-fluid flex-fill'>
+    <div className='container-fluid'>
       <div className='row'>
         <div className='col-8 m-auto'>
           <div className='rounded overflow-hidden'>

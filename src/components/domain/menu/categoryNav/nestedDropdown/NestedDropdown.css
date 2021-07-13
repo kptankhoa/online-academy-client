@@ -27,11 +27,12 @@ ul.sub-menu > li.menu-item {
   justify-content: space-between;
 }
 
-ul.sub-menu > li.menu-item > a:hover{
-  color: #3498db;
+ul.sub-menu > li.menu-item > div.mi-wrapper:hover {
+  color: #055489;
+  cursor: pointer;
 }
 
-ul.sub-menu > li.menu-item > a {
+ul.sub-menu > li.menu-item > div.mi-wrapper {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -46,4 +47,14 @@ ul.nested-menu {
 
 .separator {
   border-right: 1px solid lightgray;
+}
+
+.button-list-item {
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+
+.button-list-item:hover {
+  color: #055489;
 }

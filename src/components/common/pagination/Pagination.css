@@ -1,0 +1,17 @@
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.hover:hover {
+  color: #454545;
+}
+
+.primary-color {
+  color: #3498db;
+}
+
+.active {
+  border-bottom: 1px solid #3498db;
+  font-weight: bold;
+}
