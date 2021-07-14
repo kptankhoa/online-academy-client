@@ -80,7 +80,7 @@ function UnAuthRoute({children, ...rest}) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
-  console.log('accessKey:', accessKey);
+  // console.log('accessKey:', accessKey);
   return (
     <Route
       {...rest}

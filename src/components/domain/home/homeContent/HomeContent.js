@@ -66,7 +66,7 @@ export default function HomeContent() {
           <div className='rounded overflow-hidden'>
             {/*https://blog.blackboard.com/wp-content/uploads/Blog_Post-1.png*/}
             <img src="https://devinfo.in/wp-content/uploads/2021/05/LIL.png"
-                 height="450px" width='100%' alt="intro.png"/>
+                 height="450px" width="100%" alt="intro.png"/>
           </div>
 
           {/* Top featured courses */}

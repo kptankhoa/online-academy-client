@@ -9,7 +9,6 @@ import jwt_decode from "jwt-decode";
 function UserNav() {
   const accessToken = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
   const decoded = jwt_decode(accessToken);
-  console.log(decoded);
   return (
     <div className="ml-3 user-nav">
       <Link to="/user/profile" className="avatar-container">

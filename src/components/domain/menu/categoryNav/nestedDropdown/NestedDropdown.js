@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './NestedDropdown.css';
 import {useHistory} from "react-router-dom";
-import Button from "../../../../common/button/Button";
+import Button from "../../../../common/button/pureButton/Button";
 
 export default function NestedDropdown({data}) {
   const [showNested, setShowNested] = useState(false);
@@ -53,9 +53,9 @@ export default function NestedDropdown({data}) {
               <li className='menu-item font-weight-bold'>Popular topics</li>
               {categories.map(category => (
                 <li key={category._id} className='menu-item'>
-                  <Button title={category.categoryName}
-                          className='button-list-item'
+                  <Button className='button-list-item'
                           onClick={() => onClickHandler(category._id)}>
+                    {category.categoryName}
                   </Button>
                 </li>
               ))}

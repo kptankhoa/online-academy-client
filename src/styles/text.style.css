@@ -6,6 +6,10 @@
   font-size: 14px;
 }
 
+.text-smaller {
+  font-size: 15px;
+}
+
 .text-blur {
   color: gray;
 }

@@ -3,10 +3,13 @@ import Logo from './logo/Logo';
 import SearchBar from './searchBar/SearchBar';
 import CategoryNav from './categoryNav/CategoryNav';
 
-import './NavBar.css';
 import UserNav from "./userNav/UserNav";
-import Button from "../../common/button/Button";
+import Button from "../../common/button/pureButton/Button";
 import {Link} from "react-router-dom";
+import WishListButton from "../../common/button/wishListButton/WishListButton";
+
+import './NavBar.css';
+import '../../../styles/text.style.css';
 
 export default function NavBar() {
   const accessToken = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
@@ -17,19 +20,27 @@ export default function NavBar() {
       <SearchBar/>
 
       {accessToken ? (
-        <UserNav/>
+        <>
+          <Link to="/user/wishlist">
+            <WishListButton size={20}/>
+          </Link>
+          <UserNav/>
+        </>
       ) : (
         <>
           <Link to="/login">
             <div className='ml-2'>
-              <Button title='Log in'
-                      className='border border-info rounded text-info font-weight-bold py-2 px-4'/>
+              <Button
+                className='border border-info rounded text-info font-weight-bold py-2 px-4 text-smaller'>
+                Log in
+              </Button>
             </div>
           </Link>
           <Link to="/signup">
             <div className='ml-2'>
-              <Button title='Sign up'
-                      className='rounded text-white bg-info font-weight-bold py-2 px-4'/>
+              <Button className='rounded text-white bg-info font-weight-bold py-2 px-4 text-smaller'>
+                Sign up
+              </Button>
             </div>
           </Link>
         </>

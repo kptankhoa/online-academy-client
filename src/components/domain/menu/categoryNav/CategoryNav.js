@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import './CategoryNav.css';
-import Button from '../../../common/button/Button';
+import Button from '../../../common/button/pureButton/Button';
 import NestedDropdown from './nestedDropdown/NestedDropdown';
 import {getDataFromAcademyApi} from "../../../../services/academyApi";
 
@@ -28,7 +28,7 @@ export default function CategoryNav() {
   return (
     <div className='category-nav px-2'
          onClick={toggleDropdown} onBlur={onBlurHandler}>
-      <Button title='Categories'/>
+      <Button>Categories</Button>
       {showDropdown ? (
         <NestedDropdown data={categories}/>
       ) : ''}
