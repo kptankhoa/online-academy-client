@@ -40,8 +40,7 @@ function Pagination(props) {
     );
 
     const current = currentPage ?
-      <PaginationItem className='primary-color mx-2 active'
-                      onClick={() => gotoPage(currentPage)}>
+      <PaginationItem className='primary-color mx-2 active'>
         {currentPage}
       </PaginationItem> : '';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import UserInfoCard from "../../../../common/card/userInfoCard/UserInfoCard";
-import Button from "../../../../common/button/Button";
+import Button from "../../../../common/button/pureButton/Button";
 
 import "../../../../../styles/text.style.css";
 import "../../../../../styles/pseudo.style.css";
@@ -11,8 +11,11 @@ function UserDropdown({userInfo}) {
   const history = useHistory();
 
   function handleLogOut() {
-    // academyAxios.post();
-    history.push('/login');
+    academyAxios.post("/auth/logout").then(() => {
+      localStorage.removeItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+      localStorage.removeItem(process.env.REACT_APP_STORAGE_REFRESH_TOKEN);
+      history.push('/login');
+    });
   }
 
   return (
@@ -24,11 +27,27 @@ function UserDropdown({userInfo}) {
         </div>
       </Link>
       <div className="border-top py-2">
-        <Link to="/user/profile">
-          <Button title="My Profile" className="text-left w-100 text-small hover-color"/>
+        <Link to="/user/my-learning">
+          <Button className="text-left w-100 text-small hover-color">
+            My learning
+          </Button>
         </Link>
-        <Button title="Log out" onClick={handleLogOut}
-                className="text-left w-100 text-small hover-color"/>
+        <Link to="/user/wishlist">
+          <Button className="text-left w-100 text-small hover-color">
+            Wish list
+          </Button>
+        </Link>
+      </div>
+      <div className="border-top py-2">
+        <Link to="/user/profile">
+          <Button className="text-left w-100 text-small hover-color">
+            My Profile
+          </Button>
+        </Link>
+        <Button onClick={handleLogOut}
+                className="text-left w-100 text-small hover-color">
+          Log out
+        </Button>
       </div>
     </div>
   );
