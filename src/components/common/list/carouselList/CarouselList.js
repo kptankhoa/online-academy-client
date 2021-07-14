@@ -1,5 +1,5 @@
 import React from "react";
-import CourseCard from "../../card/CourseCard";
+import CourseCard from "../../card/courseCard/CourseCard";
 import Carousel from "react-material-ui-carousel";
 import './CarouselList.css'
 

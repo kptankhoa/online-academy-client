@@ -1,8 +1,8 @@
 import React from 'react';
 
 import './CourseCard.css'
-import CourseRating from "../rating/CourseRating";
-import {convertNumberWithComma} from "../../../utils/commonUtils";
+import CourseRating from "../../rating/CourseRating";
+import {convertNumberWithComma} from "../../../../utils/commonUtils";
 
 export default function CourseCard({courseData, className, style}) {
   const classes = 'card border-0 course-card ' + className;
