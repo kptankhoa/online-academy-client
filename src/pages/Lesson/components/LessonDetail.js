@@ -1,8 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import LessonViewContext from 'pages/Lesson/lessonViewContext';
 
 const LessonDetail = (props) => {
-  const { lesson, setProgress } = props;
+  const { state } = useContext(LessonViewContext);
+  const lesson = state.lesson;
+  const { setProgress } = props;
   const player = useRef(null);
   const startAt = lesson.progress ? (lesson.progress.progress ? lesson.progress.progress : lesson.progress) : 0;
   return (

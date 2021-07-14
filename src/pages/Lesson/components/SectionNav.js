@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useHistory } from 'react-router-dom';
 import Button from '../../../components/common/button/Button';
+import LessonViewContext from '../lessonViewContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SectionNav(props) {
   const classes = useStyles();
-  const { courseId, sections, setLesson } = props;
+  const { courseId, setLesson } = props;
+  const { state } = useContext(LessonViewContext);
+  const sections = state.sections;
   const history = useHistory();
   const onClickHandler = (lesson) => {
     history.push(`/courses/${courseId}/lessons/${lesson._id}`);

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import LessonViewContext from 'pages/Lesson/lessonViewContext';
 
-const CourseInfo = (props) => {
-  const { course } = props;
+const CourseInfo = () => {
+  const { state } = useContext(LessonViewContext);
+  const course = state.course;
   return (
     <div className='row mt-3'>
       <div className='col-4'>

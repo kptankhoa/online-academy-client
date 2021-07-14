@@ -1,31 +1,58 @@
+import React, { useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import LessonDetail from './components/LessonDetail';
-// import useStyles from './styles/index.style';
-import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { axiosInstance } from 'utils/auth';
 import Navbar from 'components/domain/menu/NavBar'
+import Footer from 'components/domain/footer/Footer'
+import LessonDetail from './components/LessonDetail';
 import CourseInfo from './components/CourseInfo';
 import SectionNav from './components/SectionNav';
+import reducer, { SET_COURSE, SET_LESSON, SET_SECTIONS } from './lessonViewReducer';
+import LessonViewContext from './lessonViewContext';
 
-const LessonView = (props) => {
+const LessonView = () => {
   const { courseId, lessonId } = useParams();
-  const [lesson, setLesson] = useState({});
-  const [course, setCourse] = useState({});
-  const [sections, setSections] = useState({});
+  const initialState = {
+    lesson: {},
+    course: {},
+    sections: {},
+  }
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [progress, setProgress] = useState({});
+  const [isEnrolled, setIsEnrolled] = useState(false);
   useEffect(() => {
     axiosInstance.get(`/courses/${courseId}/lessons/${lessonId}`)
-      .then(r => setLesson(r.data));
-  },[]);
-  useEffect(() => {
+      .then(r => {
+        console.log(r);
+        dispatch({
+          type: SET_LESSON,
+          payload: r.data
+        })
+      })
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response.data);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  });
     axiosInstance.get(`/courses/${courseId}`)
-      .then(r => setCourse(r.data));
+      .then(r => dispatch({
+        type: SET_COURSE,
+        payload: r.data
+      }));
+    axiosInstance.get(`/courses/${courseId}/sections`)
+      .then(r => dispatch({
+        type: SET_SECTIONS,
+        payload: r.data
+      }));
   },[]);
   useEffect(() => {
-    axiosInstance.get(`/courses/${courseId}/sections`)
-      .then(r => setSections(r.data));
-  }, []);
+    setIsEnrolled(!(Object.keys(state.lesson).length === 0));
+  },[state.lesson])
   useEffect(() => {
     window.addEventListener('beforeunload', (event) => {
       event.preventDefault();
@@ -38,6 +65,7 @@ const LessonView = (props) => {
       postProgress();
     }
   }, []);
+  // setIsEnrolled(!(Object.keys(state.lesson).length === 0));
   const decoded = jwt_decode(localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN));
   const postProgress = () => {
     axiosInstance.post(`/progresses`, {
@@ -45,24 +73,36 @@ const LessonView = (props) => {
       courseId,
       lessonId,
       progress: progress.playedSeconds
-    }).then(data => console.log(data));
+    }).then();
   };
+
   function setLessonHandler(newLesson) {
     postProgress();
-    setLesson(newLesson);
+    dispatch({
+      type: SET_LESSON,
+      payload: newLesson});
   };
   return (
     <div>
       <Navbar />
-      <div className="row">
-        <div className='col-xl-8'>
-          <LessonDetail lesson={lesson} setProgress={setProgress}/>
-          <CourseInfo course={course}/>
+      {isEnrolled ? (
+        <LessonViewContext.Provider value={{state, dispatch}}>
+          <div className="row">
+            <div className='col-xl-8'>
+              <LessonDetail setProgress={setProgress}/>
+              <CourseInfo />
+            </div>
+            <div className='col'>
+              <SectionNav courseId={courseId} setLesson={setLessonHandler}/>
+            </div>
+          </div>
+        </LessonViewContext.Provider>
+      ) : (
+        <div className="m-5 ">
+          <h4 className="text-danger">You haven't enrolled this course!</h4>
         </div>
-        <div className='col'>
-          <SectionNav courseId={courseId} sections={sections} setLesson={setLessonHandler}/>
-        </div>
-      </div>
+      )}
+      <Footer />
     </div>
   );
 }
