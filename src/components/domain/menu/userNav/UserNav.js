@@ -4,16 +4,25 @@ import UserDropdown from "./userDropdown/UserDropdown";
 
 import './UserNav.css';
 import {Link} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 function UserNav() {
+  const accessToken = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  const decoded = jwt_decode(accessToken);
+  console.log(decoded);
   return (
     <div className="ml-3 user-nav">
       <Link to="/user/profile" className="avatar-container">
-        <Avatar size={40} src="https://imgt.taimienphi.vn/cf/Images/sa/2018/12/6/co-do-viet-nam-taimienphi.vn.jpg"/>
+        <Avatar size={40}
+                src={decoded.avatar}/>
       </Link>
       <div className="dropdown-container">
         <div className="dropdown-content">
-          <UserDropdown/>
+          <UserDropdown userInfo={{
+            name: decoded.fullName,
+            email: decoded.email,
+            avatar: decoded.avatar
+          }}/>
         </div>
       </div>
     </div>

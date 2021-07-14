@@ -4,21 +4,23 @@ import Button from "../../../../common/button/Button";
 
 import "../../../../../styles/text.style.css";
 import "../../../../../styles/pseudo.style.css";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import {academyAxios} from "../../../../../config/axios.config";
 
-function UserDropdown() {
-  // const history = useHistory();
+function UserDropdown({userInfo}) {
+  const history = useHistory();
 
   function handleLogOut() {
-    // history.push('/login');
+    // academyAxios.post();
+    history.push('/login');
   }
 
   return (
     <div className="d-flex flex-column">
       <Link to="/user/profile" className="text-decoration-none text-color-primary hover-color">
         <div className="p-3">
-          <UserInfoCard avatar="https://imgt.taimienphi.vn/cf/Images/sa/2018/12/6/co-do-viet-nam-taimienphi.vn.jpg"
-                        name="Dinh Gia Kiet" email="1712541@student.hcmus.edu.vn"/>
+          <UserInfoCard avatar={userInfo.avatar}
+                        name={userInfo.name} email={userInfo.email}/>
         </div>
       </Link>
       <div className="border-top py-2">
