@@ -1,6 +1,6 @@
 import React from "react";
 
-import './CourseRating.css'
+import './CourseRating.css';
 
 export default function CourseRating({ratingPoint, ratedNumber}) {
 
@@ -9,18 +9,24 @@ export default function CourseRating({ratingPoint, ratedNumber}) {
     let ret = [];
     while (rating > 0) {
       if (rating >= 1) {
-        ret.push(<i key={rating} className="fas fa-star rating-icon"/>);
+        ret.push(1);
       } else if (rating >= 0.5) {
-        ret.push(<i key={rating} className="fas fa-star-half-alt rating-icon"/>);
+        ret.push(0.5);
       } else {
-        ret.push(<i key={rating} className="far fa-star rating-icon"/>);
+        ret.push(0);
       }
       rating--;
     }
     while (ret.length < 5) {
-      ret.push(<i key={ret.length} className="far fa-star rating-icon"/>);
+      ret.push(0);
     }
-    return ret;
+
+    return ret.map((value, index) => {
+      return value === 1 ? <i key={index} className="fas fa-star rating-icon"/> : (
+        value === 0 ? <i key={index} className="far fa-star rating-icon"/> :
+          <i key={index} className="fas fa-star-half-alt rating-icon"/>
+      )
+    });
   }
 
   return (

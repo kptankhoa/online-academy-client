@@ -17,3 +17,7 @@
 .text-x-small {
   font-size: 12px;
 }
+
+.text-color-error {
+  color: #c0392b;
+}
