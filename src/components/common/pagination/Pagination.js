@@ -2,15 +2,16 @@ import React from 'react';
 import PaginationItem from "./paginationItem/PaginationItem";
 
 import './Pagination.css';
-import {useHistory, useRouteMatch} from "react-router-dom";
+// import {useHistory, useRouteMatch} from "react-router-dom";
 
 function Pagination(props) {
   const classes = 'custom-pagination ' + (props.className ? props.className : '');
-  const history = useHistory();
-  let {url} = useRouteMatch();
+  // const history = useHistory();
+  // let {url} = useRouteMatch();
 
   function gotoPage(page) {
-    history.push(`${url}?page=${page}`);
+    // history.push(`${url}?page=${page}`);
+    props.setPage(page);
   }
 
   function renderPageNumber(currentPage, nextPage, prevPage, totalPage) {
