@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from "react-router-dom";
 import Profile from "../profile/Profile";
+import MyLearning from "../myLearning/MyLearning";
 
 function TabContent() {
   const {tabId} = useParams();
@@ -10,7 +11,7 @@ function TabContent() {
       case "profile":
         return <Profile/>;
       case "my-learning":
-        return <div>my-learning</div>;
+        return <MyLearning/>;
       case "wishlist":
         return <div>wishlist</div>;
       default:
