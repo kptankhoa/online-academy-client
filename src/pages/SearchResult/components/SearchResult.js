@@ -4,6 +4,7 @@ import { getDataFromAcademyApi } from 'services/academyApi';
 import Pagination from 'components/common/pagination/Pagination';
 import CourseList from 'components/common/list/courseList/CourseList';
 import { useLocation } from 'react-router-dom';
+import 'components/domain/listPage/ListPageContent.css';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -16,6 +17,7 @@ const SearchResult = () => {
   const [loading2, setLoading2] = useState(true);
   const [page1, setPage1] = useState(1);
   const [page2, setPage2] = useState(1);
+  const [sortBy, setSortBy] = useState('default');
   let query = useQuery();
   let keyword = query.get('keyword');
   useEffect(() => {
@@ -23,25 +25,27 @@ const SearchResult = () => {
     getDataFromAcademyApi('/api/search/course', {
       params: {
         keyword,
-        page: page1
+        page: page1,
+        sortBy: sortBy != 'default' ?  sortBy : ''
       }
     }).then(data => {
       setLoading1(false);
       setCourseQueryResultInfo(data);
     })
-  }, [page1, keyword]);
+  }, [page1, keyword, sortBy]);
   useEffect(() => {
     setLoading2(true);
     getDataFromAcademyApi('/api/search/byCategory', {
       params: {
         keyword,
-        page: page2
+        page: page2,
+        sortBy: sortBy != 'default' ?  sortBy : ''
       }
     }).then(data => {
       setLoading2(false);
       setCategoryQueryResultInfo(data);
     })
-  }, [page2, keyword]);
+  }, [page2, keyword, sortBy]);
   useEffect(() => {
     setPage1(1);
     setPage2(1);
@@ -88,6 +92,24 @@ const SearchResult = () => {
   )
   return (
     <>
+      <div className='container-fluid pt-4 list-page-content flex-grow-1'>
+        <div className='row'>
+          <div className='col-6 m-auto p-0 d-flex justify-content-end align-items-center'>
+            <h5 className='font-weight-bold mr-2'>Sort by:</h5>
+              <div className="form-group m-0">
+                <select className="form-control"
+                        id="exampleFormControlSelect1"
+                            value={sortBy}
+                            onChange={e => setSortBy(e.target.value)}
+                >
+                  <option value={'default'} selected>None</option>
+                  <option value={'ratingDesc'}>Rating Decreasing</option>
+                  <option value={'priceAsc'}>Price Ascending</option>
+                </select>
+              </div>
+          </div>
+        </div>
+      </div>
       {renderCoursesView(loading1, courseQueryResultInfo, setPage1, title1)}
       {renderCoursesView(loading2, categoryQueryResultInfo, setPage2, title2)}
     </>
