@@ -1,3 +1,13 @@
 .hover-color:hover {
   color: #3498db;
 }
+
+.hover-border-bottom:hover, .active {
+  border-bottom: 5px solid #454545;
+  margin-bottom: -5px;
+}
+
+:target {
+  border-bottom: 5px solid #454545;
+  margin-bottom: -5px;
+}

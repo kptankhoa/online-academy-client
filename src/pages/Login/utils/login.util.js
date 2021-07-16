@@ -5,7 +5,7 @@ export async function Login(data) {
   try {
     const HOST = process.env.REACT_APP_ONLINE_HOST || process.env.REACT_APP_HOST;
     console.log(HOST);
-    const res = await axiosInstanceDefault.post('/auth/login/user', data);
+    const res = await axiosInstanceDefault.post('/auth/login/account', data);
 
     if (res.status === 200) {
       const { accessToken, refreshToken } = res.data;
@@ -14,6 +14,7 @@ export async function Login(data) {
         localStorage.setItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN, accessToken);
         localStorage.setItem(process.env.REACT_APP_STORAGE_REFRESH_TOKEN, refreshToken);
         setAccessTokenToHeader(accessToken);
+
         return true
       }
 

@@ -11,7 +11,7 @@ function UserNav() {
   const decoded = jwt_decode(accessToken);
   return (
     <div className="ml-3 user-nav">
-      <Link to="/user/profile" className="avatar-container">
+      <Link to="/user" className="avatar-container">
         <Avatar size={40}
                 src={decoded.avatar}/>
       </Link>
