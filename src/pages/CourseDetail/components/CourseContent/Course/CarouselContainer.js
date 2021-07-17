@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -13,10 +13,17 @@ import SwiperCore, { Pagination } from 'swiper/core';
 import CourseInfo from './CourseInfo';
 import { Typography } from '@material-ui/core';
 
+import CourseDetailContext from '../../../CourseDetailContext';
+import Loading from '../../../../../components/Loading';
+import CourseCard from '../../../../../components/common/card/CourseCard';
+
 // install Swiper modules
 SwiperCore.use([Pagination]);
 
-export default function App() {
+export default function CarouselContainer() {
+  const { state } = useContext(CourseDetailContext);
+  console.log('state', state);
+
   return (
     <>
       <Typography variant="h5" style={{ fontWeight: 'bold' }}>
@@ -29,15 +36,18 @@ export default function App() {
         //   clickable: true,
         // }}
       >
-        <SwiperSlide>
-          <CourseInfo></CourseInfo>
-        </SwiperSlide>
-        <SwiperSlide>
-          <CourseInfo></CourseInfo>
-        </SwiperSlide>
-        <SwiperSlide>
-          <CourseInfo></CourseInfo>
-        </SwiperSlide>
+        {state.sameCourses ? (
+          state.sameCourses.map((courses) => {
+            return (
+              <SwiperSlide>
+                <CourseCard courseData={courses} />
+                {/* <CourseInfo></CourseInfo> */}
+              </SwiperSlide>
+            );
+          })
+        ) : (
+          <Loading />
+        )}
       </Swiper>
     </>
   );

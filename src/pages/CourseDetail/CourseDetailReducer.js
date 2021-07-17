@@ -6,6 +6,16 @@ export default function reducer(state, action) {
         ...state,
         course: action.payload.course,
       };
+    case 'setSameCourses':
+      return {
+        ...state,
+        sameCourses: action.payload.sameCourses,
+      };
+    case 'setSections':
+      return {
+        ...state,
+        sections: action.payload.sections,
+      };
     default:
       return state;
   }

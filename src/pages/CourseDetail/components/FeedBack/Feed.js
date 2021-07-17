@@ -1,9 +1,9 @@
 import { Avatar, Grid, Paper, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
-import Loading from '../../../components/Loading';
+import Loading from '../../../../components/Loading';
 import Rating from './Rating';
 
-import { axiosInstance } from '../../../utils/auth';
+import { axiosInstance } from '../../../../utils/auth';
 
 function Feed({ userId, comment, rating }) {
   const [user, setUser] = useState(null);

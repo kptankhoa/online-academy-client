@@ -1,24 +1,24 @@
 import { useContext, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
-import CourseDetail from './components/CourseDetail';
-import RegisterCourseForm from './components/RegisterCourseForm';
+import CourseDetail from './components/CourseContent/Course/CourseDetail';
+import RegisterCourseForm from './components/Register/RegisterCourseForm';
 
 import useStyles from './styles/index.style';
 import { axiosInstance } from '../../utils/auth';
 import CourseDetailContext from './CourseDetailContext';
 import reducer from './CourseDetailReducer';
-import CourseContent from './components/CourseContent';
-import FeedBack from './components/FeedBack';
+
+import { CourseContent, FeedBack, Lecturers } from './components';
 import DescriptionIcon from '@material-ui/icons/Description';
 
 import { Grid } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 
-import HeaderBar from '../../components/HeaderBar';
-import Rating from './components/Rating';
-import Lecturers from './components/Lecturers';
-import CarouselContainer from './components/CarouselContainer';
+import NavBar from '../../components/domain/menu/NavBar';
+import CarouselContainer from './components/CourseContent/Course/CarouselContainer';
 import Footer from '../../components/Footer';
+import getSameCourse from './utils/get5CourseByCourseId';
+import { getSections } from './utils';
 
 function CourseDescription(props) {
   const { courseId } = useParams();
@@ -28,7 +28,6 @@ function CourseDescription(props) {
     course: {
       courseImage: '/gif/loading.gif',
     },
-    section: {},
     process: {},
   };
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -36,8 +35,6 @@ function CourseDescription(props) {
   useEffect(() => {
     async function getCourse() {
       const rel = await axiosInstance.get(`/courses/${courseId}`);
-
-      console.log('rel', rel);
       dispatch({
         type: 'setCourse',
         payload: {
@@ -45,11 +42,13 @@ function CourseDescription(props) {
         },
       });
     }
+    getSameCourse(courseId, dispatch);
+    getSections(courseId, dispatch);
     getCourse();
   }, [courseId]);
   return (
     <div>
-      <HeaderBar />
+      <NavBar />
       <CourseDetailContext.Provider value={{ state, dispatch }}>
         <Grid container justify="center">
           <Grid item xs={12}>

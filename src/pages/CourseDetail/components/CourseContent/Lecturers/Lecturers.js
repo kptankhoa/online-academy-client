@@ -4,9 +4,9 @@ import { List, Typography } from '@material-ui/core';
 import LecturerDetail from './LecturerDetail';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
-import CourseDetailContext from '../CourseDetailContext';
-import Loading from '../../../components/Loading';
+import CourseDetailContext from '../../../CourseDetailContext';
 
+import { Loading } from '../../../../../components';
 function Lecturers(params) {
   const { state, dispatch } = useContext(CourseDetailContext);
 

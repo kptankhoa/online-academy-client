@@ -12,8 +12,8 @@ import { useContext, useState } from 'react';
 import Rating from './Rating';
 import Feed from './Feed';
 
-import CourseDetailContext from '../CourseDetailContext';
-import Loading from '../../../components/Loading';
+import CourseDetailContext from '../../CourseDetailContext';
+import { Loading } from '../../../../components';
 
 function FeedBack(props) {
   const { state, dispatch } = useContext(CourseDetailContext);

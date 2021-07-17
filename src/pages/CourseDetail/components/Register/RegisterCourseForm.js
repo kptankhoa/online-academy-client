@@ -6,7 +6,7 @@ import {
   CardActions,
   Button,
 } from '@material-ui/core';
-import useStyles from '../styles/register.style';
+import useStyles from '../../styles/register.style';
 import { CardContent } from '@material-ui/core';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
@@ -16,11 +16,11 @@ import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import { Typography } from '@material-ui/core';
-import Rating from './Rating';
-import Money from './Money';
+import Rating from '../FeedBack/Rating';
+import Money from '../CourseContent/Course/Money';
 
-import CourseDetailContext from '../CourseDetailContext';
-import Loading from '../../../components/Loading';
+import CourseDetailContext from '../../CourseDetailContext';
+import Loading from '../../../../components/Loading';
 
 /**
  *

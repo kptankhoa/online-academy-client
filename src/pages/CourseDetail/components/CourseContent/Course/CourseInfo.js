@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
-import Rating from './Rating';
+import { Rating } from '../..';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import Money from './Money';
 function CourseInfo(params) {

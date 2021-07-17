@@ -1,9 +1,9 @@
-import useStyles from '../styles/courseDetail.style';
+import useStyles from './courseDetail.style';
 
 import { Grid } from '@material-ui/core';
 import { Suspense } from 'react';
 
-import RegisterCourseForm from './RegisterCourseForm';
+import RegisterCourseForm from '../../Register/RegisterCourseForm';
 
 /**
  *

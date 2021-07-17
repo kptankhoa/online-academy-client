@@ -1,0 +1,19 @@
+.rating-icon {
+  color: #f39c12;
+  font-size: 10px;
+  margin-left: 2px;
+}
+
+.rating-point {
+  font-size: 15px;
+  font-weight: bold;
+  color: #e67e22;
+}
+
+.rating-number {
+  font-size: 13px;
+  color: gray;
+  margin-left: 5px;
+  /*font-weight: bold;*/
+}
+
