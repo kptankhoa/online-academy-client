@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: 'blue',
     },
+    border: 'none',
+    padding: 10,
+    borderRadius: 10,
   },
   price: {
     textAlign: 'center',

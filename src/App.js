@@ -1,17 +1,18 @@
-import React, { Suspense, useReducer } from 'react';
+import React, {Suspense, useReducer} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  Redirect, useLocation,
 } from 'react-router-dom';
 
-import { publicRoute } from './pages/routes';
+import {publicRoute} from './pages/routes';
 
 import Login from './pages/Login';
 
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
+import UserPage from "./pages/User";
 
 export default function App() {
   const initialState = {
@@ -22,43 +23,59 @@ export default function App() {
 
   return (
     <Router>
-      <div>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Switch>
-            <UnAuthRoute path="/login" exact={true}>
-              <Login />
-            </UnAuthRoute>
-            <AppContext.Provider value={{ state, dispatch }}>
-              {publicRoute.map((ro, i) => {
-                return (
-                  <PublicRoute
-                    key={i}
-                    path={ro.path}
-                    component={ro.component}
-                    exact={true}
-                  ></PublicRoute>
-                );
-              })}
-            </AppContext.Provider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <UnAuthRoute path="/login" exact={true}>
+            <Login/>
+          </UnAuthRoute>
 
-            <Route path="*">
-              <Redirect to="/login"></Redirect>
-            </Route>
-          </Switch>
-        </Suspense>
-      </div>
+          <PrivateRoute path="/user">
+            <UserPage/>
+          </PrivateRoute>
+
+          <AppContext.Provider value={{state, dispatch}}>
+            {publicRoute.map((ro, i) => {
+              return (
+                <PublicRoute
+                  key={i}
+                  path={ro.path}
+                  component={ro.component}
+                  exact={true}
+                />
+              );
+            })}
+
+          </AppContext.Provider>
+
+          <Route path="*">
+            <NoMatch/>
+          </Route>
+
+        </Switch>
+      </Suspense>
     </Router>
   );
 }
 
-function PrivateRoute({ children, component, ...rest }) {
+function NoMatch() {
+  let location = useLocation();
+
+  return (
+    <div>
+      <h3>
+        No match for <code>{location.pathname}</code>
+      </h3>
+    </div>
+  );
+}
+
+function PrivateRoute({children, ...rest}) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
-  console.log('accessKey:', accessKey);
+
   if (accessKey) {
-    console.log('accessKey', accessKey && 1);
-    return <Route {...rest} component={component} />;
+    return <Route {...rest} >{children}</Route>;
   } else {
     return (
       <Route
@@ -76,11 +93,11 @@ function PrivateRoute({ children, component, ...rest }) {
   }
 }
 
-function UnAuthRoute({ children, ...rest }) {
+function UnAuthRoute({children, ...rest}) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
-  console.log('accessKey:', accessKey);
+  // console.log('accessKey:', accessKey);
   return (
     <Route
       {...rest}
@@ -100,6 +117,6 @@ function UnAuthRoute({ children, ...rest }) {
   );
 }
 
-function PublicRoute({ ...rest }) {
+function PublicRoute({...rest}) {
   return <Route {...rest} />;
 }

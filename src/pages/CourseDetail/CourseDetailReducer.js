@@ -16,6 +16,11 @@ export default function reducer(state, action) {
         ...state,
         sections: action.payload.sections,
       };
+    case 'setImage':
+      return {
+        ...state,
+        course: { ...state.course, courseImage: action.payload.image },
+      };
     default:
       return state;
   }

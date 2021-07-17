@@ -5,7 +5,7 @@ export default function Section({title, className, children}) {
   return (
     <div className={classes} style={{color: '#454545'}}>
       <div className='title'>
-        <h3 className='font-weight-bold'>{title}</h3>
+        <h4 className='font-weight-bold'>{title}</h4>
       </div>
       {children}
     </div>

@@ -34,7 +34,6 @@ function FeedBack(props) {
                   key={i}
                 ></Feed>
               </Grow>
-              ;
             </>
           );
         })}

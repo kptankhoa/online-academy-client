@@ -19,8 +19,13 @@ export default function TransitionsModal({ children, url, ...rest }) {
   };
 
   return (
-    <div>
-      <button type="button" onClick={handleOpen} className={classes.button}>
+    <div style={{ position: 'static' }}>
+      <button
+        style={{ position: 'static' }}
+        type="button"
+        onClick={handleOpen}
+        className={classes.button}
+      >
         {children}
       </button>
       <Modal

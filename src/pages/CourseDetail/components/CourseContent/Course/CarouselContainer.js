@@ -15,7 +15,7 @@ import { Typography } from '@material-ui/core';
 
 import CourseDetailContext from '../../../CourseDetailContext';
 import Loading from '../../../../../components/Loading';
-import CourseCard from '../../../../../components/common/card/CourseCard';
+import CourseCard from '../../../../../components/common/card/courseCard/CourseCard';
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
@@ -39,8 +39,11 @@ export default function CarouselContainer() {
         {state.sameCourses ? (
           state.sameCourses.map((courses) => {
             return (
-              <SwiperSlide>
-                <CourseCard courseData={courses} />
+              <SwiperSlide style={{ position: 'static' }}>
+                <CourseCard
+                  courseData={courses}
+                  style={{ position: 'static' }}
+                />
                 {/* <CourseInfo></CourseInfo> */}
               </SwiperSlide>
             );

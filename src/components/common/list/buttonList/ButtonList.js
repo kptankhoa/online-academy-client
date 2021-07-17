@@ -1,13 +1,15 @@
 import React from "react";
-import Button from "../../button/Button";
+import Button from "../../button/pureButton/Button";
 import './ButtonList.css';
 
 export default function ButtonList({titleList, className}) {
-  const classes = 'button-list ' + className;
+  const classes = 'pureButton-list ' + className;
   return (
     <div className={classes}>
-      {titleList.map(title => (
-        <Button key={title} title={title} className='category-button'/>
+      {titleList.map((title, index) => (
+        <Button key={index} className='category-button'>
+          {title}
+        </Button>
       ))}
     </div>
   );

@@ -5,13 +5,16 @@ import {
   CardActionArea,
   CardActions,
   Button,
+  Snackbar,
+  Slide,
+  Link,
 } from '@material-ui/core';
 import useStyles from '../../styles/register.style';
 import { CardContent } from '@material-ui/core';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import { findDOMNode } from 'react-dom';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
@@ -20,7 +23,19 @@ import Rating from '../FeedBack/Rating';
 import Money from '../CourseContent/Course/Money';
 
 import CourseDetailContext from '../../CourseDetailContext';
-import Loading from '../../../../components/Loading';
+import { CustomButton, Loading } from 'components';
+import { getCurrentUser } from 'utils';
+import { axiosInstance } from 'utils/auth';
+import MuiAlert from '@material-ui/lab/Alert';
+import { enroll } from 'pages/CourseDetail/utils';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+function SlideTransition(props) {
+  return <Slide {...props} direction="up" />;
+}
 
 /**
  *
@@ -31,7 +46,18 @@ function RegisterCourseForm(props) {
   const classes = useStyles();
   const ref = useRef();
   const { state, dispatch } = useContext(CourseDetailContext);
+  const [open, setOpen] = useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   // const toggleFullScreen = () => {
   //   screenfull.request(findDOMNode(ref.current));
   // };
@@ -42,8 +68,43 @@ function RegisterCourseForm(props) {
     <Loading size={20} />
   );
 
+  const handleEnrollOnclick = async (done) => {
+    const user = getCurrentUser();
+    if (user === null) {
+      handleClick();
+      return false;
+    } else {
+      const courseId = state.course.courseId;
+      const userId = user.userId;
+
+      enroll(userId, courseId).then(() => done());
+      return true;
+    }
+  };
+
+  const registed = (
+    <div>
+      <CheckIcon />
+      Resgisted
+    </div>
+  );
+
   return (
     <div {...props}>
+      <Snackbar
+        anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error">
+          Please{' '}
+          <Link href="/login" style={{ color: 'white', fontWeight: 'bold' }}>
+            Login
+          </Link>{' '}
+          to continuous!
+        </Alert>
+      </Snackbar>
       <Card>
         <CardActionArea>
           <ReactPlayer
@@ -69,15 +130,17 @@ function RegisterCourseForm(props) {
               <CheckIcon />
               Total Time: {state.course.totalHours} h
             </ListItem>
-            <ListItem>
-              <CheckIcon />
-              Section
-            </ListItem>
           </List>
           <Money money={20000} size={30}></Money>
         </CardContent>
         <CardActions className={classes.registerbutton}>
-          <Button className={classes.button}>Register</Button>
+          <CustomButton
+            onclick={handleEnrollOnclick}
+            initState="unclick"
+            className={classes.button}
+            unclickName={'Enroll Me'}
+            clickedName={registed}
+          ></CustomButton>
         </CardActions>
       </Card>
     </div>

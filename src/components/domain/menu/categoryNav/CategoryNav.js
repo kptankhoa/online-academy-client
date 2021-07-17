@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import './CategoryNav.css';
-import Button from '../../../common/button/Button';
+import Button from '../../../common/button/pureButton/Button';
 import NestedDropdown from './nestedDropdown/NestedDropdown';
+import {getDataFromAcademyApi} from "../../../../services/academyApi";
 
-const categoriesSample = {
-  web: ['html', 'css', 'js'],
-  mobile: ['android', 'ios', 'react native', 'flutter']
-};
-
-
-export default function CategoryNav(props) {
+export default function CategoryNav() {
   const [categories, setCategories] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    setCategories(categoriesSample);
+    getDataFromAcademyApi('/categories').then(data => {
+      setCategories(data);
+    });
   }, []);
 
   function toggleDropdown() {
@@ -31,9 +28,9 @@ export default function CategoryNav(props) {
   return (
     <div className='category-nav px-2'
          onClick={toggleDropdown} onBlur={onBlurHandler}>
-      <Button title='Categories' />
+      <Button>Categories</Button>
       {showDropdown ? (
-        <NestedDropdown data={categories} />
+        <NestedDropdown data={categories}/>
       ) : ''}
     </div>
   );

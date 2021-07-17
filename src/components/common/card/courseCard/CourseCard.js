@@ -1,21 +1,10 @@
 import React from 'react';
 
 import './CourseCard.css'
-import CourseRating from "../rating/CourseRating";
+import CourseRating from "../../rating/CourseRating";
+import {convertNumberWithComma} from "../../../../utils/commonUtils";
 
 export default function CourseCard({courseData, className, style}) {
-
-  function convertNumberWithComma(number) {
-    let ret = '';
-    let value = number;
-    while (Math.floor(value / 1000) > 0) {
-      ret = `,${value.toString()
-        .slice(-3)}${ret}`;
-      value = Math.floor(value / 1000);
-    }
-    return value + ret;
-  }
-
   const classes = 'card border-0 course-card ' + className;
   return (
     <div className={classes} style={style}>

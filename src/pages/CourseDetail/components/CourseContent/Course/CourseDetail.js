@@ -1,9 +1,10 @@
 import useStyles from './courseDetail.style';
 
 import { Grid } from '@material-ui/core';
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 
 import RegisterCourseForm from '../../Register/RegisterCourseForm';
+import CourseDetailContext from 'pages/CourseDetail/CourseDetailContext';
 
 /**
  *
@@ -15,6 +16,16 @@ function CourseDetail(props) {
     props;
 
   const classes = useStyles();
+  const { state, dispatch } = useContext(CourseDetailContext);
+
+  const onWrongsImage = () => {
+    dispatch({
+      type: 'setImage',
+      payload: {
+        image: '/images/wrong_image.jpg',
+      },
+    });
+  };
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div {...rest}>
@@ -26,7 +37,13 @@ function CourseDetail(props) {
           }}
         >
           <Grid item md={12}>
-            <img src={img} alt={name} className={classes.img} />
+            <img
+              src={img}
+              // src={'images/wrong_image.jpg'}
+              alt={name}
+              className={classes.img}
+              onError={onWrongsImage}
+            />
           </Grid>
           <Grid item md={12} className={classes.content}>
             <Grid container justify="center">
@@ -35,9 +52,6 @@ function CourseDetail(props) {
                   <Grid item md={8}>
                     <h3 className={classes.title}>{name}</h3>
                     <span className={classes.subTitle}>{shortdescription}</span>
-                  </Grid>
-                  <Grid item md={4}>
-                    <RegisterCourseForm className={classes.register} />
                   </Grid>
                 </Grid>
               </Grid>

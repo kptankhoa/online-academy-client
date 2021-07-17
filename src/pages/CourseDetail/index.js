@@ -15,8 +15,9 @@ import { Grid } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 
 import NavBar from '../../components/domain/menu/NavBar';
+import Footer from 'components/domain/footer/Footer';
 import CarouselContainer from './components/CourseContent/Course/CarouselContainer';
-import Footer from '../../components/Footer';
+// import Footer from '../../components/Footer';
 import getSameCourse from './utils/get5CourseByCourseId';
 import { getSections } from './utils';
 
@@ -90,6 +91,10 @@ function CourseDescription(props) {
                 </Grid>
                 <Grid item xs={12} style={{ marginBottom: 20 }}>
                   <FeedBack></FeedBack>
+                  {/* <RegisterCourseForm /> */}
+                </Grid>
+                <Grid item xs={12}>
+                  <RegisterCourseForm className={classes.register} />
                 </Grid>
               </Grid>
             </Grid>

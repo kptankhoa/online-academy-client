@@ -11,7 +11,7 @@ function Lecturers(params) {
   const { state, dispatch } = useContext(CourseDetailContext);
 
   const Lecturer = state.course.courseLecturers ? (
-    <List>
+    <List style={{ position: 'static' }}>
       {state.course.courseLecturers.map((lecturer, i) => {
         return (
           <LecturerDetail

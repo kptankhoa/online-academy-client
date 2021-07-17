@@ -53,7 +53,10 @@ function CourseContent(props) {
           <TocIcon />
           Courses Content
         </Typography>
-        <Paper style={{ backgroundColor: '#fefefe' }} variant="outlined">
+        <Paper
+          style={{ backgroundColor: '#fefefe', position: 'static' }}
+          variant="outlined"
+        >
           {state.sections ? (
             state.sections.map(({ title, lessons }, i) => {
               return (
@@ -61,16 +64,24 @@ function CourseContent(props) {
                   key={i}
                   expanded={expanded === i}
                   onChange={handleChange(i)}
+                  style={{ position: 'static' }}
                 >
                   <AccordionSummary
+                    style={{ position: 'static' }}
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
                   >
                     <Typography className={classes.heading}>{title}</Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
-                    <List style={{ paddingTop: 0, width: '100%' }}>
+                  <AccordionDetails style={{ position: 'static' }}>
+                    <List
+                      style={{
+                        position: 'static',
+                        paddingTop: 0,
+                        width: '100%',
+                      }}
+                    >
                       {lessons.map((lesson, index) => {
                         return (
                           <Slide
@@ -82,6 +93,7 @@ function CourseContent(props) {
                               <Grid
                                 container
                                 style={{
+                                  position: 'static',
                                   display: 'flex',
                                   justifyContent: 'space-between',
                                 }}
