@@ -35,10 +35,10 @@ const LoginForm = function (props) {
     setLoading(true);
     const res = await Login(data);
     if (res) {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN)
-      });
+      // dispatch({
+      //   type: LOGIN_SUCCESS,
+      //   payload: localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN)
+      // });
       history.push('/');
     } else {
       alert('error');

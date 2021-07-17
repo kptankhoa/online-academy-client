@@ -3,12 +3,19 @@ import React from 'react';
 import './CourseCard.css'
 import CourseRating from "../../rating/CourseRating";
 import {convertNumberWithComma} from "../../../../utils/commonUtils";
+import {useHistory} from "react-router-dom";
 
 export default function CourseCard({courseData, className, style}) {
   const classes = 'card border-0 course-card ' + className;
+  const history = useHistory();
+
+  function handleClick() {
+    history.push(`/courses/${courseData._id}`);
+  }
+
   return (
     <div className={classes} style={style}>
-      <button className='pure-button p-0 text-left' style={{color: '#454545'}}>
+      <button className='pure-button p-0 text-left' style={{color: '#454545'}} onClick={handleClick}>
         <div className='image-wrapper'>
           <img className="card-img-top h-100" src={courseData.courseImage} alt='courseImage.jpg'/>
         </div>

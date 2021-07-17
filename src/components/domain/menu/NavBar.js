@@ -18,7 +18,6 @@ export default function NavBar() {
       <Logo/>
       <CategoryNav/>
       <SearchBar/>
-
       {accessToken ? (
         <>
           <Link to="/user/wishlist">
