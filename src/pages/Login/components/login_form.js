@@ -4,24 +4,26 @@ import {
   InputLabel,
   FormControl,
   IconButton,
-  Button,
 } from '@material-ui/core';
-// import { makeStyles } from '@material-ui/core/styles';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 
 import useStyles from '../styles/login_form.style';
 import { Login } from '../utils/login.util';
 
 import LoginButton from './LoginButton';
+import {authContext} from "../../../provider/authProvider";
+import {LOGIN_SUCCESS} from "../../../Reducer/authReducer";
 
 const LoginForm = function (props) {
   const history = useHistory();
   const { type } = props;
   const classes = useStyles();
+
+  const {dispatch} = useContext(authContext);
 
   const {
     register,
@@ -33,6 +35,10 @@ const LoginForm = function (props) {
     setLoading(true);
     const res = await Login(data);
     if (res) {
+      // dispatch({
+      //   type: LOGIN_SUCCESS,
+      //   payload: localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN)
+      // });
       history.push('/');
     } else {
       alert('error');

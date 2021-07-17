@@ -1,5 +1,5 @@
 import { InputBase } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from '@material-ui/icons/Search';
 
 import useStyles from '../styles/header.style';
 

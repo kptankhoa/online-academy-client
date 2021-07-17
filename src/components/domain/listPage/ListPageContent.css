@@ -1,0 +1,24 @@
+.list-page-content {
+  color: #454545;
+}
+
+.course-info {
+  color: #454545;
+  display: flex;
+}
+
+.course-list-item {
+  display: flex;
+}
+
+.text-small {
+  font-size: 14px;
+}
+
+.text-line-through {
+  text-decoration: line-through;
+}
+
+.text-blur {
+  color: gray;
+}

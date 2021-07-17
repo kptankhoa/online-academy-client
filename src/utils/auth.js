@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOST = process.env.REACT_APP_ONLINE_HOST||process.env.REACT_APP_HOST;
+const HOST = process.env.REACT_APP_ONLINE_HOST || "";
 
 export const axiosInstance = axios.create({
   baseURL: HOST,
@@ -8,12 +8,12 @@ export const axiosInstance = axios.create({
   headers: {
     'X-Access-Token': localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN)
   }
-})
+});
 
 export const axiosInstanceDefault = axios.create({
   baseURL: HOST,
   timeout: 10000
-})
+});
 
 export function parseJwt(token) {
   var base64Url = token.split('.')[1];

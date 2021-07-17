@@ -1,5 +1,5 @@
 import { axiosInstanceDefault } from '../../../utils/auth';
-
+import {setAccessTokenToHeader} from "../../../config/axios.config";
 
 export async function Login(data) {
   try {
@@ -9,19 +9,21 @@ export async function Login(data) {
 
     if (res.status === 200) {
       const { accessToken, refreshToken } = res.data;
-  
+
       if (accessToken && refreshToken) {
         localStorage.setItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN, accessToken);
         localStorage.setItem(process.env.REACT_APP_STORAGE_REFRESH_TOKEN, refreshToken);
+        setAccessTokenToHeader(accessToken);
+
         return true
       }
-     
+
       return false;
     } else {
       alert("invalid account");
       return false;
     }
-   
+
   } catch (err) {
     if (err.response) {
       console.log(err.response.data);
