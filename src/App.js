@@ -12,7 +12,7 @@ import Login from './pages/Login';
 
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
-import UserPage from "./pages/User";
+import UserPage from "./pages/Account";
 
 export default function App() {
   const initialState = {
