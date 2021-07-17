@@ -29,11 +29,10 @@ export default function App() {
             <Login/>
           </UnAuthRoute>
 
-          <PrivateRoute path="/user">
-            <UserPage/>
-          </PrivateRoute>
-
           <AppContext.Provider value={{state, dispatch}}>
+            <PrivateRoute path="/user">
+              <UserPage/>
+            </PrivateRoute>
             {publicRoute.map((ro, i) => {
               return (
                 <PublicRoute
