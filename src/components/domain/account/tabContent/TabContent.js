@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import Profile from "../profile/Profile";
 import MyLearning from "../myLearning/MyLearning";
 import Wishlist from "../wishlist/Wishlist";
+import Security from "../security/Security";
 
 function TabContent() {
   const {tabId} = useParams();
@@ -15,6 +16,8 @@ function TabContent() {
         return <MyLearning/>;
       case "wishlist":
         return <Wishlist/>;
+      case "security":
+        return <Security/>;
       default:
         return <div className="text-center">Not found</div>;
     }

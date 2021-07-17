@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import jwt_decode from "jwt-decode";
 import {academyAxios} from "../../../../config/axios.config";
-import CourseCard from "../../../common/card/courseCard/CourseCard";
+import WishlistCard from "./wishlistCard/WishlistCard";
 
 function Wishlist() {
+  const [loading, setLoading] = useState(true);
   const [wishlist, setWishlist] = useState([]);
   const decoded = jwt_decode(localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN));
 
@@ -14,14 +15,22 @@ function Wishlist() {
           console.log(response.data);
           setWishlist(response.data);
         }
+        setLoading(false);
       });
   }, [decoded.userId]);
+
+  function handleRemoveWishlistCourse(courseId) {
+    setWishlist(wishlist.filter(e => e._id !== courseId));
+  }
+
   return (
-    <div className="d-flex flex-wrap align-items-center">
-      {wishlist.length > 0 ? (
+    <div className="d-flex flex-wrap">
+      {(!loading) ? (
         <>
           {wishlist.map((course, index) => (
-            <CourseCard key={index} courseData={course} className="mr-4 mb-4"/>
+            <WishlistCard
+              className="mr-4 mb-4" userId={decoded.userId}
+              key={index} courseData={course} remove={handleRemoveWishlistCourse}/>
           ))}
         </>
       ) : (

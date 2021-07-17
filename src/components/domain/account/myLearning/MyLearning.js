@@ -6,6 +6,7 @@ import CourseCard from "../../../common/card/courseCard/CourseCard";
 import "styles/other.style.css";
 
 function MyLearning() {
+  const [loading, setLoading] = useState(true);
   const [learningList, setLearningList] = useState([]);
   const decoded = jwt_decode(localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN));
 
@@ -16,11 +17,12 @@ function MyLearning() {
           console.log(response.data);
           setLearningList(response.data);
         }
+        setLoading(false);
       });
   }, [decoded.userId]);
   return (
     <div className="d-flex flex-wrap align-items-center">
-      {learningList.length > 0 ? (
+      {!loading ? (
         <>
           {learningList.map((course, index) => (
             <CourseCard key={index} courseData={course} className="mr-4 mb-4"/>
