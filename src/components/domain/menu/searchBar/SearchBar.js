@@ -14,11 +14,11 @@ export default function SearchBar(props) {
     })
   };
   const onSearchBtnClick = () => {
-    history.push(`/search?keyword=${state.query}`);
+    history.push(`/search?q=${state.query}`);
   };
   const onKeyUpHandler = (e) => {
     if(e.keyCode === 13){
-      history.push(`/search?keyword=${state.query}`);
+      history.push(`/search?q=${state.query}`);
     };
   };
   return (

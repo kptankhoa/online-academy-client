@@ -1,10 +1,16 @@
 import React from 'react';
 import CourseRating from "../../rating/CourseRating";
 import {convertNumberWithComma} from "../../../../utils/commonUtils";
+import { useHistory } from 'react-router-dom';
 
 function CourseListItem({data}) {
+  const history = useHistory();
+  const onCourseClick = () => {
+    history.push(`/courses/${data._id}`);
+  };
+
   return (
-    <button className='pure-button p-0 text-left w-100 d-block'>
+    <button className='pure-button p-0 text-left w-100 d-block' onClick={onCourseClick}>
       <div className='course-list-item'>
         <div>
           <img className='rounded' height='150px' width='260px' src={data.courseImage} alt='courseImage.jpg'/>
