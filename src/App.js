@@ -10,7 +10,6 @@ import Login from './pages/loginv2';
 import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
-import UserPage from "./pages/Account";
 import AuthProvider from "./provider/authProvider";
 import jwt_decode from "jwt-decode";
 import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
