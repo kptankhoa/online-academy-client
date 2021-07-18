@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import UserInfoCard from "../../../../common/card/userInfoCard/UserInfoCard";
 import Button from "../../../../common/button/pureButton/Button";
 
@@ -6,14 +6,18 @@ import "../../../../../styles/text.style.css";
 import "../../../../../styles/pseudo.style.css";
 import {Link, useHistory} from "react-router-dom";
 import {academyAxios} from "../../../../../config/axios.config";
+import {authContext} from "../../../../../provider/authProvider";
+import {LOGOUT_SUCCESS} from "../../../../../Reducer/authReducer";
 
 function UserDropdown({userInfo}) {
   const history = useHistory();
+  const {dispatch} = useContext(authContext);
 
   function handleLogOut() {
     academyAxios.post("/auth/logout").then(() => {
       localStorage.removeItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
       localStorage.removeItem(process.env.REACT_APP_STORAGE_REFRESH_TOKEN);
+      dispatch({type: LOGOUT_SUCCESS});
       history.push('/login');
     });
   }

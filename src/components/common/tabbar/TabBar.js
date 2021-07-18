@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import TabItem from "./tabItem/TabItem";
 
+import "styles/other.style.css";
+
 function TabBar({className}) {
   const [activeTabId, setActiveTabId] = useState(null);
 

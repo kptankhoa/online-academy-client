@@ -1,20 +1,30 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Button from "../../../../common/button/pureButton/Button";
 import {Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import {academyAxios} from "../../../../../config/axios.config";
+import {authContext} from "../../../../../provider/authProvider";
+import {UPDATE_USER_INFO} from "../../../../../Reducer/authReducer";
 
-function EmailModalInput({defaultValue, userId}) {
+function EmailModalInput() {
+  const {authState, dispatch} = useContext(authContext);
   const [show, setShow] = useState(false);
-  const {register, handleSubmit, formState: {errors}} = useForm();
+  const {register, handleSubmit, formState: {errors}, reset} = useForm();
+  const userId = authState.userInfo._id;
+  const defaultValue = authState.userInfo.email;
 
   function onSubmitEmail(data) {
-    // alert(JSON.stringify(data));
     academyAxios.post(`/users/${userId}/email`, {
       email: data.email
     }).then(response => {
       if (response.status === 200) {
         alert("Successfully! Please verify your email");
+        dispatch({
+          type: UPDATE_USER_INFO,
+          payload: {
+            email: data.email
+          }
+        })
       }
     }).catch(error => {
       alert(error.response.data.error);
@@ -27,9 +37,10 @@ function EmailModalInput({defaultValue, userId}) {
 
   function hideModal() {
     setShow(false);
+    reset();
   }
 
-  const emailPattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const emailPattern = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   return (
     <div className="form-group">
       <label>Email</label>
