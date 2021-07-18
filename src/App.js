@@ -36,9 +36,9 @@ export default function App() {
                 <UserPage/>
               </PrivateRoute>
 
-              <PrivateRoute path="/lecturer">
+              <LecturerRoute path="/lecturer">
                 <LecturerDashboard/>
-              </PrivateRoute>
+              </LecturerRoute>
 
               {publicRoute.map((ro, i) => {
                 return (

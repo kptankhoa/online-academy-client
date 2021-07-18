@@ -80,13 +80,9 @@ function LecturerDashboard() {
 
   return (
     <div className="lecturer-dashboard">
-      <div className="header">
-        <div className='user-page d-flex flex-column'>
-          <NavBar/>
-          <LecturerPageContent/>
-          <Footer/>
-        </div>
-      </div>
+      <NavBar/>
+      <LecturerPageContent/>
+      <Footer/>
     </div>
   );
 }
