@@ -5,12 +5,17 @@ import {
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Login } from 'pages/loginv2/login.action';
 import LoginButton from 'pages/Login/components/LoginButton';
+import jwt_decode from 'jwt-decode';
+import { academyAxios } from '../../../config/axios.config';
+import { LOGIN_SUCCESS } from '../../../Reducer/authReducer';
+import { authContext } from '../../../provider/authProvider';
 
 const LoginForm = function(props) {
   const history = useHistory();
+  const {dispatch} = useContext(authContext);
   const {
     register,
     handleSubmit,
@@ -20,6 +25,19 @@ const LoginForm = function(props) {
       setLoading(true);
       const res = await Login(data, asLecturer);
       if (res) {
+        const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+        if (token) {
+          const decoded = jwt_decode(token);
+          academyAxios.get(`/users/${decoded.userId}`).then(response => {
+            if (response.status === 200) {
+              dispatch({
+                type: LOGIN_SUCCESS,
+                payload: response.data
+              });
+              history.push('/');
+            }
+          });
+        }
         history.push('/');
       } else {
         alert('error');
