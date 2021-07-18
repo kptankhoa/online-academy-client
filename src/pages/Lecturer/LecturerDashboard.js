@@ -1,7 +1,11 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import Logo from "components/domain/menu/logo/Logo";
 import {useForm} from "react-hook-form";
 import vimeoClient from "../../config/vimeo.config";
+import NavBar from "../../components/domain/menu/NavBar";
+import UserPageContent from "../../components/domain/account/UserPageContent";
+import Footer from "../../components/domain/footer/Footer";
+import LecturerPageContent from "../../components/domain/account/LecturerPageContent";
 
 function LecturerDashboard() {
 
@@ -28,62 +32,60 @@ function LecturerDashboard() {
   //   console.log(realPath);
   // }
 
-  function onSubmit(data) {
-    console.log(data);
-    // console.log(URL.createObjectURL(data.file[0]));
-    let file_name = URL.createObjectURL(data.file[0]);
-    console.log(file_name);
-    vimeoClient.upload(
-      file_name,
-      {
-        'name': 'first_video_uploaded',
-        'description': 'The description goes here.'
-      },
-      function (uri) {
-        console.log('Your video URI is: ' + uri);
-      },
-      function (bytes_uploaded, bytes_total) {
-        let percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
-        console.log(bytes_uploaded, bytes_total, percentage + '%');
-      },
-      function (error) {
-        console.log('Failed because: ' + error);
-      }
-    )
-  }
-
-  function onClick() {
-    let file_name = "C:\\Users\\ASUS\\Desktop\\video_test.webm";
-    console.log(file_name);
-    vimeoClient.upload(
-      file_name,
-      {
-        'name': 'first_video_uploaded',
-        'description': 'The description goes here.'
-      },
-      function (uri) {
-        console.log('Your video URI is: ' + uri);
-      },
-      function (bytes_uploaded, bytes_total) {
-        let percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
-        console.log(bytes_uploaded, bytes_total, percentage + '%');
-      },
-      function (error) {
-        console.log('Failed because: ' + error);
-      }
-    )
-  }
+  // function onSubmit(data) {
+  //   console.log(data);
+  //   // console.log(URL.createObjectURL(data.file[0]));
+  //   let file_name = URL.createObjectURL(data.file[0]);
+  //   console.log(file_name);
+  //   vimeoClient.upload(
+  //     file_name,
+  //     {
+  //       'name': 'first_video_uploaded',
+  //       'description': 'The description goes here.'
+  //     },
+  //     function (uri) {
+  //       console.log('Your video URI is: ' + uri);
+  //     },
+  //     function (bytes_uploaded, bytes_total) {
+  //       let percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
+  //       console.log(bytes_uploaded, bytes_total, percentage + '%');
+  //     },
+  //     function (error) {
+  //       console.log('Failed because: ' + error);
+  //     }
+  //   )
+  // }
+  //
+  // function onClick() {
+  //   let file_name = "/home/redfoxvn/Desktop/bigbuck.mp4";
+  //   console.log(file_name);
+  //   vimeoClient.upload(
+  //     file_name,
+  //     {
+  //       'name': 'first_video_uploaded',
+  //       'description': 'The description goes here.'
+  //     },
+  //     function (uri) {
+  //       console.log('Your video URI is: ' + uri);
+  //     },
+  //     function (bytes_uploaded, bytes_total) {
+  //       let percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
+  //       console.log(bytes_uploaded, bytes_total, percentage + '%');
+  //     },
+  //     function (error) {
+  //       console.log('Failed because: ' + error);
+  //     }
+  //   )
+  // }
 
   return (
     <div className="lecturer-dashboard">
       <div className="header">
-        <Logo/>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="file" {...register("file", {required: true})}/>
-          <input type="submit" value="Submit"/>
-        </form>
-
-        <button onClick={onClick}>Test</button>
+        <div className='user-page d-flex flex-column'>
+          <NavBar/>
+          <LecturerPageContent/>
+          <Footer/>
+        </div>
       </div>
     </div>
   );

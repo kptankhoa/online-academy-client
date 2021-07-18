@@ -17,7 +17,9 @@ function PasswordModalInput() {
       setMessage("Confirm password does not match");
     } else {
       setMessage("");
-      academyAxios.patch(`/users/${authState.userInfo._id}/password`, {
+      const url = authState.userInfo.type === "student" ? `/users/${authState.userInfo._id}/password` :
+        `/lecturers/${authState.userInfo._id}/password`;
+      academyAxios.patch(url, {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword
       }).then(response => {
