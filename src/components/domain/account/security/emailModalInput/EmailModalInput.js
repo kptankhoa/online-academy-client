@@ -10,11 +10,11 @@ function EmailModalInput() {
   const {authState, dispatch} = useContext(authContext);
   const [show, setShow] = useState(false);
   const {register, handleSubmit, formState: {errors}, reset} = useForm();
-  const userId = authState.userInfo._id;
-  const defaultValue = authState.userInfo.email;
 
   function onSubmitEmail(data) {
-    academyAxios.post(`/users/${userId}/email`, {
+    const url = authState.userInfo.type === "student" ? `/users/${authState.userInfo._id}/email` :
+      `/lecturers/${authState.userInfo._id}/email`;
+    academyAxios.post(url, {
       email: data.email
     }).then(response => {
       if (response.status === 200) {
@@ -43,42 +43,46 @@ function EmailModalInput() {
   const emailPattern = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   return (
     <div className="form-group">
-      <label>Email</label>
-      <div className="input-group">
-        <input className="form-control" defaultValue={defaultValue} disabled={true}/>
-        <div className="input-group-append">
-          <Button style={{backgroundColor: "#555555"}}
-                  onClick={showModal}>
-            <i className="fas fa-pen" style={{color: 'white'}}/>
-          </Button>
-        </div>
-      </div>
-      <Modal show={show} onHide={hideModal} centered>
-        <Modal.Body>
-          <div className="text-color-primary">
-            <h5 className="font-weight-bold mb-4">Change Email</h5>
-            <form onSubmit={handleSubmit(onSubmitEmail)}>
-              <div className="form-group">
-                <label htmlFor="new-email">New Email</label>
-                <input id="new-email" className="form-control"
-                       {...register("email", {
-                         required: true,
-                         pattern: emailPattern
-                       })} />
-                <small className="text-color-error">
-                  {errors.email?.type === 'required' && "This field is required"}
-                </small>
-                <small className="text-color-error">
-                  {errors.email?.type === 'pattern' && "Invalid format"}
-                </small>
-              </div>
-              <div className="form-group">
-                <input type="submit" className="btn btn-outline-dark" value="Save"/>
-              </div>
-            </form>
+      {authState.userInfo ? (
+        <>
+          <label>Email</label>
+          <div className="input-group">
+            <input className="form-control" defaultValue={authState.userInfo.email} disabled={true}/>
+            <div className="input-group-append">
+              <Button style={{backgroundColor: "#555555"}}
+                      onClick={showModal}>
+                <i className="fas fa-pen" style={{color: 'white'}}/>
+              </Button>
+            </div>
           </div>
-        </Modal.Body>
-      </Modal>
+          <Modal show={show} onHide={hideModal} centered>
+            <Modal.Body>
+              <div className="text-color-primary">
+                <h5 className="font-weight-bold mb-4">Change Email</h5>
+                <form onSubmit={handleSubmit(onSubmitEmail)}>
+                  <div className="form-group">
+                    <label htmlFor="new-email">New Email</label>
+                    <input id="new-email" className="form-control"
+                           {...register("email", {
+                             required: true,
+                             pattern: emailPattern
+                           })} />
+                    <small className="text-color-error">
+                      {errors.email?.type === 'required' && "This field is required"}
+                    </small>
+                    <small className="text-color-error">
+                      {errors.email?.type === 'pattern' && "Invalid format"}
+                    </small>
+                  </div>
+                  <div className="form-group">
+                    <input type="submit" className="btn btn-outline-dark" value="Save"/>
+                  </div>
+                </form>
+              </div>
+            </Modal.Body>
+          </Modal>
+        </>
+      ) : ""}
     </div>
   );
 }

@@ -21,11 +21,15 @@ function AuthProvider(props) {
     const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
     if (token) {
       const decoded = jwt_decode(token);
-      academyAxios.get(`/users/${decoded.userId}`).then(response => {
+      const url = decoded.type === "student" ? `/users/${decoded.userId}` : `/lecturers/${decoded.userId}`;
+      academyAxios.get(url).then(response => {
         if (response.status === 200) {
           dispatch({
             type: LOGIN_SUCCESS,
-            payload: response.data
+            payload: {
+              ...response.data,
+              type: decoded.type
+            }
           });
         }
       });

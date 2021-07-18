@@ -3,46 +3,50 @@ import {
   InputLabel,
   FormControl, FormControlLabel, Checkbox
 } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { Login } from 'pages/loginv2/login.action';
+import {useForm} from 'react-hook-form';
+import {useHistory} from 'react-router-dom';
+import {useContext, useState} from 'react';
+import {Login} from 'pages/loginv2/login.action';
 import LoginButton from 'pages/Login/components/LoginButton';
 import jwt_decode from 'jwt-decode';
-import { academyAxios } from '../../../config/axios.config';
-import { LOGIN_SUCCESS } from '../../../Reducer/authReducer';
-import { authContext } from '../../../provider/authProvider';
+import {academyAxios} from '../../../config/axios.config';
+import {LOGIN_SUCCESS} from '../../../Reducer/authReducer';
+import {authContext} from '../../../provider/authProvider';
 
-const LoginForm = function(props) {
+const LoginForm = function (props) {
   const history = useHistory();
   const {dispatch} = useContext(authContext);
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: {errors}
   } = useForm();
   const onSubmit = handleSubmit(async (data) => {
-      setLoading(true);
-      const res = await Login(data, asLecturer);
-      if (res) {
-        const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
-        if (token) {
-          const decoded = jwt_decode(token);
-          academyAxios.get(`/users/${decoded.userId}`).then(response => {
-            if (response.status === 200) {
-              dispatch({
-                type: LOGIN_SUCCESS,
-                payload: response.data
-              });
-              history.push('/');
-            }
-          });
-        }
-        history.push('/');
-      } else {
-        alert('error');
-        setLoading(false);
+    setLoading(true);
+    const res = await Login(data, asLecturer);
+    if (res) {
+      const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+      if (token) {
+        const decoded = jwt_decode(token);
+        const url = decoded.type === "student" ? `/users/${decoded.userId}` : `/lecturers/${decoded.userId}`;
+        academyAxios.get(url).then(response => {
+          if (response.status === 200) {
+            dispatch({
+              type: LOGIN_SUCCESS,
+              payload: {
+                ...response.data,
+                type: decoded.type
+              }
+            });
+            history.push('/');
+          }
+        });
       }
+      history.push('/');
+    } else {
+      alert('error');
+      setLoading(false);
+    }
   });
   const onCheckHandler = () => {
     setAsLecturer(!asLecturer);
@@ -63,7 +67,7 @@ const LoginForm = function(props) {
           id='username'
           type='text'
           autoFocus
-          {...register('username', { required: true })}
+          {...register('username', {required: true})}
         />
       </FormControl>
       <FormControl fullWidth className='m-2' >
@@ -75,7 +79,7 @@ const LoginForm = function(props) {
         <Input
           id='password'
           type={'password'}
-          {...register('password', { required: true })}
+          {...register('password', {required: true})}
         />
       </FormControl>
       <FormControlLabel

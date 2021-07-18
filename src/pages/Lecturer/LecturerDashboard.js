@@ -1,7 +1,11 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import Logo from "components/domain/menu/logo/Logo";
 import {useForm} from "react-hook-form";
 import vimeoClient from "../../config/vimeo.config";
+import NavBar from "../../components/domain/menu/NavBar";
+import UserPageContent from "../../components/domain/account/UserPageContent";
+import Footer from "../../components/domain/footer/Footer";
+import LecturerPageContent from "../../components/domain/account/LecturerPageContent";
 
 function LecturerDashboard() {
 
@@ -27,6 +31,7 @@ function LecturerDashboard() {
   //   const realPath = extractFilename(e.target.value);
   //   console.log(realPath);
   // }
+
 
   function onSubmit(data) {
     console.log(data);
@@ -74,13 +79,11 @@ function LecturerDashboard() {
   return (
     <div className="lecturer-dashboard">
       <div className="header">
-        <Logo/>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="file" {...register("file", {required: true})}/>
-          <input type="submit" value="Submit"/>
-        </form>
-
-        <button onClick={onClick}>Test</button>
+        <div className='user-page d-flex flex-column'>
+          <NavBar/>
+          <LecturerPageContent/>
+          <Footer/>
+        </div>
       </div>
     </div>
   );
