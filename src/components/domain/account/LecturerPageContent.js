@@ -4,7 +4,7 @@ import {academyAxios} from "config/axios.config";
 import {getTokenPayload} from "utils/commonUtils";
 
 function LecturerPageContent() {
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [teachingCourses, setTeachingCourses] = useState([]);
   const decoded = getTokenPayload();
 
@@ -13,7 +13,7 @@ function LecturerPageContent() {
       .then(response => {
         if (response.status === 200) {
           setTeachingCourses(response.data);
-          // setLoading(false);
+          setLoading(false);
         }
       });
   }, [decoded.userId]);
@@ -26,7 +26,15 @@ function LecturerPageContent() {
             <div className='title'>
               <h4 className='font-weight-bold'>My Courses</h4>
             </div>
-            <CourseList listData={teachingCourses} className='mt-3'/>
+            {loading ? (
+              <div className='spinner-wrapper mt-5'>
+                <div className="spinner-grow spinner" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <CourseList listData={teachingCourses} className='mt-3'/>
+            )}
           </div>
         </div>
       </div>

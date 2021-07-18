@@ -58,3 +58,31 @@
   display: flex;
 }
 
+.pure-button {
+  border: none;
+  background-color: transparent;
+  padding: 6px 12px;
+  color: #454545;
+}
+
+.button-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.category-button {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  color: #3498db;
+  font-weight: bold;
+  padding: 16px 0;
+  width: 230px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.category-button:hover {
+  color: #055489;
+}
+
