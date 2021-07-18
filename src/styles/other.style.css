@@ -9,6 +9,23 @@
   color: #bdbdbd;
 }
 
-.active-tab-item {
+.active {
+  border-bottom: 5px solid #454545;
+  margin-bottom: -5px;
+}
 
+.dropdown-container {
+  width: 250px;
+  position: absolute;
+  right: 0;
+  display: none;
+  z-index: 1;
+}
+
+.dropdown-content {
+  box-shadow: 0 0 2px #c6c6c6;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  margin-top: 20px;
 }

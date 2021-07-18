@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link} from "react-router-dom";
 import TabItem from "./tabItem/TabItem";
 
+import "styles/other.style.css";
+import {authContext} from "provider/authProvider";
+
 function TabBar({className}) {
   const [activeTabId, setActiveTabId] = useState(null);
+  const {authState} = useContext(authContext);
 
   function renderTabItem(tabId, tabName) {
     if (tabId === activeTabId) {
@@ -19,12 +23,20 @@ function TabBar({className}) {
 
   const classes = "d-flex align-items-center " + (className ? className : "");
   return (
-    <div className={classes}>
-      {renderTabItem("profile", "Profile")}
-      {renderTabItem("my-learning", "My Learning")}
-      {renderTabItem("wishlist", "Wishlist")}
-      {renderTabItem("security", "Security")}
-    </div>
+    <>
+      {authState.userInfo ? (
+        <div className={classes}>
+          {renderTabItem("profile", "Profile")}
+          {authState.userInfo.type === "student" ? (
+            <>
+              {renderTabItem("my-learning", "My Learning")}
+              {renderTabItem("wishlist", "Wishlist")}
+            </>
+          ) : ""}
+          {renderTabItem("security", "Security")}
+        </div>
+      ) : ""}
+    </>
   );
 }
 

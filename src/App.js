@@ -1,58 +1,65 @@
-import React, {Suspense, useReducer} from 'react';
+import React, { Suspense, useReducer } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect, useLocation,
+  Redirect, useLocation
 } from 'react-router-dom';
-
-import {publicRoute} from './pages/routes';
-
-import Login from './pages/Login';
-
+import { publicRoute } from './pages/routes';
+import Login from './pages/loginv2';
+import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
-import UserPage from "./pages/Account";
+import AuthProvider from "./provider/authProvider";
+import jwt_decode from "jwt-decode";
+import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
 
 export default function App() {
   const initialState = {
     query: '',
-    item: [],
+    item: []
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Router>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Switch>
-          <UnAuthRoute path="/login" exact={true}>
-            <Login/>
-          </UnAuthRoute>
-
+    <AuthProvider>
+      <Router>
+        <Suspense fallback={<div>Loading...</div>}>
           <AppContext.Provider value={{state, dispatch}}>
-            <PrivateRoute path="/user">
-              <UserPage/>
-            </PrivateRoute>
-            {publicRoute.map((ro, i) => {
-              return (
-                <PublicRoute
-                  key={i}
-                  path={ro.path}
-                  component={ro.component}
-                  exact={true}
-                />
-              );
-            })}
+            <Switch>
 
+              <UnAuthRoute path="/login" exact={true}>
+                <Login/>
+              </UnAuthRoute>
+
+              <PrivateRoute path="/user">
+                <UserPage/>
+              </PrivateRoute>
+
+              <PrivateRoute path="/lecturer">
+                <LecturerDashboard/>
+              </PrivateRoute>
+
+              {publicRoute.map((ro, i) => {
+                return (
+                  <PublicRoute
+                    key={i}
+                    path={ro.path}
+                    component={ro.component}
+                    exact={true}
+                  />
+                );
+              })}
+
+              <Route path="*">
+                <NoMatch/>
+              </Route>
+
+            </Switch>
           </AppContext.Provider>
-
-          <Route path="*">
-            <NoMatch/>
-          </Route>
-
-        </Switch>
-      </Suspense>
-    </Router>
+        </Suspense>
+      </Router>
+    </AuthProvider>
   );
 }
 
@@ -69,13 +76,32 @@ function NoMatch() {
 }
 
 function PrivateRoute({children, ...rest}) {
-  const accessKey = localStorage.getItem(
-    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  );
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
 
-  if (accessKey) {
+  if (token) {
     return <Route {...rest} >{children}</Route>;
   } else {
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/login'
+              // state: { from: location }
+            }}
+          />
+        }
+      />
+    );
+  }
+}
+
+function LecturerRoute({children, ...rest}) {
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  const decoded = jwt_decode(token);
+
+  if (!token) {
     return (
       <Route
         {...rest}
@@ -89,24 +115,32 @@ function PrivateRoute({children, ...rest}) {
         }
       />
     );
+  } else if (decoded.type === "lecturer") {
+    return <Route {...rest} >{children}</Route>;
+  } else {
+    return <Route {...rest} children={
+      <Redirect
+        to={{
+          pathname: '/',
+          // state: { from: location }
+        }}
+      />
+    }/>
   }
 }
 
 function UnAuthRoute({children, ...rest}) {
-  const accessKey = localStorage.getItem(
-    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  );
-  // console.log('accessKey:', accessKey);
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
   return (
     <Route
       {...rest}
       children={
-        !accessKey ? (
+        !token ? (
           children
         ) : (
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/'
               // state: { from: location }
             }}
           />
@@ -116,6 +150,6 @@ function UnAuthRoute({children, ...rest}) {
   );
 }
 
-function PublicRoute({...rest}) {
+function PublicRoute({ ...rest }) {
   return <Route {...rest} />;
 }
