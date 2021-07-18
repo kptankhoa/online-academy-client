@@ -6,7 +6,7 @@ import {
   Redirect, useLocation
 } from 'react-router-dom';
 import { publicRoute } from './pages/routes';
-import Login from './pages/login';
+import Login from './pages/loginv2';
 import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
