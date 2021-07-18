@@ -1,4 +1,4 @@
-import React, {Suspense, useContext, useReducer} from 'react';
+import React, {Suspense, useReducer} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,7 +13,9 @@ import Login from './pages/Login';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
 import UserPage from "./pages/Account";
-import AuthProvider, {authContext} from "./provider/authProvider";
+import AuthProvider from "./provider/authProvider";
+import jwt_decode from "jwt-decode";
+import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
 
 export default function App() {
   const initialState = {
@@ -28,12 +30,19 @@ export default function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <AppContext.Provider value={{state, dispatch}}>
             <Switch>
+
               <UnAuthRoute path="/login" exact={true}>
                 <Login/>
               </UnAuthRoute>
+
               <PrivateRoute path="/user">
                 <UserPage/>
               </PrivateRoute>
+
+              <PrivateRoute path="/lecturer">
+                <LecturerDashboard/>
+              </PrivateRoute>
+
               {publicRoute.map((ro, i) => {
                 return (
                   <PublicRoute
@@ -44,7 +53,6 @@ export default function App() {
                   />
                 );
               })}
-
 
               <Route path="*">
                 <NoMatch/>
@@ -71,13 +79,9 @@ function NoMatch() {
 }
 
 function PrivateRoute({children, ...rest}) {
-  // const accessKey = localStorage.getItem(
-  //   process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  // );
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
 
-  const {authState} = useContext(authContext);
-
-  if (authState.authenticated) {
+  if (token) {
     return <Route {...rest} >{children}</Route>;
   } else {
     return (
@@ -96,17 +100,45 @@ function PrivateRoute({children, ...rest}) {
   }
 }
 
+function LecturerRoute({children, ...rest}) {
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  const decoded = jwt_decode(token);
+
+  if (!token) {
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/login',
+              // state: { from: location }
+            }}
+          />
+        }
+      />
+    );
+  } else if (decoded.type === "lecturer") {
+    return <Route {...rest} >{children}</Route>;
+  } else {
+    return <Route {...rest} children={
+      <Redirect
+        to={{
+          pathname: '/',
+          // state: { from: location }
+        }}
+      />
+    }/>
+  }
+}
+
 function UnAuthRoute({children, ...rest}) {
-  // const accessKey = localStorage.getItem(
-  //   process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  // );
-  const {authState} = useContext(authContext);
-  // console.log('accessKey:', accessKey);
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
   return (
     <Route
       {...rest}
       children={
-        !authState.authenticated ? (
+        !token ? (
           children
         ) : (
           <Redirect
