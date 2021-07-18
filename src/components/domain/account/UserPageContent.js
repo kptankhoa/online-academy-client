@@ -1,8 +1,8 @@
 import React from 'react';
 import {Route, Switch} from "react-router-dom";
 
-import "../../../styles/text.style.css";
-import "../../../styles/pseudo.style.css";
+import "styles/text.style.css";
+import "styles/pseudo.style.css";
 import TabBar from "../../common/tabbar/TabBar";
 import TabContent from "./tabContent/TabContent";
 
