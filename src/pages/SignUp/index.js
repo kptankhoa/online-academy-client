@@ -1,22 +1,22 @@
 import { Container } from '@material-ui/core';
-import LoginForm from './components/loginForm';
+import SignUpForm from './components/signUpForm';
 import NavBar from 'components/domain/menu/NavBar';
 import Footer from 'components/domain/footer/Footer';
 import useStyles from './index.styles';
 
-function Login() {
+function SignUp() {
   const classes = useStyles();
 
   return (
     <>
       <NavBar />
       <Container align='center' height={1} component='main' className={classes.root}>
-        <h3>Sign In</h3>
-        <LoginForm />
+        <h3>Sign Up</h3>
+        <SignUpForm />
       </Container>
       <Footer />
     </>
   );
 }
 
-export default Login;
+export default SignUp;

@@ -53,7 +53,7 @@ const LoginForm = function(props) {
     <form
       onSubmit={onSubmit}
     >
-      <FormControl fullWidth border={1} className='m-1'>
+      <FormControl fullWidth border={1} className='m-2'>
         <InputLabel
           htmlFor='username'
         >
@@ -66,7 +66,7 @@ const LoginForm = function(props) {
           {...register('username', { required: true })}
         />
       </FormControl>
-      <FormControl fullWidth className='m-1' >
+      <FormControl fullWidth className='m-2' >
         <InputLabel
           htmlFor='password'
         >
