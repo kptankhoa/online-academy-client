@@ -13,6 +13,9 @@ import Login from './pages/Login';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
 import UserPage from "./pages/Account";
+import AuthProvider from "./provider/authProvider";
+import jwt_decode from "jwt-decode";
+import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
 
 export default function App() {
   const initialState = {
@@ -22,38 +25,44 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Router>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Switch>
-          <UnAuthRoute path="/login" exact={true}>
-            <Login/>
-          </UnAuthRoute>
-
-          <PrivateRoute path="/user">
-            <UserPage/>
-          </PrivateRoute>
-
+    <AuthProvider>
+      <Router>
+        <Suspense fallback={<div>Loading...</div>}>
           <AppContext.Provider value={{state, dispatch}}>
-            {publicRoute.map((ro, i) => {
-              return (
-                <PublicRoute
-                  key={i}
-                  path={ro.path}
-                  component={ro.component}
-                  exact={true}
-                />
-              );
-            })}
+            <Switch>
 
+              <UnAuthRoute path="/login" exact={true}>
+                <Login/>
+              </UnAuthRoute>
+
+              <PrivateRoute path="/user">
+                <UserPage/>
+              </PrivateRoute>
+
+              <PrivateRoute path="/lecturer">
+                <LecturerDashboard/>
+              </PrivateRoute>
+
+              {publicRoute.map((ro, i) => {
+                return (
+                  <PublicRoute
+                    key={i}
+                    path={ro.path}
+                    component={ro.component}
+                    exact={true}
+                  />
+                );
+              })}
+
+              <Route path="*">
+                <NoMatch/>
+              </Route>
+
+            </Switch>
           </AppContext.Provider>
-
-          <Route path="*">
-            <NoMatch/>
-          </Route>
-
-        </Switch>
-      </Suspense>
-    </Router>
+        </Suspense>
+      </Router>
+    </AuthProvider>
   );
 }
 
@@ -70,11 +79,9 @@ function NoMatch() {
 }
 
 function PrivateRoute({children, ...rest}) {
-  const accessKey = localStorage.getItem(
-    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  );
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
 
-  if (accessKey) {
+  if (token) {
     return <Route {...rest} >{children}</Route>;
   } else {
     return (
@@ -93,16 +100,45 @@ function PrivateRoute({children, ...rest}) {
   }
 }
 
+function LecturerRoute({children, ...rest}) {
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  const decoded = jwt_decode(token);
+
+  if (!token) {
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/login',
+              // state: { from: location }
+            }}
+          />
+        }
+      />
+    );
+  } else if (decoded.type === "lecturer") {
+    return <Route {...rest} >{children}</Route>;
+  } else {
+    return <Route {...rest} children={
+      <Redirect
+        to={{
+          pathname: '/',
+          // state: { from: location }
+        }}
+      />
+    }/>
+  }
+}
+
 function UnAuthRoute({children, ...rest}) {
-  const accessKey = localStorage.getItem(
-    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  );
-  // console.log('accessKey:', accessKey);
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
   return (
     <Route
       {...rest}
       children={
-        !accessKey ? (
+        !token ? (
           children
         ) : (
           <Redirect

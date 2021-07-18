@@ -1,10 +1,12 @@
-import React, {useRef, useState} from 'react';
-import Button from "../../../../common/button/pureButton/Button";
+import React, {useContext, useRef, useState} from 'react';
+import Button from "components/common/button/pureButton/Button";
 import {Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
-import {academyAxios} from "../../../../../config/axios.config";
+import {academyAxios} from "config/axios.config";
+import {authContext} from "provider/authProvider";
 
-function PasswordModalInput({userId}) {
+function PasswordModalInput() {
+  const {authState} = useContext(authContext);
   const [show, setShow] = useState(false);
   const {register, handleSubmit, formState: {errors}, reset} = useForm();
   const ref = useRef(null);
@@ -15,12 +17,11 @@ function PasswordModalInput({userId}) {
       setMessage("Confirm password does not match");
     } else {
       setMessage("");
-      academyAxios.patch(`/users/${userId}/password`, {
+      academyAxios.patch(`/users/${authState.userInfo._id}/password`, {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword
       }).then(response => {
         if (response.status === 200) {
-          reset();
           hideModal();
           alert("Password has been changed!");
         }
@@ -36,6 +37,7 @@ function PasswordModalInput({userId}) {
 
   function hideModal() {
     setShow(false);
+    reset();
   }
 
   return (

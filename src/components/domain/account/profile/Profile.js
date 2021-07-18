@@ -1,31 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import {useForm} from "react-hook-form";
-import jwt_decode from "jwt-decode";
-import {academyAxios} from "../../../../config/axios.config";
+import React, { useContext } from 'react';
+import { useForm } from "react-hook-form";
+import { academyAxios } from "config/axios.config";
 
 import "styles/other.style.css";
+import { authContext } from "provider/authProvider";
+import { UPDATE_USER_INFO } from "Reducer/authReducer";
 
 function Profile() {
-  const [user, setUser] = useState({});
-  const {register, handleSubmit, formState: {errors}} = useForm();
-  const decoded = jwt_decode(localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN));
-
-  useEffect(() => {
-    academyAxios.get(`/users/${decoded.userId}`).then(response => {
-      if (response.status === 200) {
-        setUser(response.data);
-      }
-    });
-  }, [decoded.userId]);
+  const { authState, dispatch } = useContext(authContext);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    academyAxios.patch(`/users/${decoded.userId}`, {
+    academyAxios.patch(`/users/${authState.userInfo._id}`, {
       fullName: data.fullName,
       phone: data.phone,
       address: data.address
     }).then(response => {
       if (response.status === 200) {
         alert("Successfully!");
+        dispatch({
+          type: UPDATE_USER_INFO,
+          payload: {
+            fullName: data.fullName,
+            phone: data.phone,
+            address: data.address
+          }
+        })
       }
     }).catch(error => {
       alert(error);
@@ -34,24 +34,18 @@ function Profile() {
 
   return (
     <div>
-      {Object.keys(user).length === 0 ? (
-        <div className="spinner-wrapper">
-          <div className="spinner-grow spinner" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      ) : (
+      {authState.userInfo ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input id="username" className="form-control"
-                   disabled={true} defaultValue={user.username}/>
+              disabled={true} defaultValue={authState.userInfo.username} />
           </div>
 
           <div className="form-group">
             <label htmlFor="full-name">Full Name</label>
             <input id="full-name" className="form-control"
-                   {...register("fullName", {required: true})} defaultValue={user.fullName}/>
+              {...register("fullName", { required: true })} defaultValue={authState.userInfo.fullName} />
             <small
               className="text-color-error">{errors.fullName?.type === 'required' && "Full name is required"}</small>
           </div>
@@ -59,8 +53,8 @@ function Profile() {
           <div className="form-group">
             <label htmlFor="phone">Phone</label>
             <input id="phone" className="form-control"
-                   {...register("phone", {required: true, pattern: /^[0-9]*$/})}
-                   defaultValue={user.phone}/>
+              {...register("phone", { required: true, pattern: /^[0-9]*$/ })}
+              defaultValue={authState.userInfo.phone} />
             <small
               className="text-color-error">{errors.phone?.type === 'required' && "Phone number is required"}</small>
             <small className="text-color-error">{errors.phone?.type === 'pattern' && "Invalid format"}</small>
@@ -69,15 +63,15 @@ function Profile() {
           <div className="form-group">
             <label htmlFor="address">Address</label>
             <input id="address" className="form-control"
-                   {...register("address", {required: true})} defaultValue={user.address}/>
+              {...register("address", { required: true })} defaultValue={authState.userInfo.address} />
             <small className="text-color-error">{errors.address?.type === 'required' && "Address is required"}</small>
           </div>
 
           <div className="text-center">
-            <input type="submit" className="btn btn-outline-dark" value="Save"/>
+            <input type="submit" className="btn btn-outline-dark" value="Save" />
           </div>
-        </form>
-      )}
+        </form>) : ""}
+
     </div>
   );
 }
