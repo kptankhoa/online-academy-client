@@ -1,37 +1,33 @@
-import React, {Suspense, useReducer} from 'react';
+import React, { Suspense, useReducer } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect, useLocation,
+  Redirect, useLocation
 } from 'react-router-dom';
-
-import {publicRoute} from './pages/routes';
-
-import Login from './pages/Login';
-
+import { publicRoute } from './pages/routes';
+import Login from './pages/login';
+import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
-import UserPage from "./pages/Account";
 
 export default function App() {
   const initialState = {
     query: '',
-    item: [],
+    item: []
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
-        <Switch>
-          <UnAuthRoute path="/login" exact={true}>
-            <Login/>
-          </UnAuthRoute>
-
-          <AppContext.Provider value={{state, dispatch}}>
-            <PrivateRoute path="/user">
-              <UserPage/>
+        <AppContext.Provider value={{ state, dispatch }}>
+          <Switch>
+            <UnAuthRoute path='/login' exact={true}>
+              <Login />
+            </UnAuthRoute>
+            <PrivateRoute path='/user'>
+              <UserPage />
             </PrivateRoute>
             {publicRoute.map((ro, i) => {
               return (
@@ -43,14 +39,12 @@ export default function App() {
                 />
               );
             })}
+            <Route path='*'>
+              <NoMatch />
+            </Route>
+          </Switch>
+        </AppContext.Provider>
 
-          </AppContext.Provider>
-
-          <Route path="*">
-            <NoMatch/>
-          </Route>
-
-        </Switch>
       </Suspense>
     </Router>
   );
@@ -68,7 +62,7 @@ function NoMatch() {
   );
 }
 
-function PrivateRoute({children, ...rest}) {
+function PrivateRoute({ children, ...rest }) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -82,7 +76,7 @@ function PrivateRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/login'
               // state: { from: location }
             }}
           />
@@ -92,7 +86,7 @@ function PrivateRoute({children, ...rest}) {
   }
 }
 
-function UnAuthRoute({children, ...rest}) {
+function UnAuthRoute({ children, ...rest }) {
   const accessKey = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -106,7 +100,7 @@ function UnAuthRoute({children, ...rest}) {
         ) : (
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/'
               // state: { from: location }
             }}
           />
@@ -116,6 +110,6 @@ function UnAuthRoute({children, ...rest}) {
   );
 }
 
-function PublicRoute({...rest}) {
+function PublicRoute({ ...rest }) {
   return <Route {...rest} />;
 }
