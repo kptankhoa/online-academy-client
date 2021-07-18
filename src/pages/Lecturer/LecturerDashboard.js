@@ -29,8 +29,32 @@ function LecturerDashboard() {
   // }
 
   function onSubmit(data) {
-    // console.log(data.video[0].name);
-    let file_name = "/home/redfoxvn/test_vimeo.mp4";
+    console.log(data);
+    // console.log(URL.createObjectURL(data.file[0]));
+    let file_name = URL.createObjectURL(data.file[0]);
+    console.log(file_name);
+    vimeoClient.upload(
+      file_name,
+      {
+        'name': 'first_video_uploaded',
+        'description': 'The description goes here.'
+      },
+      function (uri) {
+        console.log('Your video URI is: ' + uri);
+      },
+      function (bytes_uploaded, bytes_total) {
+        let percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
+        console.log(bytes_uploaded, bytes_total, percentage + '%');
+      },
+      function (error) {
+        console.log('Failed because: ' + error);
+      }
+    )
+  }
+
+  function onClick() {
+    let file_name = "C:\\Users\\ASUS\\Desktop\\video_test.webm";
+    console.log(file_name);
     vimeoClient.upload(
       file_name,
       {
@@ -55,9 +79,11 @@ function LecturerDashboard() {
       <div className="header">
         <Logo/>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="file" {...register("video", {required: true})}/>
+          <input type="file" {...register("file", {required: true})}/>
           <input type="submit" value="Submit"/>
         </form>
+
+        <button onClick={onClick}>Test</button>
       </div>
     </div>
   );
