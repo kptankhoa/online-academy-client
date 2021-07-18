@@ -1,15 +1,13 @@
-import React, {Suspense, useReducer} from 'react';
+import React, { Suspense, useReducer } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect, useLocation,
+  Redirect, useLocation
 } from 'react-router-dom';
-
-import {publicRoute} from './pages/routes';
-
-import Login from './pages/Login';
-
+import { publicRoute } from './pages/routes';
+import Login from './pages/login';
+import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
 import UserPage from "./pages/Account";
@@ -20,7 +18,7 @@ import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
 export default function App() {
   const initialState = {
     query: '',
-    item: [],
+    item: []
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -90,7 +88,7 @@ function PrivateRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/login'
               // state: { from: location }
             }}
           />
@@ -143,7 +141,7 @@ function UnAuthRoute({children, ...rest}) {
         ) : (
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/'
               // state: { from: location }
             }}
           />
@@ -153,6 +151,6 @@ function UnAuthRoute({children, ...rest}) {
   );
 }
 
-function PublicRoute({...rest}) {
+function PublicRoute({ ...rest }) {
   return <Route {...rest} />;
 }
