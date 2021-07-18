@@ -44,7 +44,9 @@ export default function SectionNav(props) {
             <div className="d-flex align-items-center">
               {lesson.progress && lesson.progress.isFinish && <i className='fas fa-check-square' style={{color: '#2ecc71'}}></i>}
               <Button style={{ fontSize: '14px' }} className='w-100 text-left'
-                      onClick={() => onClickHandler(lesson)} title={lesson.title} />
+                      onClick={() => onClickHandler(lesson)} >
+                {lesson.title}
+              </Button>
             </div>
           </AccordionDetails>
         ))}

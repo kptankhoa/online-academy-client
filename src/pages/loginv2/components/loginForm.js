@@ -13,7 +13,7 @@ import {academyAxios} from '../../../config/axios.config';
 import {LOGIN_SUCCESS} from '../../../Reducer/authReducer';
 import {authContext} from '../../../provider/authProvider';
 
-const LoginForm = function (props) {
+const LoginForm = function ({ username }) {
   const history = useHistory();
   const {dispatch} = useContext(authContext);
   const {
@@ -68,6 +68,7 @@ const LoginForm = function (props) {
           type='text'
           autoFocus
           {...register('username', {required: true})}
+          defaultValue={username}
         />
       </FormControl>
       <FormControl fullWidth className='m-2' >

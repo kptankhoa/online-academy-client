@@ -1,16 +1,15 @@
 import {
   Input,
   InputLabel,
-  FormControl, FormControlLabel, Checkbox
+  FormControl,
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
-import { SignUp } from 'pages/SignUp/signUp.action';
-import SignUpBtn from './SignUpBtn';
+import { signUp } from 'pages/SignUp/signUp.action';
+import SubmitBtn from './SubmitBtn';
 
 const SignUpForm = (props) => {
-  const history = useHistory();
+  const {setEmail, setUsername, setSignedUp} = props;
   const {
     register,
     handleSubmit,
@@ -18,11 +17,11 @@ const SignUpForm = (props) => {
   } = useForm();
   const onSubmit = handleSubmit(async (data) => {
     setLoading(true);
-    console.log(data);
-    const res = await SignUp(data);
+    setEmail(data.email);
+    setUsername(data.username);
+    const res = await signUp(data);
     if (res) {
-      alert('Sign Up Successfully!');
-      history.push('/login');
+      setSignedUp(true);
     } else {
       alert('Cannot sign up! Try another email or username!');
       setLoading(false);
@@ -82,13 +81,14 @@ const SignUpForm = (props) => {
           {...register('password', { required: true })}
         />
       </FormControl>
-      <SignUpBtn
+      <SubmitBtn
         type='submit'
         fullWidth
         variant='contained'
         loading={loading}
         color="primary"
         className="mt-4"
+        btnText="Sign Up"
       />
     </form>
   );

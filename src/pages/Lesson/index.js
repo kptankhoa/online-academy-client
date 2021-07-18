@@ -65,7 +65,6 @@ const LessonView = () => {
       postProgress();
     }
   }, []);
-  // setIsEnrolled(!(Object.keys(state.lesson).length === 0));
   const decoded = jwt_decode(localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN));
   const postProgress = () => {
     axiosInstance.post(`/progresses`, {
