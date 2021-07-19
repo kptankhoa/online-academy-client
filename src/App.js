@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { publicRoute } from './pages/routes';
 import Login from './pages/loginv2';
+import SignUp from './pages/SignUp';
 import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
@@ -30,6 +31,10 @@ export default function App() {
 
               <UnAuthRoute path="/login" exact={true}>
                 <Login/>
+              </UnAuthRoute>
+
+              <UnAuthRoute path="/signup" exact={true}>
+                <SignUp />
               </UnAuthRoute>
 
               <PrivateRoute path="/user">

@@ -6,7 +6,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../components/common/button/pureButton/Button';
+import Button from 'components/common/button/pureButton/Button';
 import LessonViewContext from '../lessonViewContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +44,9 @@ export default function SectionNav(props) {
             <div className="d-flex align-items-center">
               {lesson.progress && lesson.progress.isFinish && <i className='fas fa-check-square' style={{color: '#2ecc71'}}></i>}
               <Button style={{ fontSize: '14px' }} className='w-100 text-left'
-                      onClick={() => onClickHandler(lesson)} title={lesson.title} />
+                      onClick={() => onClickHandler(lesson)} >
+                {lesson.title}
+              </Button>
             </div>
           </AccordionDetails>
         ))}

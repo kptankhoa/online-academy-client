@@ -27,6 +27,7 @@ function TabBar({className}) {
       {authState.userInfo ? (
         <div className={classes}>
           {renderTabItem("profile", "Profile")}
+          {renderTabItem("avatar", "Avatar")}
           {authState.userInfo.type === "student" ? (
             <>
               {renderTabItem("my-learning", "My Learning")}
