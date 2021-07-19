@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOST = process.env.REACT_APP_HOST || "";
+const HOST = process.env.REACT_APP_ONLINE_HOST || "";
 
 export const axiosInstance = axios.create({
   baseURL: HOST,
@@ -23,4 +23,4 @@ export function parseJwt(token) {
   }).join(''));
 
   return JSON.parse(jsonPayload);
-};
+}
