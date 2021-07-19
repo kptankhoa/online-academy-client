@@ -13,6 +13,8 @@ import reducer from './Reducer/AppReducer';
 import AuthProvider from "./provider/authProvider";
 import jwt_decode from "jwt-decode";
 import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
+import CreateCourse from "./pages/Lecturer/createCourse/CreateCourse";
+import LecturerPage from "./pages/Lecturer/LecturerPage";
 
 export default function App() {
   const initialState = {
@@ -36,9 +38,13 @@ export default function App() {
                 <UserPage/>
               </PrivateRoute>
 
-              <PrivateRoute path="/lecturer">
-                <LecturerDashboard/>
-              </PrivateRoute>
+              <LecturerRoute path="/lecturer">
+                <LecturerPage/>
+              </LecturerRoute>
+
+              {/*<LecturerRoute path="/lecturer/create-course" exact={true}>*/}
+              {/*  <CreateCourse/>*/}
+              {/*</LecturerRoute>*/}
 
               {publicRoute.map((ro, i) => {
                 return (
