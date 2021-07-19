@@ -1,19 +1,19 @@
 import React, {useContext} from 'react';
-import Avatar from "components/common/avatar/Avatar";
-import UserDropdown from "./userDropdown/UserDropdown";
-
-import './UserNav.css';
-import {Link} from "react-router-dom";
 import {authContext} from "provider/authProvider";
+import {Link} from "react-router-dom";
+import Avatar from "components/common/avatar/Avatar";
+import UserDropdown from "../userNav/userDropdown/UserDropdown";
 
-function UserNav() {
+import "styles/other.style.css";
+
+function LecturerNav() {
   const {authState} = useContext(authContext);
 
   return (
-    <div className="ml-3 user-nav">
+    <div className="ml-3 position-relative">
       {authState.userInfo ? (
         <>
-          <Link to="/user/profile" className="avatar-container">
+          <Link to="/user" className="avatar-container">
             <Avatar size={40}
                     src={authState.userInfo.avatar}/>
           </Link>
@@ -32,4 +32,4 @@ function UserNav() {
   );
 }
 
-export default UserNav;
+export default LecturerNav;

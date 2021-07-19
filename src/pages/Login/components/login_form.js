@@ -5,22 +5,24 @@ import {
   FormControl,
   IconButton,
 } from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
-import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import {Visibility, VisibilityOff} from '@material-ui/icons';
+import {useForm} from 'react-hook-form';
+import {useHistory} from 'react-router-dom';
 
 import {useContext, useState} from 'react';
 
 import useStyles from '../styles/login_form.style';
-import { Login } from '../utils/login.util';
+import {Login} from '../utils/login.util';
 
 import LoginButton from './LoginButton';
 import {authContext} from "../../../provider/authProvider";
 import {LOGIN_SUCCESS} from "../../../Reducer/authReducer";
+import {academyAxios} from "../../../config/axios.config";
+import jwt_decode from "jwt-decode";
 
 const LoginForm = function (props) {
   const history = useHistory();
-  const { type } = props;
+  const {type} = props;
   const classes = useStyles();
 
   const {dispatch} = useContext(authContext);
@@ -28,18 +30,26 @@ const LoginForm = function (props) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm();
 
   const onSubmit = async (data) => {
     setLoading(true);
     const res = await Login(data);
     if (res) {
-      // dispatch({
-      //   type: LOGIN_SUCCESS,
-      //   payload: localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN)
-      // });
-      history.push('/');
+      const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+      if (token) {
+        const decoded = jwt_decode(token);
+        academyAxios.get(`/users/${decoded.userId}`).then(response => {
+          if (response.status === 200) {
+            dispatch({
+              type: LOGIN_SUCCESS,
+              payload: response.data
+            });
+            history.push('/');
+          }
+        });
+      }
     } else {
       alert('error');
       setLoading(false);
@@ -56,25 +66,24 @@ const LoginForm = function (props) {
   const [loading, setLoading] = useState(false);
 
 
-
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
 
   const handleChange = (p) => (e) => {
-    setPassword({ ...password, [p]: e.target.value });
+    setPassword({...password, [p]: e.target.value});
     console.log(password);
   };
 
   const handleClickShowPassword = () => {
-    setPassword({ ...password, showPassword: !password.showPassword });
+    setPassword({...password, showPassword: !password.showPassword});
   };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const  handleKeyUp = async (e) =>{
+  const handleKeyUp = async (e) => {
     if (e.keyCode === 13) {
       await onSubmit({username, password: password.password});
     }
@@ -100,7 +109,7 @@ const LoginForm = function (props) {
               type="text"
               autoFocus
               value={username}
-              {...register('username', { required: true })}
+              {...register('username', {required: true})}
               onChange={handleUsernameChange}
             />
           </FormControl>
@@ -115,8 +124,8 @@ const LoginForm = function (props) {
               id="password"
               type={password.showPassword ? 'text' : 'password'}
               value={password.password}
-              {...register('password', { required: true })}
-              onKeyUp = {handleKeyUp}
+              {...register('password', {required: true})}
+              onKeyUp={handleKeyUp}
               onChange={handleChange('password')}
               endAdornment={
                 <InputAdornment position="end">
@@ -125,7 +134,7 @@ const LoginForm = function (props) {
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                   >
-                    {password.showPassword ? <Visibility /> : <VisibilityOff />}
+                    {password.showPassword ? <Visibility/> : <VisibilityOff/>}
                   </IconButton>
                 </InputAdornment>
               }
@@ -136,7 +145,7 @@ const LoginForm = function (props) {
             fullWidth
             variant="contained"
             className={classes.submit}
-            loading = {loading}
+            loading={loading}
           />
         </form>
       );
