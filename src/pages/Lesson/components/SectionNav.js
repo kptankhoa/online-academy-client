@@ -6,7 +6,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../components/common/button/pureButton/Button';
+import Button from 'components/common/button/pureButton/Button';
 import LessonViewContext from '../lessonViewContext';
 
 const useStyles = makeStyles((theme) => ({

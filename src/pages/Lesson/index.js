@@ -74,7 +74,6 @@ const LessonView = () => {
       progress: progress.playedSeconds
     }).then();
   };
-
   function setLessonHandler(newLesson) {
     postProgress();
     dispatch({
