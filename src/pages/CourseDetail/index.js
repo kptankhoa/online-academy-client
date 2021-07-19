@@ -19,7 +19,9 @@ import Footer from 'components/domain/footer/Footer';
 import CarouselContainer from './components/CourseContent/Course/CarouselContainer';
 // import Footer from '../../components/Footer';
 import getSameCourse from './utils/get5CourseByCourseId';
-import { getSections } from './utils';
+import { getLearningList, getSections } from './utils';
+import getWishList from './utils/getWishList';
+import { getCurrentUser } from 'utils';
 
 function CourseDescription(props) {
   const { courseId } = useParams();
@@ -30,6 +32,8 @@ function CourseDescription(props) {
       courseImage: '/gif/loading.gif',
     },
     process: {},
+    isEnrolled: false,
+    isInWishList: false,
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -46,6 +50,37 @@ function CourseDescription(props) {
     getSameCourse(courseId, dispatch);
     getSections(courseId, dispatch);
     getCourse();
+
+    if (getCurrentUser()) {
+      getLearningList().then((result) => {
+        console.log('result', result);
+        const list = result.filter((course) => {
+          console.log(course._id, courseId);
+          return course._id === courseId;
+        });
+
+        dispatch({
+          type: 'setLearningList',
+          payload: {
+            isEnrolled: list.length === 0 ? false : true,
+          },
+        });
+      });
+      getWishList().then((result) => {
+        console.log('result', result);
+        const list = result.filter((course) => {
+          console.log('wish List', course._id, courseId);
+          return course._id === courseId;
+        });
+
+        dispatch({
+          type: 'setInWishList',
+          payload: {
+            isInWishList: list.length === 0 ? false : true,
+          },
+        });
+      });
+    }
   }, [courseId]);
   return (
     <div>

@@ -11,19 +11,15 @@ function Feed({ userId, comment, rating }) {
   useEffect(() => {
     async function getCourse() {
       const rel = await axiosInstance.get(`/users/${userId}`);
-
-      console.log('rel', rel);
       setUser(rel.data);
     }
     getCourse();
   }, [userId]);
 
   const fullName = user ? (
-    <>
-      <Grid xs={12}>
-        <Typography>{user.fullName}</Typography>
-      </Grid>
-    </>
+    <div>
+      <Typography style={{ fontWeight: 'bold' }}>{user.fullName}</Typography>
+    </div>
   ) : (
     <Loading size={20} />
   );

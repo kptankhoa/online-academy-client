@@ -1,6 +1,18 @@
 import { CircularProgress } from '@material-ui/core';
+import { useEffect, useState } from 'react';
 
-function Loading({ size, ...rest }) {
+function Loading({ children, cancelLoading, timeoutComponent, size, ...rest }) {
+  const [timeOut, setTimeOut] = useState(false);
+
+  useEffect(() => {
+    const s = setTimeout(() => {
+      setTimeOut(true);
+    }, 10000);
+    return () => {
+      clearTimeout(s);
+    };
+  }, [timeOut]);
+
   return (
     <div
       style={{
@@ -11,7 +23,11 @@ function Loading({ size, ...rest }) {
         padding: 10,
       }}
     >
-      <CircularProgress size={size} />
+      {timeOut ? (
+        <div>{timeoutComponent}</div>
+      ) : (
+        <CircularProgress size={size} />
+      )}
     </div>
   );
 }

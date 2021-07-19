@@ -37,9 +37,9 @@ export default function CarouselContainer() {
         // }}
       >
         {state.sameCourses ? (
-          state.sameCourses.map((courses) => {
+          state.sameCourses.map((courses, i) => {
             return (
-              <SwiperSlide style={{ position: 'static' }}>
+              <SwiperSlide style={{ position: 'static' }} key={i}>
                 <CourseCard
                   courseData={courses}
                   style={{ position: 'static' }}

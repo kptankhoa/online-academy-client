@@ -1,9 +1,9 @@
 import { axiosInstance } from 'utils/auth';
-async function enroll(userId, courseId) {
-  const body = { courseId: courseId, userId: userId };
+async function addToWishList(userId, courseId) {
+  const body = { courseId: courseId };
   try {
     console.log('body', body);
-    const res = await axiosInstance.post('/enrollments', body);
+    const res = await axiosInstance.post(`/users/${userId}/wishList`, body);
 
     console.log('res enroll', res);
     if (res.status === 200) {
@@ -29,4 +29,4 @@ async function enroll(userId, courseId) {
   }
 }
 
-export default enroll;
+export default addToWishList;

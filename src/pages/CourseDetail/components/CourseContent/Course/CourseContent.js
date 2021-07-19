@@ -85,6 +85,7 @@ function CourseContent(props) {
                       {lessons.map((lesson, index) => {
                         return (
                           <Slide
+                            key={index}
                             direction="up"
                             in={expanded === i}
                             timeout={500 * index}

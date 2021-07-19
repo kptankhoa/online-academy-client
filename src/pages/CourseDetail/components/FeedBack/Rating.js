@@ -5,8 +5,7 @@ import StarHalfIcon from '@material-ui/icons/StarHalf';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import { useEffect } from 'react';
 
-function drawStar(raw, persons) {
-  const point = raw % 5;
+function drawStar(point, persons) {
   if (point >= 0 && point <= 5) {
     const arr = [0, 0, 0, 0, 0];
     const p = Math.round(point * 2) / 2;
@@ -20,22 +19,35 @@ function drawStar(raw, persons) {
       arr[p1] = 2;
     }
 
-    console.log(arr);
-
     return (
-      <div style={{ justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'left',
+          alignItems: 'center',
+        }}
+      >
         <Typography
           style={{
-            color: 'black',
+            color: 'orange',
             fontWeight: 'bold',
-            display: 'inline',
+            display: 'flex',
             fontSize: 14,
-            padding: 2,
+            paddingRight: 4,
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          {point}/5
+          {point}
         </Typography>
-        <div style={{ display: 'inline', color: 'orange' }}>
+        <div
+          style={{
+            display: 'flex',
+            color: 'orange',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           {arr.map((i, index) => {
             switch (i) {
               case 0:
@@ -50,7 +62,14 @@ function drawStar(raw, persons) {
           })}
         </div>
         {(persons || persons === 0) && (
-          <div style={{ display: 'inline', padding: '5%' }}>
+          <div
+            style={{
+              display: 'flex',
+              padding: '5%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <SupervisorAccountIcon />
             {persons}
           </div>

@@ -27,7 +27,7 @@ import { CustomButton, Loading } from 'components';
 import { getCurrentUser } from 'utils';
 import { axiosInstance } from 'utils/auth';
 import MuiAlert from '@material-ui/lab/Alert';
-import { enroll } from 'pages/CourseDetail/utils';
+import { addToWishList, enroll, getPreviewUrl } from 'pages/CourseDetail/utils';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -62,22 +62,38 @@ function RegisterCourseForm(props) {
   //   screenfull.request(findDOMNode(ref.current));
   // };
 
-  const render = state.course.ratingPoint ? (
-    <Rating num={state.course.ratingPoint} persons={state.course.ratedNumber} />
-  ) : (
-    <Loading size={20} />
-  );
+  const render =
+    state.course.ratingPoint || state.course.ratingPoint === 0 ? (
+      <Rating
+        num={state.course.ratingPoint}
+        persons={state.course.ratedNumber}
+      />
+    ) : (
+      <Loading size={20}></Loading>
+    );
 
-  const handleEnrollOnclick = async (done) => {
+  const handleEnrollOnclick = (done) => {
     const user = getCurrentUser();
     if (user === null) {
       handleClick();
       return false;
     } else {
-      const courseId = state.course.courseId;
+      const courseId = state.course._id;
       const userId = user.userId;
-
       enroll(userId, courseId).then(() => done());
+      return true;
+    }
+  };
+
+  const handleAddToWhisListOnclick = (done) => {
+    const user = getCurrentUser();
+    if (user === null) {
+      handleClick();
+      return false;
+    } else {
+      const courseId = state.course._id;
+      const userId = user.userId;
+      addToWishList(userId, courseId).then(() => done());
       return true;
     }
   };
@@ -86,6 +102,13 @@ function RegisterCourseForm(props) {
     <div>
       <CheckIcon />
       Resgisted
+    </div>
+  );
+
+  const whisList = (
+    <div>
+      <CheckIcon />
+      WhisList
     </div>
   );
 
@@ -106,22 +129,41 @@ function RegisterCourseForm(props) {
         </Alert>
       </Snackbar>
       <Card>
-        <CardActionArea>
-          <ReactPlayer
-            width={280}
-            height={200}
-            ref={ref}
-            url="https://vimeo.com/292893585"
-            // onPlay={toggleFullScreen}
-            controls={true}
-            config={
-              {
-                // vimeo: {},
-              }
-            }
-            // playing
-          />
-        </CardActionArea>
+        {state.sections ? (
+          <CardActionArea>
+            {getPreviewUrl(state.sections) !== '' ? (
+              <ReactPlayer
+                width={280}
+                height={200}
+                ref={ref}
+                url={getPreviewUrl(state.sections)}
+                // onPlay={toggleFullScreen}
+                controls={true}
+                config={
+                  {
+                    // vimeo: {},
+                  }
+                }
+                // playing
+              />
+            ) : (
+              <div
+                style={{
+                  padding: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  justifyItems: 'center',
+                  backgroundColor: '#f6f6f6',
+                }}
+              >
+                Don't have any preview
+              </div>
+            )}
+          </CardActionArea>
+        ) : (
+          <Loading size={40} timeoutComponent={<div>Load video failed</div>} />
+        )}
+
         <CardHeader title="Content" />
         <CardContent>
           {render}
@@ -130,17 +172,32 @@ function RegisterCourseForm(props) {
               <CheckIcon />
               Total Time: {state.course.totalHours} h
             </ListItem>
+            <ListItem>
+              <CheckIcon />
+              Sections: {state.sections && state.sections.length} section
+            </ListItem>
           </List>
           <Money money={20000} size={30}></Money>
         </CardContent>
         <CardActions className={classes.registerbutton}>
           <CustomButton
+            failedComponent={<div>Can't Enroll</div>}
             onclick={handleEnrollOnclick}
-            initState="unclick"
+            initState={state.isEnrolled ? 'clicked' : 'unclick'}
             className={classes.button}
             unclickName={'Enroll Me'}
             clickedName={registed}
           ></CustomButton>
+          {getCurrentUser() && (
+            <CustomButton
+              failedComponent={<div>X</div>}
+              onclick={handleAddToWhisListOnclick}
+              initState={state.isInWishList ? 'clicked' : 'unclick'}
+              className={classes.button}
+              unclickName={'+ WishList'}
+              clickedName={whisList}
+            ></CustomButton>
+          )}
         </CardActions>
       </Card>
     </div>

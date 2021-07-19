@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -15,11 +15,16 @@ export default function CustomButton({
   unclickName,
   clickedName,
   initState,
+  failedComponent,
   ...rest
 }) {
   const classes = useStyles();
 
-  const [state, setState] = useState(initState);
+  const [state, setState] = useState(null);
+
+  useEffect(() => {
+    setState(initState);
+  }, [initState]);
 
   const done = () => {
     setState('clicked');
@@ -29,7 +34,7 @@ export default function CustomButton({
   const handleOnclick = () => {
     switch (state) {
       case 'unclick':
-        if (typeof onclick === 'function' && onclick() === true) {
+        if (typeof onclick === 'function' && onclick(done) === true) {
           onclick(done);
           setState('loading');
         }
@@ -53,7 +58,7 @@ export default function CustomButton({
         {unclickName}
       </button>
     ) : state === 'loading' ? (
-      <Loading size={20} />
+      <Loading size={20} timeoutComponent={failedComponent} />
     ) : (
       <button onClick={handleOnclick} {...rest}>
         {clickedName}
