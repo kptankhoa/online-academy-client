@@ -1,19 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    position: 'fixed',
-    maxWidth: 800,
-    maxHeight: '85%',
-    alignItems: 'center',
-    justifyContent: 'left',
-    overflowX:'hidden',
-    overflowY:'scroll',
-    top: 70,
-    paddingTop: 180,
-    right: 0,
-  },
   courseDetail: {
     display: 'inline',
   },
@@ -23,15 +10,18 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     fontWeight: 'bold',
     '&:hover': {
-      backgroundColor: 'blue'
-    }
+      backgroundColor: 'blue',
+    },
+    border: 'none',
+    padding: 10,
+    borderRadius: 10,
   },
   price: {
     textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold',
-    color: 'red'
-  }
+    color: 'red',
+  },
 }));
 
 export default useStyles;

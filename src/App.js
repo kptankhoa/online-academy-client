@@ -3,21 +3,22 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect, useLocation
+  Redirect,
+  useLocation,
 } from 'react-router-dom';
 import { publicRoute } from './pages/routes';
 import Login from './pages/loginv2';
 import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
-import AuthProvider from "./provider/authProvider";
-import jwt_decode from "jwt-decode";
-import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
+import AuthProvider from './provider/authProvider';
+import jwt_decode from 'jwt-decode';
+import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 
 export default function App() {
   const initialState = {
     query: '',
-    item: []
+    item: [],
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -25,19 +26,18 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Suspense fallback={<div>Loading...</div>}>
-          <AppContext.Provider value={{state, dispatch}}>
+          <AppContext.Provider value={{ state, dispatch }}>
             <Switch>
-
               <UnAuthRoute path="/login" exact={true}>
-                <Login/>
+                <Login />
               </UnAuthRoute>
 
               <PrivateRoute path="/user">
-                <UserPage/>
+                <UserPage />
               </PrivateRoute>
 
               <PrivateRoute path="/lecturer">
-                <LecturerDashboard/>
+                <LecturerDashboard />
               </PrivateRoute>
 
               {publicRoute.map((ro, i) => {
@@ -52,9 +52,8 @@ export default function App() {
               })}
 
               <Route path="*">
-                <NoMatch/>
+                <NoMatch />
               </Route>
-
             </Switch>
           </AppContext.Provider>
         </Suspense>
@@ -75,11 +74,13 @@ function NoMatch() {
   );
 }
 
-function PrivateRoute({children, ...rest}) {
-  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+function PrivateRoute({ children, ...rest }) {
+  const token = localStorage.getItem(
+    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
+  );
 
   if (token) {
-    return <Route {...rest} >{children}</Route>;
+    return <Route {...rest}>{children}</Route>;
   } else {
     return (
       <Route
@@ -87,7 +88,7 @@ function PrivateRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/login'
+              pathname: '/login',
               // state: { from: location }
             }}
           />
@@ -97,8 +98,10 @@ function PrivateRoute({children, ...rest}) {
   }
 }
 
-function LecturerRoute({children, ...rest}) {
-  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+function LecturerRoute({ children, ...rest }) {
+  const token = localStorage.getItem(
+    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
+  );
   const decoded = jwt_decode(token);
 
   if (!token) {
@@ -115,22 +118,29 @@ function LecturerRoute({children, ...rest}) {
         }
       />
     );
-  } else if (decoded.type === "lecturer") {
-    return <Route {...rest} >{children}</Route>;
+  } else if (decoded.type === 'lecturer') {
+    return <Route {...rest}>{children}</Route>;
   } else {
-    return <Route {...rest} children={
-      <Redirect
-        to={{
-          pathname: '/',
-          // state: { from: location }
-        }}
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/',
+              // state: { from: location }
+            }}
+          />
+        }
       />
-    }/>
+    );
   }
 }
 
-function UnAuthRoute({children, ...rest}) {
-  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+function UnAuthRoute({ children, ...rest }) {
+  const token = localStorage.getItem(
+    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
+  );
   return (
     <Route
       {...rest}
@@ -140,7 +150,7 @@ function UnAuthRoute({children, ...rest}) {
         ) : (
           <Redirect
             to={{
-              pathname: '/'
+              pathname: '/',
               // state: { from: location }
             }}
           />
