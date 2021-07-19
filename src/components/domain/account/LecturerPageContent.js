@@ -1,41 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import CourseList from "components/common/list/courseList/CourseList";
-import {academyAxios} from "config/axios.config";
-import {getTokenPayload} from "utils/commonUtils";
+import React from 'react';
+import LecturerDashboard from "../../../pages/Lecturer/LecturerDashboard";
+import {Route, Switch} from "react-router-dom";
+import CreateCourse from "../../../pages/Lecturer/createCourse/CreateCourse";
 
 function LecturerPageContent() {
-  const [loading, setLoading] = useState(true);
-  const [teachingCourses, setTeachingCourses] = useState([]);
-  const decoded = getTokenPayload();
-
-  useEffect(() => {
-    academyAxios.get(`/lecturers/${decoded.userId}/courses`)
-      .then(response => {
-        if (response.status === 200) {
-          setTeachingCourses(response.data);
-          setLoading(false);
-        }
-      });
-  }, [decoded.userId]);
-
   return (
     <div className='container-fluid text-color-primary flex-grow-1'>
       <div className='row'>
         <div className='col-7 m-auto'>
-          <div className="my-courses mt-4">
-            <div className='title'>
-              <h4 className='font-weight-bold'>My Courses</h4>
-            </div>
-            {loading ? (
-              <div className='spinner-wrapper mt-5'>
-                <div className="spinner-grow spinner" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-              </div>
-            ) : (
-              <CourseList listData={teachingCourses} className='mt-3'/>
-            )}
-          </div>
+          <Switch>
+            <Route exact path="/lecturer/dashboard">
+              <LecturerDashboard className="mt-4"/>
+            </Route>
+            <Route exact path="/lecturer/create-course">
+              <CreateCourse className="mt-4"/>
+            </Route>
+          </Switch>
         </div>
       </div>
     </div>

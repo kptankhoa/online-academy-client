@@ -70,9 +70,17 @@ export default function HomeContent() {
 
           {/*/!* Top featured category *!/*/}
           <Section title='Featured Category' className='mt-5'>
-            <ButtonList
-              className='mt-4' onItemClick={onCategoryButtonClick}
-              dataList={featuredCategory.map(e => ({title: e.categoryName, id: e._id}))}/>
+            {featuredCategory.length > 0 ? (
+              <ButtonList
+                className='mt-4' onItemClick={onCategoryButtonClick}
+                dataList={featuredCategory.map(e => ({title: e.categoryName, id: e._id}))}/>
+            ) : (
+              <div className='spinner-wrapper'>
+                <div className="spinner-grow spinner" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            )}
           </Section>
 
         </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import CourseCard from "../../card/courseCard/CourseCard";
 import Carousel from "react-material-ui-carousel";
-import './CarouselList.css'
 
 export default function CarouselList({courseList, className}) {
   function renderCarousel(courseList) {
