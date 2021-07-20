@@ -4,12 +4,14 @@ import {authContext} from 'provider/authProvider';
 import {Avatar, Button} from '@material-ui/core';
 import {axiosInstanceDefault} from 'utils/auth';
 import {UPDATE_USER_INFO} from 'Reducer/authReducer';
+import FullScreenLoading from "../../../common/loading/FullScreenLoading";
 
 const ProfilePicture = () => {
   const {authState, dispatch} = useContext(authContext);
   const [imgUrl, setImgUrl] = useState("");
   const [postUrl, setPostUrl] = useState('');
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (authState.userInfo) {
@@ -27,12 +29,12 @@ const ProfilePicture = () => {
   };
 
   const clickHandler = () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append('avaImage', file);
     axiosInstanceDefault.post(postUrl, formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     }).then(r => {
-        alert('Profile Picture changed successfully!');
         dispatch({
           type: UPDATE_USER_INFO,
           payload: {
@@ -40,7 +42,11 @@ const ProfilePicture = () => {
           }
         });
       }
-    ).catch(err => console.log(err.response));
+    )
+      .catch(err => console.log(err.response))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -71,6 +77,8 @@ const ProfilePicture = () => {
               </Button>
             </div>
           </div>
+
+          {loading && <FullScreenLoading/>}
         </>
       )}
     </div>

@@ -4,6 +4,7 @@ import {Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import {academyAxios} from "config/axios.config";
 import {authContext} from "provider/authProvider";
+import FullScreenLoading from "../../../../common/loading/FullScreenLoading";
 
 function PasswordModalInput() {
   const {authState} = useContext(authContext);
@@ -12,11 +13,15 @@ function PasswordModalInput() {
   const ref = useRef(null);
   const [message, setMessage] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   function onSubmit(data) {
     if (data.newPassword !== ref.current.value) {
       setMessage("Confirm password does not match");
     } else {
       setMessage("");
+      setLoading(true);
+      hideModal();
       const url = authState.userInfo.type === "student" ? `/users/${authState.userInfo._id}/password` :
         `/lecturers/${authState.userInfo._id}/password`;
       academyAxios.patch(url, {
@@ -24,11 +29,11 @@ function PasswordModalInput() {
         newPassword: data.newPassword
       }).then(response => {
         if (response.status === 200) {
-          hideModal();
-          alert("Password has been changed!");
         }
       }).catch(error => {
-        alert(error.response.data.error);
+        console.log(error.response.data.error);
+      }).finally(() => {
+        setLoading(false);
       })
     }
   }
@@ -93,6 +98,7 @@ function PasswordModalInput() {
           </div>
         </Modal.Body>
       </Modal>
+      {loading && <FullScreenLoading/>}
     </div>
   );
 }

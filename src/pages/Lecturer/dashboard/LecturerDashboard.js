@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import CourseList from "../../components/common/list/courseList/CourseList";
-import {getTokenPayload} from "../../utils/commonUtils";
-import {academyAxios} from "../../config/axios.config";
+import CourseList from "../../../components/common/list/courseList/CourseList";
+import {getTokenPayload} from "../../../utils/commonUtils";
+import {academyAxios} from "../../../config/axios.config";
 
 function LecturerDashboard({className}) {
   const [loading, setLoading] = useState(true);
@@ -90,7 +90,7 @@ function LecturerDashboard({className}) {
   return (
     <div className={classes}>
       <div className="text-right">
-        <Link to="/lecturer/create-course">
+        <Link to="/lecturer/create-course/1">
           <button className="btn btn-dark rounded-0">
             Create courses
           </button>
