@@ -21,7 +21,20 @@ function AuthProvider(props) {
     const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
     if (token) {
       const decoded = jwt_decode(token);
-      const url = decoded.type === "student" ? `/users/${decoded.userId}` : `/lecturers/${decoded.userId}`;
+      let url;
+      switch (decoded.type) {
+        case "admin":
+          url = `admin/${decoded.userId}`;
+          break;
+        case "student":
+          url = `/users/${decoded.userId}`;
+          break;
+        case "lecturer":
+          url = `/lecturers/${decoded.userId}`;
+          break;
+        default:
+          break;
+      }
       academyAxios.get(url).then(response => {
         if (response.status === 200) {
           dispatch({

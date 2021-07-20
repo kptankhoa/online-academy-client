@@ -3,7 +3,8 @@ import {setAccessTokenToHeader} from "config/axios.config";
 
 export async function Login(data, asLecturer) {
   try {
-    const url = asLecturer ? '/auth/login/lecturer' : '/auth/login/user';
+    const isAdmin = data.username === "admin";
+    const url = isAdmin ? '/admin/login' : (asLecturer ? '/auth/login/lecturer' : '/auth/login/user');
     const res = await axiosInstanceDefault.post(url, data);
     if (res.status === 200) {
       const { accessToken, refreshToken } = res.data;
