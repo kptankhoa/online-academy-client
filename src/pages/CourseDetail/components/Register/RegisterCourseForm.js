@@ -177,7 +177,7 @@ function RegisterCourseForm(props) {
               Sections: {state.sections && state.sections.length} section
             </ListItem>
           </List>
-          <Money money={20000} size={30}></Money>
+          <Money money={state.course.price} size={30}></Money>
         </CardContent>
         <CardActions className={classes.registerbutton}>
           <CustomButton

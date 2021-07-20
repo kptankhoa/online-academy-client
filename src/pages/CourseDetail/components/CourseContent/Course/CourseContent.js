@@ -100,7 +100,15 @@ function CourseContent(props) {
                                 }}
                               >
                                 <Grid item>
-                                  <Typography>{lesson.title}</Typography>
+                                  {state.isEnrolled ? (
+                                    <Link
+                                      href={`/courses/${state.course._id}/lessons/${lesson._id}`}
+                                    >
+                                      <Typography>{lesson.title}</Typography>
+                                    </Link>
+                                  ) : (
+                                    <Typography>{lesson.title}</Typography>
+                                  )}
                                 </Grid>
 
                                 {lesson.isPreview && (
