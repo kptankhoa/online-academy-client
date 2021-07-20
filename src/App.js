@@ -9,6 +9,7 @@ import { publicRoute } from './pages/routes';
 import Login from './pages/loginv2';
 import SignUp from './pages/SignUp';
 import UserPage from './pages/Account';
+import AdminView from './pages/Admin';
 import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
 import AuthProvider from "./provider/authProvider";
@@ -47,6 +48,9 @@ export default function App() {
                 <LecturerPage/>
               </LecturerRoute>
 
+              <AdminRoute path="/admin">
+                <AdminView />
+              </AdminRoute>
               {/*<LecturerRoute path="/lecturer/create-course" exact={true}>*/}
               {/*  <CreateCourse/>*/}
               {/*</LecturerRoute>*/}
@@ -111,7 +115,6 @@ function PrivateRoute({children, ...rest}) {
 function LecturerRoute({children, ...rest}) {
   const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
   const decoded = jwt_decode(token);
-
   if (!token) {
     return (
       <Route
@@ -127,6 +130,36 @@ function LecturerRoute({children, ...rest}) {
       />
     );
   } else if (decoded.type === "lecturer") {
+    return <Route {...rest} >{children}</Route>;
+  } else {
+    return <Route {...rest} children={
+      <Redirect
+        to={{
+          pathname: '/',
+          // state: { from: location }
+        }}
+      />
+    }/>
+  }
+}
+
+function AdminRoute({children, ...rest}) {
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  const decoded = jwt_decode(token);
+  if (!token) {
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/login',
+            }}
+          />
+        }
+      />
+    );
+  } else if (decoded.type === "admin") {
     return <Route {...rest} >{children}</Route>;
   } else {
     return <Route {...rest} children={

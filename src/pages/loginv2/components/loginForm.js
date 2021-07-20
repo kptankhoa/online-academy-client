@@ -51,7 +51,11 @@ const LoginForm = function ({ username }) {
                 type: decoded.type
               }
             });
-            history.push('/');
+            if(decoded.type === 'admin') {
+              history.push('/admin')
+            } else {
+              history.push('/');
+            }
           }
         });
       }
