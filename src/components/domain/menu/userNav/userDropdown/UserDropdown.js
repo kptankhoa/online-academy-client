@@ -45,7 +45,7 @@ function UserDropdown({userInfo}) {
         </div>
       ) : (
         <div className="border-top py-2">
-          <Link to="/lecturer">
+          <Link to="/lecturer/dashboard">
             <Button className="text-left w-100 text-small hover-color">
               Lecturer dashboard
             </Button>

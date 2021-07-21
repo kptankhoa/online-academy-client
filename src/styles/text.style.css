@@ -21,3 +21,7 @@
 .text-color-error {
   color: #c0392b;
 }
+
+.text-line-through {
+  text-decoration: line-through;
+}

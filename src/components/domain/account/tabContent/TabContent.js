@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from "react-router-dom";
 import Profile from "../profile/Profile";
+import ProfilePicture from "../profilePicture/ProfilePicture";
 import MyLearning from "../myLearning/MyLearning";
 import Wishlist from "../wishlist/Wishlist";
 import Security from "../security/Security";
@@ -18,6 +19,8 @@ function TabContent() {
         return <Wishlist/>;
       case "security":
         return <Security/>;
+      case "avatar":
+        return <ProfilePicture/>
       default:
         return <div className="text-center">Not found</div>;
     }
