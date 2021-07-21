@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 const route = {
-  path: '/admin/managements/students',
-  name: 'Student Management',
+  path: '/login/admin',
+  name: 'Login Admin',
   component: lazy(() => import('.')),
 };
 

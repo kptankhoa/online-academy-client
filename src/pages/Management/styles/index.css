@@ -1,0 +1,19 @@
+.root {
+  max-height: 100vh !important;
+  overflow: hidden;
+}
+
+.banned {
+  background-color: orangered !important;
+}
+
+.active {
+  background-color: blue !important;
+}
+
+.bot-button {
+  padding: 10px !important;
+  font-weight: bold !important;
+  text-transform: none !important;
+  color: white !important;
+}

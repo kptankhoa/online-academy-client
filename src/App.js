@@ -6,7 +6,7 @@ import {
   Redirect,
   useLocation,
 } from 'react-router-dom';
-import { publicRoute } from './pages/routes';
+import { administratorRoute, publicRoute } from './pages/routes';
 import Login from './pages/loginv2';
 import UserPage from './pages/Account';
 import AppContext from './Context/AppContext';
@@ -43,6 +43,16 @@ export default function App() {
               {publicRoute.map((ro, i) => {
                 return (
                   <PublicRoute
+                    key={i}
+                    path={ro.path}
+                    component={ro.component}
+                    exact={true}
+                  />
+                );
+              })}
+              {administratorRoute.map((ro, i) => {
+                return (
+                  <AdminRoute
                     key={i}
                     path={ro.path}
                     component={ro.component}
@@ -162,4 +172,43 @@ function UnAuthRoute({ children, ...rest }) {
 
 function PublicRoute({ ...rest }) {
   return <Route {...rest} />;
+}
+
+function AdminRoute({ children, ...rest }) {
+  const token = localStorage.getItem(
+    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
+  );
+  const decoded = jwt_decode(token);
+
+  if (!token) {
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/login',
+              // state: { from: location }
+            }}
+          />
+        }
+      />
+    );
+  } else if (decoded.type === 'admin') {
+    return <Route {...rest}>{children}</Route>;
+  } else {
+    return (
+      <Route
+        {...rest}
+        children={
+          <Redirect
+            to={{
+              pathname: '/',
+              // state: { from: location }
+            }}
+          />
+        }
+      />
+    );
+  }
 }
