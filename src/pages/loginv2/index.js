@@ -3,10 +3,12 @@ import LoginForm from 'pages/loginv2/components/loginForm';
 import NavBar from 'components/domain/menu/NavBar';
 import Footer from 'components/domain/footer/Footer';
 import useStyles from './index.styles';
+import { useLocation } from 'react-router-dom';
 
 function Login() {
   const classes = useStyles();
-
+  const location = useLocation();
+  const username = location.state ? location.state.username : '';
   return (
     <>
       <NavBar />
@@ -17,7 +19,7 @@ function Login() {
         className={classes.root}
       >
         <h3>Sign In</h3>
-        <LoginForm />
+        <LoginForm username={username} />
         <Link href="/login/admin">Log as Administrator</Link>
       </Container>
       <Footer />

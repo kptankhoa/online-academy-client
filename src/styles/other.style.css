@@ -29,3 +29,72 @@
   border: 1px solid #e0e0e0;
   margin-top: 20px;
 }
+
+.course-card {
+  width: 15rem;
+  color: #454545;
+}
+
+.course-category, .course-lecture {
+  font-size: 12px;
+  color: gray;
+}
+
+.image-wrapper {
+  height: 150px;
+  overflow: hidden;
+}
+
+.list-page-content {
+  color: #454545;
+}
+
+.course-info {
+  color: #454545;
+  display: flex;
+}
+
+.course-list-item {
+  display: flex;
+}
+
+.pure-button {
+  border: none;
+  background-color: transparent;
+  padding: 6px 12px;
+  color: #454545;
+}
+
+.button-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.category-button {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  color: #3498db;
+  font-weight: bold;
+  padding: 16px 0;
+  width: 230px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.category-button:hover {
+  color: #055489;
+}
+
+.full-screen-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(45, 52, 54,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}

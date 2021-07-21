@@ -1,3 +1,5 @@
+import jwt_decode from "jwt-decode";
+
 function convertNumberWithComma(number) {
   let ret = '';
   let value = number;
@@ -9,4 +11,9 @@ function convertNumberWithComma(number) {
   return value + ret;
 }
 
-export {convertNumberWithComma};
+function getTokenPayload() {
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  return jwt_decode(token);
+}
+
+export {convertNumberWithComma, getTokenPayload};

@@ -2,37 +2,15 @@ import React, {useEffect, useState} from "react";
 import Section from "../section/Section";
 import CarouselList from "../../../common/list/carouselList/CarouselList";
 import ButtonList from "../../../common/list/buttonList/ButtonList";
-import {getDataFromAcademyApi} from "../../../../services/academyApi";
-
-const featuredCategories = [
-  {
-    categoryName: "HTML"
-  },
-  {
-    categoryName: "CSS"
-  },
-  {
-    categoryName: "JavaScript"
-  },
-  {
-    categoryName: "Node.JS"
-  },
-  {
-    categoryName: "React"
-  },
-  {
-    categoryName: "Web Design"
-  },
-  {
-    categoryName: "React Native"
-  },
-]
+import {getDataFromAcademyApi} from "services/academyApi";
+import {useHistory} from "react-router-dom";
 
 export default function HomeContent() {
   const [featuredCourses, setFeaturedCourses] = useState([]);
   const [latestCourses, setLatestCourses] = useState([]);
   const [mostViewedCourses, setMostViewedCourses] = useState([]);
-  // const [featuredCategory, setFeaturedCategory] = useState([]);
+  const [featuredCategory, setFeaturedCategory] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     async function getFeaturedCoursesFromApi() {
@@ -50,14 +28,20 @@ export default function HomeContent() {
       setMostViewedCourses(courses);
     }
 
-    // async function getFeaturedCategoryFromApi() {
-    //   const courses = await getFeaturedCourses();
-    //   setFeaturedCategory(courses);
-    // }
+    async function getFeaturedCategoryFromApi() {
+      const courses = await getDataFromAcademyApi('/statistics/featuredCategories');
+      setFeaturedCategory(courses);
+    }
+
     getFeaturedCoursesFromApi();
     getLatestCoursesFromApi();
     getMostViewedCoursesFromApi();
+    getFeaturedCategoryFromApi();
   }, []);
+
+  function onCategoryButtonClick(categoryId) {
+    history.push(`/category/${categoryId}`);
+  }
 
   return (
     <div className='container-fluid'>
@@ -71,24 +55,32 @@ export default function HomeContent() {
 
           {/* Top featured courses */}
           <Section title='Featured Courses' className='mt-5'>
-            <CarouselList courseList={featuredCourses} className='mt-3'/>
+            <CarouselList courseList={featuredCourses} className='mt-4'/>
           </Section>
 
           {/* Latest courses */}
           <Section title='Latest Courses' className='mt-5'>
-            <CarouselList courseList={latestCourses} className='mt-3'/>
+            <CarouselList courseList={latestCourses} className='mt-4'/>
           </Section>
 
           {/* Most viewed courses */}
           <Section title='Most Viewed Course' className='mt-5'>
-            <CarouselList courseList={mostViewedCourses} className='mt-3'/>
+            <CarouselList courseList={mostViewedCourses} className='mt-4'/>
           </Section>
 
           {/*/!* Top featured category *!/*/}
           <Section title='Featured Category' className='mt-5'>
-            <ButtonList
-              className='mt-3'
-              titleList={featuredCategories.map(e => e.categoryName)}/>
+            {featuredCategory.length > 0 ? (
+              <ButtonList
+                className='mt-4' onItemClick={onCategoryButtonClick}
+                dataList={featuredCategory.map(e => ({title: e.categoryName, id: e._id}))}/>
+            ) : (
+              <div className='spinner-wrapper'>
+                <div className="spinner-grow spinner" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            )}
           </Section>
 
         </div>
