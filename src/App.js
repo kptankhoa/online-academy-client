@@ -13,7 +13,7 @@ import AppContext from './Context/AppContext';
 import reducer from './Reducer/AppReducer';
 import AuthProvider from "./provider/authProvider";
 import jwt_decode from "jwt-decode";
-import LecturerDashboard from "./pages/Lecturer/LecturerDashboard";
+import LecturerDashboard from "./pages/Lecturer/dashboard/LecturerDashboard";
 import CreateCourse from "./pages/Lecturer/createCourse/CreateCourse";
 import LecturerPage from "./pages/Lecturer/LecturerPage";
 

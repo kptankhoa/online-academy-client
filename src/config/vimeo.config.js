@@ -1,9 +1,9 @@
-import {Vimeo} from "vimeo";
+let Vimeo = require('vimeo').Vimeo;
 
 let vimeoClient = new Vimeo(
-  "39ba767f25abdc84010d60d2bc3e6e62ac9fd080",
-  "zGDioWt7fUtkXPEN0BOqNek3Xmzb/uEJn33u3wlSXwPMlNBbRNWnZj4lPEoFcd8u+JyXBeJF13kHq0hUdcm400PUqqRyQrImTgN0O0umwJ2zFCEfCZNvuzMzc8b2zrIm",
-  "73a4d694c2f4ead6ab07b9575dc5b7cb"
+  "3500a6e0cc54f4a2ebb64e7ea018d6167f55fa91",
+  "HtiAEmxp+0bMcv0Qqrx27qKiji4a0an6J794T3m/cXVa18dtEgN/FY4mzZa+Gg3wUYvv+hwA1pPcFAVzGHzZAENTG1/7G7utEj4/uNpM6R8QSADfcU7rOAzvTx7olT7S",
+  "765fb4f9a1404d2865641e09adf9afdc"
 );
 
 export default vimeoClient;

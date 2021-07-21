@@ -1,7 +1,8 @@
 import React from 'react';
-import LecturerDashboard from "../../../pages/Lecturer/LecturerDashboard";
+import LecturerDashboard from "pages/Lecturer/dashboard/LecturerDashboard";
 import {Route, Switch} from "react-router-dom";
-import CreateCourse from "../../../pages/Lecturer/createCourse/CreateCourse";
+import CreateCourse from "pages/Lecturer/createCourse/CreateCourse";
+import CreateCourseProvider from "provider/createCourseProvider";
 
 function LecturerPageContent() {
   return (
@@ -12,8 +13,13 @@ function LecturerPageContent() {
             <Route exact path="/lecturer/dashboard">
               <LecturerDashboard className="mt-4"/>
             </Route>
-            <Route exact path="/lecturer/create-course">
-              <CreateCourse className="mt-4"/>
+            <Route path="/lecturer/create-course">
+              <CreateCourseProvider>
+                <CreateCourse className="mt-5"/>
+              </CreateCourseProvider>
+            </Route>
+            <Route path="/lecturer/*">
+              404 not found
             </Route>
           </Switch>
         </div>
