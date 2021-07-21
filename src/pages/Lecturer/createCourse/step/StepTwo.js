@@ -1,27 +1,33 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {createCourseContext} from "provider/createCourseProvider";
-import {Button} from "@material-ui/core";
 import FullScreenLoading from "components/common/loading/FullScreenLoading";
 import FormData from "form-data";
 import ReactCrop from "react-image-crop";
 import 'react-image-crop/dist/ReactCrop.css';
 import {SET_STATE} from "Reducer/createCourseReducer";
-import {academyAxios} from "../../../../config/axios.config";
+import {academyAxios} from "config/axios.config";
+import {Modal} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
 const StepTwo = () => {
-  const {state: {loading}, dispatch} = useContext(createCourseContext);
-  const [imgUrl, setImgUrl] = useState(`${process.env.PUBLIC_URL}/no_image.jpg`);
-  const [croppedImage, setCroppedImage] = useState("");
+  const {state, dispatch} = useContext(createCourseContext);
+  const [imgUrl, setImgUrl] = useState("");
+  const [croppedImage, setCroppedImage] = useState(`${process.env.PUBLIC_URL}/no_image.jpg`);
+  const [croppedBlob, setCroppedBlob] = useState({});
 
   const imgRef = useRef(null);
-  const [crop, setCrop] = useState({unit: '%', width: 100, aspect: 16 / 9});
+  const [crop, setCrop] = useState({unit: '%', height: 100, aspect: 16 / 9});
   const [completedCrop, setCompletedCrop] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const history = useHistory();
 
   const changeHandler = (e) => {
     setImgUrl(URL.createObjectURL(e.target.files[0]));
+    setShowModal(true);
   };
 
-  function clickHandler() {
+  function onSubmit() {
     dispatch({
       type: SET_STATE,
       payload: {
@@ -29,25 +35,31 @@ const StepTwo = () => {
       }
     });
     const formData = new FormData();
-    formData.append('courseImage', croppedImage);
-    academyAxios.post("/courses/60b74e65925c8e4710e90c6f/courseImage", formData, {
-      headers: {'Content-Type': 'multipart/form-data'},
-      onUploadProgress: function (progressEvent) {
-        // Do whatever you want with the native progress event
-        console.log(progressEvent);
-      },
-    }).then(r => {
-      console.log(r.data);
+    formData.append('courseImage', croppedBlob);
+    academyAxios.post(`/courses/${state.newCourse._id}/courseImage`, formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    }).then(response => {
+      if (response.status === 200) {
+        dispatch({
+          type: SET_STATE,
+          payload: {
+            currentStep: state.currentStep + 1,
+            loading: false,
+            newCourse: {...state.newCourse, courseImage: response.data.url},
+            errorMessage: "",
+          }
+        });
+        history.push("/lecturer/create-course/3");
+      }
     }).catch(error => {
-      console.log(error.response.data);
-    }).finally(() => {
       dispatch({
         type: SET_STATE,
         payload: {
+          errorMessage: error.response.data.error_message,
           loading: false
         }
       });
-    });
+    })
   }
 
   const onImageLoaded = useCallback((img) => {
@@ -72,53 +84,79 @@ const StepTwo = () => {
       crop.width,
       crop.height
     );
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) {
-          //reject(new Error('Canvas is empty'));
+          reject(new Error('Canvas is empty'));
           console.error('Canvas is empty');
           return;
         }
         blob.name = fileName;
-        resolve(blob);
+        resolve({
+          blob: blob,
+          croppedUrl: URL.createObjectURL(blob)
+        });
       }, 'image/jpeg');
     });
   }
 
-  useEffect(() => {
+  function hideModal() {
+    setShowModal(false);
+  }
+
+  async function onCropImage() {
     if (!completedCrop || !imgRef.current) {
       return;
     }
-    const image = imgRef.current;
-    getCroppedImg(image, completedCrop, "croppedImage.jpeg").then((blob) => {
-      console.log(blob);
-      setCroppedImage(blob);
-    })
-  }, [completedCrop]);
+    const {blob, croppedUrl} = await getCroppedImg(
+      imgRef.current, completedCrop, "croppedImage.jpeg"
+    );
+    if (blob) {
+      setCroppedImage(croppedUrl);
+      setCroppedBlob(blob);
+      hideModal();
+    }
+  }
 
   return (
-    <div className="mt-4 text-center">
-      {loading && <FullScreenLoading/>}
-      <ReactCrop
-        src={imgUrl}
-        onImageLoaded={onImageLoaded}
-        crop={crop}
-        onChange={(c) => setCrop(c)}
-        onComplete={(c) => setCompletedCrop(c)}
-        style={{width: 700}}
-      />
-      <button>
-        Upload New Image
+    <div className="mt-5 text-center">
+      {state.loading && <FullScreenLoading/>}
+      {state.errorMessage && (
+        <div className="alert alert-danger d-flex align-items-center mb-2" role="alert">
+          <i className="fas fa-exclamation-circle" style={{fontSize: 20}}/>&nbsp;&nbsp;
+          <div>{state.errorMessage}</div>
+        </div>
+      )}
+      <div style={{width: 500, padding: 10, border: '1px solid #454545', margin: 'auto'}}>
+        <img src={croppedImage} alt="croppedImage" width="100%"/>
+      </div>
+
+      <div className="mt-4">
         <input
           type='file'
           accept='image/png, image/jpeg'
-          hidden
-          onChange={(e) => changeHandler(e)}
-        />
-      </button>
-      <button onClick={clickHandler}>
-        Save image
-      </button>
+          onChange={changeHandler}/>
+        <button className="btn btn-dark rounded-0 ml-2 py-2"
+                onClick={onSubmit}>
+          Save image
+        </button>
+      </div>
+
+      <Modal show={showModal} onHide={hideModal}
+             centered size="lg">
+        <Modal.Body>
+          <div className="text-color-primary p-3">
+            <h5 className="font-weight-bold mb-4">Crop image</h5>
+            <ReactCrop
+              src={imgUrl}
+              onImageLoaded={onImageLoaded}
+              crop={crop}
+              onChange={(c) => setCrop(c)}
+              onComplete={(c) => setCompletedCrop(c)}/>
+            <button className="btn btn-dark rounded-0" onClick={onCropImage}>Crop</button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

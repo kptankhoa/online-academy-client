@@ -134,7 +134,7 @@ const StepOne = () => {
         </div>
 
         <div className="text-center">
-          <input type="submit" className="btn btn-outline-dark" value="Save"/>
+          <input type="submit" className="btn btn-dark rounded-0" value="Save"/>
         </div>
       </form>
       {state.loading && <FullScreenLoading/>}
