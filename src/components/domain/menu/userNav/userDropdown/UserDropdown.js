@@ -1,66 +1,97 @@
-import React, {useContext} from 'react';
-import UserInfoCard from "components/common/card/userInfoCard/UserInfoCard";
-import Button from "components/common/button/pureButton/Button";
+import React, { useContext } from 'react';
+import UserInfoCard from 'components/common/card/userInfoCard/UserInfoCard';
+import Button from 'components/common/button/pureButton/Button';
 
-import "styles/text.style.css";
-import "styles/pseudo.style.css";
-import {Link, useHistory} from "react-router-dom";
-import {academyAxios} from "config/axios.config";
-import {authContext} from "provider/authProvider";
-import {LOGOUT_SUCCESS} from "Reducer/authReducer";
+import 'styles/text.style.css';
+import 'styles/pseudo.style.css';
+import { Link, useHistory } from 'react-router-dom';
+import { academyAxios } from 'config/axios.config';
+import { authContext } from 'provider/authProvider';
+import { LOGOUT_SUCCESS } from 'Reducer/authReducer';
 
-function UserDropdown({userInfo}) {
+function UserDropdown({ userInfo }) {
   const history = useHistory();
-  const {authState, dispatch} = useContext(authContext);
+  const { authState, dispatch } = useContext(authContext);
 
   function handleLogOut() {
-    academyAxios.post("/auth/logout").then(() => {
+    academyAxios.post('/auth/logout').then(() => {
       localStorage.removeItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
       localStorage.removeItem(process.env.REACT_APP_STORAGE_REFRESH_TOKEN);
-      dispatch({type: LOGOUT_SUCCESS});
+      dispatch({ type: LOGOUT_SUCCESS });
       history.push('/login');
     });
   }
 
+  const renderByType = (type) => {
+    switch (type) {
+      case 'student':
+        return (
+          <>
+            <div className='border-top py-2'>
+              <Link to='/user/my-learning'>
+                <Button className='text-left w-100 text-small hover-color'>
+                  My learning
+                </Button>
+              </Link>
+              <Link to='/user/wishlist'>
+                <Button className='text-left w-100 text-small hover-color'>
+                  Wish list
+                </Button>
+              </Link>
+            </div>
+            <div className='border-top py-2'>
+              <Link to='/user/profile'>
+                <Button className='text-left w-100 text-small hover-color'>
+                  My Profile
+                </Button>
+              </Link>
+            </div>
+          </>
+        );
+      case 'lecturer':
+        return (
+          <>
+            <div className='border-top py-2'>
+              <Link to='/lecturer/dashboard'>
+                <Button className='text-left w-100 text-small hover-color'>
+                  Lecturer dashboard
+                </Button>
+              </Link>
+            </div>
+            <div className='border-top py-2'>
+              <Link to='/user/profile'>
+                <Button className='text-left w-100 text-small hover-color'>
+                  My Profile
+                </Button>
+              </Link>
+            </div>
+          </>
+        );
+      case 'admin':
+        return (
+          <div className='border-top py-2'>
+            <Link to='/admin'>
+              <Button className='text-left w-100 text-small hover-color'>
+                Admin Dashboard
+              </Button>
+            </Link>
+          </div>
+        );
+    }
+  };
   return (
-    <div className="d-flex flex-column">
-      <Link to="/user/profile" className="text-decoration-none text-color-primary hover-color">
-        <div className="p-3">
+    <div className='d-flex flex-column'>
+      <Link to='/user/profile' className='text-decoration-none text-color-primary hover-color'>
+        <div className='p-3'>
           <UserInfoCard avatar={userInfo.avatar}
-                        name={userInfo.name} email={userInfo.email}/>
+                        name={userInfo.name} email={userInfo.email} />
         </div>
       </Link>
-      {authState.userInfo.type === "student" ? (
-        <div className="border-top py-2">
-          <Link to="/user/my-learning">
-            <Button className="text-left w-100 text-small hover-color">
-              My learning
-            </Button>
-          </Link>
-          <Link to="/user/wishlist">
-            <Button className="text-left w-100 text-small hover-color">
-              Wish list
-            </Button>
-          </Link>
-        </div>
-      ) : (
-        <div className="border-top py-2">
-          <Link to="/lecturer/dashboard">
-            <Button className="text-left w-100 text-small hover-color">
-              Lecturer dashboard
-            </Button>
-          </Link>
-        </div>
-      )}
-      <div className="border-top py-2">
-        <Link to="/user/profile">
-          <Button className="text-left w-100 text-small hover-color">
-            My Profile
-          </Button>
-        </Link>
+      {renderByType(authState.userInfo.type)}
+      <div className='border-top py-2'>
         <Button onClick={handleLogOut}
-                className="text-left w-100 text-small hover-color">
-          Log out
+                className='text-left w-100 text-small hover-color'>
+          Log Out
         </Button>
       </div>
     </div>
