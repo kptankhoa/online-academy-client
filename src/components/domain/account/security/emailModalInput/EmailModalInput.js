@@ -75,7 +75,7 @@ function EmailModalInput() {
                     </small>
                   </div>
                   <div className="form-group">
-                    <input type="submit" className="btn btn-outline-dark" value="Save"/>
+                    <input type="submit" className="btn btn-dark rounded-0" value="Save"/>
                   </div>
                 </form>
               </div>

@@ -92,9 +92,27 @@
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(45, 52, 54,0.4);
+  background-color: rgba(45, 52, 54, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 20;
+}
+
+.input-text {
+  padding: 4px 8px;
+  font-size: 15px;
+  border: 1px solid #454545;
+}
+
+.input-text:focus {
+  outline: none;
+}
+
+.bg-lightgray {
+  background-color: #f8f8f8;
+}
+
+.border-gray{
+  border: 1px solid gray;
 }

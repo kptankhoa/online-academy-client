@@ -37,19 +37,19 @@ function CreateCourse({className}) {
           )}
         </Route>
         <Route path="/lecturer/create-course/3">
-          {state.newCourse ? (
-            <>
+          {/*{state.newCourse ? (*/}
+          {/*  <>*/}
               <h4 className="text-center font-weight-bold text-monospace">
                 Upload videos
               </h4>
               <StepThree/>
-            </>
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/lecturer/create-course/1",
-              }}/>
-          )}
+            {/*</>*/}
+          {/*) : (*/}
+          {/*  <Redirect*/}
+          {/*    to={{*/}
+          {/*      pathname: "/lecturer/create-course/1",*/}
+          {/*    }}/>*/}
+          {/*)}*/}
         </Route>
         <Route path="/lecturer/create-course/*">
           404 not found
