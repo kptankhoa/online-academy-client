@@ -9,7 +9,12 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      style={{ width: '100%', padding: '0px 1px' }}
+      style={{
+        width: '100%',
+        padding: '0px 1px',
+        overflowY: 'scroll',
+        marginBottom: 100,
+      }}
       {...other}
     >
       {value === index && <div>{children}</div>}
