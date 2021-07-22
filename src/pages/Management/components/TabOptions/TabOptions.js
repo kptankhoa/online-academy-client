@@ -9,7 +9,7 @@ import { Person } from '@material-ui/icons';
 import CategoryIcon from '@material-ui/icons/Category';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import TabPanel from './TapPanel';
-import { LecturerManagement } from '..';
+import { CourseManagement, LecturerManagement } from '..';
 import CategoryManagement from '../CategoryManagement/CategoryManagement';
 
 function a11yProps(index) {
@@ -126,7 +126,7 @@ export default function TabOptions() {
         <CategoryManagement />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item Four
+        <CourseManagement />
       </TabPanel>
     </div>
   );

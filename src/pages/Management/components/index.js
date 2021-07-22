@@ -8,3 +8,4 @@ export { default as CourseManagement } from './CourseManagement/CourseManagement
 export { default as TabOptions } from './TabOptions/TabOptions';
 export { default as TabPanel } from './TabOptions/TapPanel';
 export { default as AlertDialog } from './Dialog/AlertDialog';
+export { default as CourseItem } from './ItemList/CourseItem';

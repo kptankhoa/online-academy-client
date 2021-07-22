@@ -18,6 +18,11 @@ export default function reducer(state, action) {
         categories: action.payload.categories,
       };
 
+    case 'setCourses':
+      return {
+        ...state,
+        courses: action.payload.courses,
+      };
     default:
       return state;
   }

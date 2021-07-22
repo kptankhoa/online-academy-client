@@ -16,11 +16,13 @@ import {
 } from '@material-ui/core';
 // import { List } from './components';
 import { useContext, useEffect, useState } from 'react';
-import { ItemList } from '..';
+import { CourseItem } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
 import { Loading } from 'components';
-import { getStudents } from 'pages/Management/utils';
+import { getSections, getStudents } from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Rating } from 'pages/CourseDetail/components';
+import { convertNumberWithComma } from 'utils/commonUtils';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -36,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     padding: theme.spacing(2, 4, 3),
-    width: '50%',
+    width: '80%',
     height: '80vh',
     overflowY: 'auto',
   },
@@ -77,7 +79,7 @@ function StudentManagement(props) {
   //     console.log('result', result);
   //     dispatch({
   //       type: 'setStudents',
-  //       payload: { lecturers: result },
+  //       payload: { courses: result },
   //     });
   //   });
   // }, []);
@@ -87,10 +89,14 @@ function StudentManagement(props) {
   console.log('modal', modal);
 
   const handleOpen = (id) => {
-    if (state.lecturers) {
-      const m = state.lecturers.find((d) => d._id === id);
+    if (state.courses) {
+      const m = state.courses.find((d) => d._id === id);
       console.log(m);
-      return () => setModal({ isOpen: true, data: m });
+      return () => {
+        getSections(id).then((data) => {
+          setModal({ isOpen: true, data: m, sections: data });
+        });
+      };
     }
   };
 
@@ -101,16 +107,18 @@ function StudentManagement(props) {
     });
   };
 
-  const render = state.lecturers ? (
-    state.lecturers.map((lecturer) => (
-      <Grid item xs={12} key={lecturer._id}>
-        <ItemList
-          email={lecturer.email}
-          fullName={lecturer.fullName}
-          itemId={lecturer._id}
-          onClick={handleOpen(lecturer._id)}
-          status={lecturer.status}
-          username={lecturer.username}
+  const render = state.courses ? (
+    state.courses.map((course) => (
+      <Grid item xs={12} key={course._id}>
+        <CourseItem
+          itemId={course._id}
+          category={course.category && course.category.categoryName}
+          courseName={course.courseName}
+          onClick={handleOpen(course._id)}
+          ratedNumber={course.ratedNumber}
+          soldNumber={course.soldNumber}
+          key={course._id}
+          status={course.status}
           // style={{ border: 'solid 1px blue' }}
         />
       </Grid>
@@ -140,20 +148,21 @@ function StudentManagement(props) {
                   fontWeight: 'bold',
                 }}
               >
-                Lecturers
+                Courses
               </Typography>
             }
           >
             <ListSubheader
               style={{ padding: 0, margin: 0, display: 'initial' }}
             >
-              <ItemList
+              <CourseItem
                 noOptions
-                email="Email"
-                fullName="Full Name"
                 itemId="ID"
+                category="Category"
+                courseName="Course Name"
+                ratedNumber="Rated Number"
+                soldNumber="Sold Number"
                 status="Status"
-                username="Username"
                 style={{
                   border: 'solid 1px blue',
                   borderRadius: 0,
@@ -165,7 +174,7 @@ function StudentManagement(props) {
                 }}
               />
             </ListSubheader>
-            {/* {state.lecturers?} */}
+            {/* {state.courses?} */}
             {render}
           </List>
         </Grid>
@@ -185,52 +194,82 @@ function StudentManagement(props) {
         <Fade in={modal.isOpen}>
           <div
             className={`${classes.paper} ${
-              modal.data.status === 'ACTIVE'
+              modal.data.status === 'COMPLETED'
                 ? classes.active
-                : modal.data.status === 'PENDING'
+                : modal.data.status === 'INCOMPLETE'
                 ? classes.pending
                 : classes.deleted
             }`}
           >
             <div>
               <Grid container>
-                <Grid item xs={3}>
-                  <Avatar
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      height: 100,
-                      width: 100,
-                    }}
-                    src={modal.data.avatar}
-                  >
-                    {modal.data.fullName && modal.data.fullName.slice(0, 1)}
-                  </Avatar>
+                <Grid item xs={12} style={{ width: '100%' }}>
+                  <img
+                    src={modal.data.courseImage}
+                    alt="Course"
+                    style={{ width: '100%' }}
+                  />
                 </Grid>
-                <Grid item xs={9}>
-                  <Grid item xs={12}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <Typography
-                          style={{
-                            fontWeight: 'bold',
-                          }}
-                          variant="h4"
-                        >
-                          {modal.data.fullName}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography variant="h5">
-                          {modal.data.username}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>{modal.data.email}</Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div style={{ display: 'flex' }}>
+                    <Typography style={{ padding: 7 }}>
+                      {modal.data.category && modal.data.category.categoryName}
+                    </Typography>
+                  </div>
+                  <div style={{ display: 'flex' }}>
+                    <Rating
+                      num={modal.data.ratingPoint}
+                      persons={modal.data.ratedNumber}
+                    />
+                    <Typography style={{ marginLeft: 10, padding: 7 }}>
+                      Total: ({modal.data.totalHours}h)
+                    </Typography>
+                    <Typography style={{ marginLeft: 10, padding: 7 }}>
+                      Views: {modal.data.view}
+                    </Typography>
+                  </div>
+                </Grid>
+
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    style={{ color: 'orange', fontWeight: 'bold' }}
+                    variant="h5"
+                  >
+                    {convertNumberWithComma(modal.data.price)}VND
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} style={{ width: '100%' }}>
+                  <Typography variant="h3">
+                    Course Name: {modal.data.courseName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} style={{ width: '100%' }}>
+                  <Typography variant="h6">
+                    <b>Brief Description:</b> {modal.data.briefDescription}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} style={{ width: '100%' }}>
+                  <Typography>
+                    <b>Detail Description:</b> {modal.data.detailDescription}
+                  </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
                   <div className={classes.modelAccordion}>
@@ -241,27 +280,35 @@ function StudentManagement(props) {
                         id="panel1a-header"
                       >
                         <Typography className={classes.heading}>
-                          Teaching Courses
+                          Courses
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
                         <Grid container>
                           <Grid item xs={12}>
-                            {modal.data.teachingCourses &&
-                              modal.data.teachingCourses.map(
-                                (course, index) => {
+                            {modal.data.courseLecturers &&
+                              modal.data.courseLecturers.map(
+                                (lecturer, index) => {
+                                  const render = (
+                                    <Grid container style={{ padding: 5 }}>
+                                      <Grid item xs={1}>
+                                        <Avatar src={lecturer.avatar}></Avatar>
+                                      </Grid>
+
+                                      <Grid item xs={11}>
+                                        <Typography>
+                                          {lecturer.fullName}
+                                        </Typography>
+                                      </Grid>
+                                    </Grid>
+                                  );
                                   return index === 0 ? (
-                                    <div>
-                                      <Typography>
-                                        {course.courseName}
-                                      </Typography>
-                                    </div>
+                                    <div>{render}</div>
                                   ) : (
                                     <div>
                                       <Divider />
-                                      <Typography style={{ marginTop: 10 }}>
-                                        {course.courseName}
-                                      </Typography>
+
+                                      {render}
                                     </div>
                                   );
                                 }
@@ -277,15 +324,59 @@ function StudentManagement(props) {
                         id="panel2a-header"
                       >
                         <Typography className={classes.heading}>
-                          Learning List
+                          Sections
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Typography>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Suspendisse malesuada lacus ex, sit amet blandit
-                          leo lobortis eget.
-                        </Typography>
+                        <Grid container>
+                          {modal.sections &&
+                            modal.sections.map((section) => {
+                              return (
+                                <Grid item xs={12}>
+                                  <Accordion>
+                                    <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls="panel1a-content"
+                                      id="panel1a-header"
+                                    >
+                                      <Typography className={classes.heading}>
+                                        {section.title}
+                                      </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                      <Grid container>
+                                        <Grid item xs={12}>
+                                          {section.lessons.map(
+                                            (lesson, index) => {
+                                              const render = (
+                                                <Grid
+                                                  container
+                                                  style={{ padding: 5 }}
+                                                >
+                                                  <Typography>
+                                                    {lesson.title}
+                                                  </Typography>
+                                                </Grid>
+                                              );
+                                              return index === 0 ? (
+                                                <div>{render}</div>
+                                              ) : (
+                                                <div>
+                                                  <Divider />
+
+                                                  {render}
+                                                </div>
+                                              );
+                                            }
+                                          )}
+                                        </Grid>
+                                      </Grid>
+                                    </AccordionDetails>
+                                  </Accordion>
+                                </Grid>
+                              );
+                            })}
+                        </Grid>
                       </AccordionDetails>
                     </Accordion>
                   </div>

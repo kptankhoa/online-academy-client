@@ -16,7 +16,7 @@ import { ItemList, StudentManagement, TabOptions } from './components';
 import StudentManagementContext from './ManagementContext';
 import reducer from './ManagementReducer';
 import { Loading } from 'components';
-import { getCategories, getLecturers, getStudents } from './utils';
+import { getCategories, getCourses, getLecturers, getStudents } from './utils';
 import NavBar from 'components/domain/menu/NavBar';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +45,12 @@ function Admin(props) {
       dispatch({
         type: 'setCategories',
         payload: { categories: result },
+      });
+    });
+    getCourses().then((result) => {
+      dispatch({
+        type: 'setCourses',
+        payload: { courses: result },
       });
     });
   }, []);
