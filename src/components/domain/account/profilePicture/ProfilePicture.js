@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import FormData from 'form-data';
 import {authContext} from 'provider/authProvider';
-import {Avatar, Button} from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import {axiosInstanceDefault} from 'utils/auth';
 import {UPDATE_USER_INFO} from 'Reducer/authReducer';
 import FullScreenLoading from "../../../common/loading/FullScreenLoading";
+import Avatar from '../../../common/avatar/Avatar';
 
 const ProfilePicture = () => {
   const {authState, dispatch} = useContext(authContext);
@@ -50,14 +51,15 @@ const ProfilePicture = () => {
   };
 
   return (
-    <div className='ml-3 d-inline-block'>
+    <div className='d-inline-block'>
       {authState.userInfo && (
         <>
-          <Avatar alt='Avatar' src={imgUrl} style={{height: '200px', width: '200px'}}/>
+          <Avatar className="m-0 text-center" alt='Avatar' src={imgUrl} size={200} />
           <div className='text-center mt-2'>
             <Button
               variant='contained'
               component='label'
+              className="text-capitalize"
             >
               Upload New Image
               <input
@@ -72,8 +74,9 @@ const ProfilePicture = () => {
                 variant='contained'
                 color='primary'
                 onClick={clickHandler}
+                className="text-capitalize"
               >
-                Change Profile Picture
+                Change Picture
               </Button>
             </div>
           </div>

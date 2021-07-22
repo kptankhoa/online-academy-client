@@ -1,10 +1,11 @@
 import React from 'react';
 
-function Avatar({src, size}) {
+function Avatar({ src, size, className }) {
+  const classes = 'rounded-circle overflow-hidden ' + (className ? className : '');
   return (
-    <div className="rounded-circle overflow-hidden" style={{height: size, width: size}}>
-      <img src={src} alt="avatar"
-           height='100%' width='100%'/>
+    <div className={classes} style={{ height: size, width: size }}>
+      <img src={src} alt='avatar'
+           height='100%' width='100%' />
     </div>
   );
 }

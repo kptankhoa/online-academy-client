@@ -9,28 +9,50 @@ import {UPDATE_USER_INFO} from "../../../../../Reducer/authReducer";
 function EmailModalInput() {
   const {authState, dispatch} = useContext(authContext);
   const [show, setShow] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const {register, handleSubmit, formState: {errors}, reset} = useForm();
 
   function onSubmitEmail(data) {
+    !verifying ? submitEmail(data) : verifyEmail(data);
+  }
+
+  function submitEmail(data) {
     const url = authState.userInfo.type === "student" ? `/users/${authState.userInfo._id}/email` :
       `/lecturers/${authState.userInfo._id}/email`;
     academyAxios.post(url, {
       email: data.email
     }).then(response => {
       if (response.status === 200) {
-        alert("Successfully! Please verify your email");
-        dispatch({
-          type: UPDATE_USER_INFO,
-          payload: {
-            email: data.email
-          }
-        })
+        alert("Success! Please verify your email");
+        setVerifying(true);
       }
     }).catch(error => {
       alert(error.response.data.error);
     })
   }
 
+  function verifyEmail(data) {
+    const url = authState.userInfo.type === "student" ? `/users/${authState.userInfo._id}/verify` :
+      `/lecturers/${authState.userInfo._id}/verify`;
+    academyAxios.post(url, {
+      email: data.email,
+      key: data.key
+    }).then(response => {
+      if (response.status === 200) {
+        alert("Your email is verified!");
+        dispatch({
+          type: UPDATE_USER_INFO,
+          payload: {
+            email: data.email
+          }
+        })
+        hideModal();
+        setVerifying(false);
+      }
+    }).catch(error => {
+      alert(error.response.data.error);
+    })
+  }
   function showModal() {
     setShow(true);
   }
@@ -47,7 +69,7 @@ function EmailModalInput() {
         <>
           <label>Email</label>
           <div className="input-group">
-            <input className="form-control" defaultValue={authState.userInfo.email} disabled={true}/>
+            <input className="form-control" value={authState.userInfo.email} disabled={true}/>
             <div className="input-group-append">
               <Button style={{backgroundColor: "#555555"}}
                       onClick={showModal}>
@@ -61,7 +83,7 @@ function EmailModalInput() {
                 <h5 className="font-weight-bold mb-4">Change Email</h5>
                 <form onSubmit={handleSubmit(onSubmitEmail)}>
                   <div className="form-group">
-                    <label htmlFor="new-email">New Email</label>
+                    <label htmlFor="new-email">New Email:</label>
                     <input id="new-email" className="form-control"
                            {...register("email", {
                              required: true,
@@ -74,8 +96,17 @@ function EmailModalInput() {
                       {errors.email?.type === 'pattern' && "Invalid format"}
                     </small>
                   </div>
+                  {
+                    verifying && (
+                      <div className="form-group">
+                        <label htmlFor="new-email">Verify Key:</label>
+                        <input id="new-email" className="form-control"
+                               {...register("key")} />
+                      </div>
+                    )
+                  }
                   <div className="form-group">
-                    <input type="submit" className="btn btn-outline-dark" value="Save"/>
+                    <input type="submit" className="btn btn-outline-dark" value={!verifying ? 'Save' : 'Verify'}/>
                   </div>
                 </form>
               </div>
