@@ -164,8 +164,8 @@ function CategoryItem({
               style={{
                 textTransform: 'lowercase',
                 border: '1px solid',
-                borderColor: isDeleted === false ? 'darkblue' : 'red',
-                backgroundColor: isDeleted === false ? 'blue' : 'orangered',
+                borderColor: isDeleted === 'false' ? 'darkblue' : 'red',
+                backgroundColor: isDeleted === 'false' ? 'blue' : 'orangered',
                 padding: 4,
                 color: 'white',
                 fontWeight: 'bold',

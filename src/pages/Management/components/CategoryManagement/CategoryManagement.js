@@ -13,14 +13,17 @@ import {
   AccordionSummary,
   AccordionDetails,
   Divider,
+  IconButton,
 } from '@material-ui/core';
 // import { List } from './components';
 import { useContext, useEffect, useState } from 'react';
 import { AlertDialog, CategoryItem } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
 import { Loading } from 'components';
-import { getStudents } from 'pages/Management/utils';
+import { deleteCategory, getStudents } from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/Add';
+import FormDialog from '../Dialog/FormDialog';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -54,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fefefe',
     position: 'relative',
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     maxHeight: '100%',
   },
   modelAccordion: {
@@ -67,6 +70,11 @@ function CategoryManagement(props) {
   const { state, dispatch } = useContext(ManagementContext);
   const [modal, setModal] = useState({
     isOpen: false,
+    data: {},
+  });
+
+  const [form, setForm] = useState({
+    open: false,
     data: {},
   });
   // const [open, setOpen] = useState(false);
@@ -85,6 +93,40 @@ function CategoryManagement(props) {
   const classes = useStyles();
 
   console.log('modal', modal);
+
+  const handleSubmit = (data) => {
+    dispatch({
+      type: 'setCategories',
+      payload: {
+        categories: [...state.categories, data],
+      },
+    });
+    setForm({
+      ...form,
+      open: false,
+    });
+  };
+
+  const handleDetele = (id) => {
+    return () =>
+      deleteCategory(id).then((res) => {
+        if (state.categories) {
+          const c = state.categories.map((d) =>
+            d._id === id ? { ...d, isDeleted: true } : d
+          );
+          dispatch({
+            type: 'setCategories',
+            payload: {
+              categories: c,
+            },
+          });
+          setModal({
+            ...modal,
+            isOpen: false,
+          });
+        }
+      });
+  };
 
   const handleOpen = (id) => {
     if (state.categories) {
@@ -139,6 +181,9 @@ function CategoryManagement(props) {
                 }}
               >
                 Categories
+                <IconButton onClick={() => setForm({ open: true, data: {} })}>
+                  <AddIcon style={{ color: 'white' }} />
+                </IconButton>
               </Typography>
             }
           >
@@ -167,7 +212,17 @@ function CategoryManagement(props) {
           </List>
         </Grid>
       </Grid>
-      <AlertDialog open={modal.isOpen} onClose={handleClose} />
+      <AlertDialog
+        open={modal.isOpen}
+        onAgree={handleDetele(modal.data._id)}
+        onDis={handleClose}
+        onClose={handleClose}
+      />
+      <FormDialog
+        open={form.open}
+        onClose={(open) => setForm({ open: open })}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }
