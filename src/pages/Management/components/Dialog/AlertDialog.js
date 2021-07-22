@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({ open, onClose }) {
+export default function AlertDialogSlide({ open, onClose, onAgree, onDis }) {
   // const [open, setOpen] = React.useState(false);
 
   // const handleClickOpen = () => {
@@ -20,6 +20,10 @@ export default function AlertDialogSlide({ open, onClose }) {
 
   const handleClose = () => {
     onClose(false);
+  };
+
+  const handleAgree = () => {
+    onAgree();
   };
 
   return (
@@ -33,19 +37,18 @@ export default function AlertDialogSlide({ open, onClose }) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {"Use Google's location service?"}
+          {'Are you sure to detele?'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            This action can't revert
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={onDis} color="primary">
             Disagree
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleAgree} color="primary">
             Agree
           </Button>
         </DialogActions>

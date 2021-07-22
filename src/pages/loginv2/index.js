@@ -1,13 +1,14 @@
-import { Container, Link } from '@material-ui/core';
+import { Button, Container, Link } from '@material-ui/core';
 import LoginForm from 'pages/loginv2/components/loginForm';
 import NavBar from 'components/domain/menu/NavBar';
 import Footer from 'components/domain/footer/Footer';
 import useStyles from './index.styles';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 function Login() {
   const classes = useStyles();
   const location = useLocation();
+  const history = useHistory();
   const username = location.state ? location.state.username : '';
   return (
     <>
@@ -20,7 +21,17 @@ function Login() {
       >
         <h3>Sign In</h3>
         <LoginForm username={username} />
-        <Link href="/login/admin">Log as Administrator</Link>
+        <Button
+          style={{
+            backgroundColor: 'inherit',
+            textTransform: 'none',
+            textDecoration: 'underline',
+            color: 'blue',
+          }}
+          onClick={() => history.push('/login/admin')}
+        >
+          Log as Administrator
+        </Button>
       </Container>
       <Footer />
     </>

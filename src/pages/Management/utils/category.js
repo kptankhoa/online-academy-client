@@ -10,3 +10,30 @@ export function getCategories() {
     });
   });
 }
+
+export function addCategory(categoryName, level) {
+  return new Promise((resolve, reject) => {
+    const body = {
+      categoryName: categoryName,
+      level: level,
+    };
+    try {
+      axiosInstance.post(`/categories`, body).then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
+export function deleteCategory(categoryId) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.delete(`/categories/${categoryId}`).then((response) => {
+      if (response.status === 200) {
+        resolve(response.data);
+      }
+    });
+  });
+}
