@@ -3,7 +3,16 @@ import LessonView from "../lessonView/LessonView";
 import NewLessonForm from "../newLessonForm/NewLessonForm";
 
 const SectionView = ({order, title, lessons, className}) => {
-  const [showLessonInput, setShowLessonInput] = useState(false);
+  // const {state, event} = useContext(uploadVideoContext);
+  const [lessonFormVisibility, setLessonFormVisibility] = useState(false);
+
+  function showLessonForm() {
+    setLessonFormVisibility(true);
+  }
+
+  function hideLessonForm() {
+    setLessonFormVisibility(false);
+  }
 
   const classes = "border-gray px-3 pb-4 bg-lightgray " + (className || "");
   return (
@@ -15,28 +24,21 @@ const SectionView = ({order, title, lessons, className}) => {
       </header>
 
       <div className="pt-4 pl-5">
-        {lessons.map((lesson, index) => (
+        {lessons && lessons.map((lesson, index) => (
           <LessonView key={index} className="mb-3"
                       title={lesson.title} order={lesson.order}/>
         ))}
-        {showLessonInput ? (
-          <NewLessonForm className="mb-3"/>
+        {lessonFormVisibility ? (
+          <NewLessonForm className="mb-3" onCancel={hideLessonForm}/>
         ) : (
           <div className="text-right">
             <button className="pure-button text-smaller btn-dark font-weight-bold"
-                    onClick={() => setShowLessonInput(true)}>
+                    onClick={showLessonForm}>
               New Lesson
             </button>
           </div>
         )}
       </div>
-
-      {/*<div className="text-right">*/}
-      {/*  <button className="pure-button text-smaller btn-dark font-weight-bold"*/}
-      {/*          onClick={() => setShowLessonInput(true)}>*/}
-      {/*    New Lesson*/}
-      {/*  </button>*/}
-      {/*</div>*/}
 
     </div>
   );

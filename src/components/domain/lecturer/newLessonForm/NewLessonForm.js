@@ -1,23 +1,21 @@
-import React, {useContext} from 'react';
-import FullScreenLoading from "../../../common/loading/FullScreenLoading";
-import {createCourseContext} from "../../../../provider/createCourseProvider";
+import React from 'react';
 import {useForm} from "react-hook-form";
-import {SET_STATE} from "../../../../Reducer/createCourseReducer";
 
-const NewLessonForm = ({className}) => {
-  const {state, dispatch} = useContext(createCourseContext);
+const NewLessonForm = ({className, onCancel}) => {
+  // const {state, dispatch} = useContext(createCourseContext);
+  // const {event} = useContext(uploadVideoContext);
   const {register, handleSubmit} = useForm();
 
   const onSubmit = (data) => {
-    dispatch({
-      type: SET_STATE,
-      payload: {
-        loading: true
-      }
-    });
-    setTimeout(() => {
-      dispatch({type: SET_STATE, payload: {loading: false}});
-    }, 2000);
+    // dispatch({
+    //   type: SET_STATE,
+    //   payload: {
+    //     loading: true
+    //   }
+    // });
+    // setTimeout(() => {
+    //   dispatch({type: SET_STATE, payload: {loading: false}});
+    // }, 2000);
     console.log(data);
   }
 
@@ -39,17 +37,22 @@ const NewLessonForm = ({className}) => {
                  placeholder="Enter a Title"/>
         </div>
         <div className="text-right mt-3">
+          <button
+            type="button" onClick={onCancel}
+            className="pure-button font-weight-bold text-smaller text-color-blue">
+            Cancel
+          </button>
           <button type="button" style={{fontSize: 15}}
-                  className="btn btn-dark rounded-0 font-weight-bold mr-2">
+                  className="pure-button btn-dark font-weight-bold mr-2">
             <label htmlFor="upload-lesson" className="m-0">+ Video</label>
           </button>
           <input id="upload-lesson" type="file" accept='video/*'
                  onChange={handleVideoChange} hidden/>
           <input type="submit" value="Save" style={{fontSize: 15}}
-                 className="btn btn-dark rounded-0 text-smaller font-weight-bold"/>
+                 className="pure-button btn-dark text-smaller font-weight-bold"/>
         </div>
       </form>
-      {state.loading && <FullScreenLoading/>}
+      {/*{state.loading && <FullScreenLoading/>}*/}
     </div>
   );
 };

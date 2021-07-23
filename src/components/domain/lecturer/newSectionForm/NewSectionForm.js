@@ -1,25 +1,24 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from "react-hook-form";
 
-import {createCourseContext} from "provider/createCourseProvider";
-import {SET_STATE} from "Reducer/createCourseReducer";
 import FullScreenLoading from "components/common/loading/FullScreenLoading";
 
-const NewSectionForm = ({className}) => {
+import "styles/text.style.css"
+import {uploadVideoContext} from "../../../../provider/uploadVideoProvider";
+
+const NewSectionForm = ({className, cancelable}) => {
+  // const [loading, setLoading] = useState(false);
+
   const {register, handleSubmit} = useForm();
-  const {state, dispatch} = useContext(createCourseContext);
+  const {state, event} = useContext(uploadVideoContext);
 
   const onSubmit = (data) => {
-    dispatch({
-      type: SET_STATE,
-      payload: {
-        loading: true
-      }
+    event.postSection({
+      courseId: "60f99936b77f0c00154695aa",
+      title: data.title,
+      order: state.sections.length + 1
     });
-    setTimeout(() => {
-      dispatch({type: SET_STATE, payload: {loading: false}});
-    }, 2000);
-    console.log(data);
+    event.hideSectionForm();
   }
 
   const classes = "border-gray bg-white p-3 " + (className || "");
@@ -36,14 +35,26 @@ const NewSectionForm = ({className}) => {
                  placeholder="Enter a Title"/>
         </div>
         <div className="text-right mt-2">
+          {cancelable && (
+            <button
+              onClick={event.hideSectionForm}
+              className="pure-button text-smaller font-weight-bold text-color-blue">
+              Cancel
+            </button>
+          )}
           <input type="submit" value="Save" style={{fontSize: 15}}
-                 className="btn btn-dark rounded-0 text-smaller font-weight-bold">
+                 className="pure-button btn-dark text-smaller font-weight-bold">
           </input>
         </div>
       </form>
-      {state.loading && <FullScreenLoading/>}
+      {/*{loading && <FullScreenLoading/>}*/}
     </div>
   );
 };
+
+NewSectionForm.defaultProps = {
+  className: "",
+  cancelable: true
+}
 
 export default NewSectionForm;

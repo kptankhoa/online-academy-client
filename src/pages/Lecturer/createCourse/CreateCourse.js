@@ -5,6 +5,7 @@ import StepTwo from "./step/StepTwo";
 import {createCourseContext} from "../../../provider/createCourseProvider";
 import {Redirect, Route, Switch} from "react-router-dom";
 import StepThree from "./step/StepThree";
+import UploadVideoProvider from "../../../provider/uploadVideoProvider";
 
 function CreateCourse({className}) {
   const {state} = useContext(createCourseContext);
@@ -39,11 +40,13 @@ function CreateCourse({className}) {
         <Route path="/lecturer/create-course/3">
           {/*{state.newCourse ? (*/}
           {/*  <>*/}
-              <h4 className="text-center font-weight-bold text-monospace">
-                Upload videos
-              </h4>
-              <StepThree/>
-            {/*</>*/}
+          <h4 className="text-center font-weight-bold text-monospace">
+            Upload videos
+          </h4>
+          <UploadVideoProvider>
+            <StepThree/>
+          </UploadVideoProvider>
+          {/*</>*/}
           {/*) : (*/}
           {/*  <Redirect*/}
           {/*    to={{*/}
