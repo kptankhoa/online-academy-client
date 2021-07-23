@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import LessonView from "../lessonView/LessonView";
 import NewLessonForm from "../newLessonForm/NewLessonForm";
 
-const SectionView = ({order, title, lessons, className}) => {
+const SectionView = ({sectionId, order, title, lessons, className}) => {
   // const {state, event} = useContext(uploadVideoContext);
   const [lessonFormVisibility, setLessonFormVisibility] = useState(false);
 
@@ -25,11 +25,16 @@ const SectionView = ({order, title, lessons, className}) => {
 
       <div className="pt-4 pl-5">
         {lessons && lessons.map((lesson, index) => (
-          <LessonView key={index} className="mb-3"
-                      title={lesson.title} order={lesson.order}/>
+          <LessonView
+            key={index} className="mb-3"
+            title={lesson.title} order={lesson.order}
+          />
         ))}
         {lessonFormVisibility ? (
-          <NewLessonForm className="mb-3" onCancel={hideLessonForm}/>
+          <NewLessonForm
+            parentSectionId={sectionId}
+            className="mb-3" onCancel={hideLessonForm}
+          />
         ) : (
           <div className="text-right">
             <button className="pure-button text-smaller btn-dark font-weight-bold"

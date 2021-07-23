@@ -1,26 +1,64 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from "react-hook-form";
+import {uploadVideoContext} from "provider/uploadVideoProvider";
+import {createCourseContext} from "provider/createCourseProvider";
 
-const NewLessonForm = ({className, onCancel}) => {
-  // const {state, dispatch} = useContext(createCourseContext);
-  // const {event} = useContext(uploadVideoContext);
+const NewLessonForm = ({className, onCancel, parentSectionId}) => {
+  const {state: createCourseState} = useContext(createCourseContext);
+  const {state: uploadState, event} = useContext(uploadVideoContext);
   const {register, handleSubmit} = useForm();
+  const [lessonUrl, setLessonUrl] = useState("");
+  const [duration, setDuration] = useState(0);
 
   const onSubmit = (data) => {
-    // dispatch({
-    //   type: SET_STATE,
-    //   payload: {
-    //     loading: true
-    //   }
-    // });
-    // setTimeout(() => {
-    //   dispatch({type: SET_STATE, payload: {loading: false}});
-    // }, 2000);
-    console.log(data);
+    if (!data.title || !lessonUrl || !duration) {
+      return;
+    }
+    const parentSection = uploadState.sections.find(
+      section => section._id === parentSectionId);
+    const order = parentSection.lessons ? (parentSection.lessons.length + 1) : 1;
+
+    event.postLesson({
+      courseId: createCourseState.newCourse._id,
+      sectionId: parentSectionId,
+      title: data.title,
+      totalLength: duration,
+      videoUrl: lessonUrl,
+      order: order,
+      // isPreview: true
+    }, hideForm);
+  }
+
+  const onProgress = (bytes_uploaded, bytes_total) => {
+    let percentage = (bytes_uploaded / bytes_total * 100).toFixed(2);
+    console.log(bytes_uploaded, bytes_total, percentage + '%');
+  }
+
+  const onUploaded = (uri) => {
+    console.log('Your video URI is: ' + uri);
+    const id = uri.split("/").slice(-1)[0];
+    setLessonUrl(`https://vimeo.com/${id}`);
   }
 
   const handleVideoChange = (e) => {
-    console.log(e.target.files[0]);
+    const file = e.target.files[0];
+    getVideoDuration(file);
+    event.uploadVideo(file, onProgress, onUploaded);
+  }
+
+  const getVideoDuration = (file) => {
+    let video = document.createElement('video');
+    video.preload = 'metadata';
+    video.src = URL.createObjectURL(file);
+
+    video.onloadedmetadata = function () {
+      URL.revokeObjectURL(video.src);
+      setDuration(video.duration);
+    }
+  }
+
+  const hideForm = () => {
+    onCancel();
   }
 
   const classes = "border-gray bg-white p-3 " + (className || "");

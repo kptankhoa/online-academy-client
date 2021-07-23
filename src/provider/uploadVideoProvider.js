@@ -1,6 +1,13 @@
 import React, {createContext, useReducer} from 'react';
-import {POST_SECTION_SUCCESS, reducer, SET_ERROR_MESSAGE, SET_STATE} from "../Reducer/uploadVideoReducer";
+import {
+  POST_LESSON_SUCCESS,
+  POST_SECTION_SUCCESS,
+  reducer,
+  SET_ERROR_MESSAGE,
+  SET_STATE
+} from "../Reducer/uploadVideoReducer";
 import {academyAxios} from "../config/axios.config";
+import vimeoClient from "../config/vimeo.config";
 
 const initialValue = {
   sectionFormVisibility: true,
@@ -25,13 +32,48 @@ const UploadVideoProvider = ({children}) => {
     dispatch({type: SET_STATE, payload: {sectionFormVisibility: false}});
   }
 
-  // function showLessonForm() {
-  //   dispatch({type: SET_STATE, payload: {lessonFormVisibility: true}});
-  // }
-  //
-  // function hideLessonForm() {
-  //   dispatch({type: SET_STATE, payload: {lessonFormVisibility: false}});
-  // }
+  function uploadVideo(path, onProgress, onUploaded) {
+    vimeoClient.upload(
+      path,
+      {
+        'name': new Date().toISOString(),
+        'description': 'This is description.'
+      },
+      function (uri) {
+        onUploaded(uri);
+      },
+      function (bytes_uploaded, bytes_total) {
+        onProgress(bytes_uploaded, bytes_total);
+      },
+      function (error) {
+        console.log('Failed because: ' + error);
+      }
+    )
+  }
+
+  function postLesson(data, callback) {
+    academyAxios.post("/lessons", {...data})
+      .then(response => {
+        if (response.status === 201) {
+          dispatch({
+            type: POST_LESSON_SUCCESS,
+            payload: {
+              lesson: response.data,
+              sectionId: data.sectionId
+            }
+          });
+          callback();
+        }
+      })
+      .catch(error => {
+        dispatch({
+          type: SET_ERROR_MESSAGE,
+          payload: {
+            errorMessage: error.response.data.error
+          }
+        });
+      });
+  }
 
   function postSection({courseId, title, order}) {
     academyAxios.post("/sections", {courseId, title, order})
@@ -60,10 +102,10 @@ const UploadVideoProvider = ({children}) => {
     state: state,
     event: {
       showSectionForm,
-      // showLessonForm,
       hideSectionForm,
-      // hideLessonForm,
-      postSection
+      postSection,
+      uploadVideo,
+      postLesson
     }
   }
   return (

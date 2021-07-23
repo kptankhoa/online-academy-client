@@ -2,36 +2,22 @@ import React, {useContext} from 'react';
 import SectionView from "components/domain/lecturer/sectionView/SectionView";
 import NewSectionForm from "components/domain/lecturer/newSectionForm/NewSectionForm";
 import {uploadVideoContext} from "provider/uploadVideoProvider";
-
-// const sections = [
-// {
-//   title: "Introduction",
-//   order: 1,
-//   lessons: [
-//     {
-//       title: "What is HTML?",
-//       order: 1
-//     },
-//     {
-//       title: "What is CSS?",
-//       order: 2
-//     },
-//     {
-//       title: "What is JavaScript?",
-//       order: 3
-//     }
-//   ]
-// }
-// ]
+import {useHistory} from "react-router-dom";
 
 const StepThree = () => {
   const {state, event} = useContext(uploadVideoContext);
+  const history = useHistory();
+
+  function onDone() {
+    history.push("/lecturer/dashboard");
+  }
 
   return (
     <div className="mt-5">
 
       <div className="mb-3 text-right">
         <button
+          onClick={onDone}
           className="pure-button btn-outline-success font-weight-bold py-2 transition-all">
           <i className="fas fa-check-circle"/>&nbsp;
           Mark as done
@@ -45,9 +31,11 @@ const StepThree = () => {
         </div>
       )}
 
-      {state.sections.map(section => (
+      {state.sections.map((section, index) => (
         <SectionView
+          key={index}
           className="mb-5"
+          sectionId={section._id}
           title={section.title}
           order={section.order}
           lessons={section.lessons}
