@@ -10,11 +10,13 @@ import {
   Grid,
   Fade,
   Slide,
+  Button,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TocIcon from '@material-ui/icons/Toc';
 
 import { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Preview } from '../..';
 import { Loading } from '../../../../../components';
 import CourseDetailContext from '../../../CourseDetailContext';
@@ -30,6 +32,7 @@ function CourseContent(props) {
   const { detaildescription, ...rest } = props;
   const [expanded, setExpanded] = useState(false);
   const { state, dispatch } = useContext(CourseDetailContext);
+  const history = useHistory();
 
   // const list =[{a, true}]
   const handleChange = (panel) => (event, isExpanded) => {
@@ -100,7 +103,24 @@ function CourseContent(props) {
                                 }}
                               >
                                 <Grid item>
-                                  <Typography>{lesson.title}</Typography>
+                                  {state.isEnrolled ? (
+                                    <Button
+                                      style={{
+                                        backgroundColor: 'inherit',
+                                        border: 'none',
+                                        textTransform: 'none',
+                                      }}
+                                      onClick={() =>
+                                        history.push(
+                                          `/courses/${state.course._id}/lessons/${lesson._id}`
+                                        )
+                                      }
+                                    >
+                                      <Typography>{lesson.title}</Typography>
+                                    </Button>
+                                  ) : (
+                                    <Typography>{lesson.title}</Typography>
+                                  )}
                                 </Grid>
 
                                 {lesson.isPreview && (

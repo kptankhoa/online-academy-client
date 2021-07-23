@@ -3,10 +3,7 @@ import { setAccessTokenToHeader } from '../../../config/axios.config';
 
 export async function Login(data) {
   try {
-    const HOST =
-      process.env.REACT_APP_ONLINE_HOST || process.env.REACT_APP_HOST;
-    console.log(HOST);
-    const res = await axiosInstanceDefault.post('/auth/login/user', data);
+    const res = await axiosInstanceDefault.post('/admin/login', data);
 
     if (res.status === 200) {
       const { accessToken, refreshToken } = res.data;

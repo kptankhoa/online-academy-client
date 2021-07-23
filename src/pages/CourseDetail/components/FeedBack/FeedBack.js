@@ -12,7 +12,7 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Rating from './Rating';
 import Feed from './Feed';
 
@@ -33,6 +33,28 @@ function FeedBack(props) {
     isPreviousPage: false,
     totalPage: 0,
   });
+
+  // useMemo(() => {
+  //   if (state.course.feedbacks) {
+  //     const index = (FeedBack.currentPage - 1) * LIMIT_PAGE;
+
+  //     const total = state.course.feedbacks;
+  //     const currentFeedBacks = state.course.feedbacks.slice(
+  //       index,
+  //       index + LIMIT_PAGE
+  //     );
+  //     const totalPage = Math.ceil(total.length / LIMIT_PAGE);
+  //     const isNextPage = totalPage > 1;
+  //     setFeedBack({
+  //       feedBacks: total,
+  //       currentFeedBacks: currentFeedBacks,
+  //       currentPage: 1,
+  //       isNextPage: isNextPage,
+  //       isPreviousPage: false,
+  //       totalPage: totalPage,
+  //     });
+  //   }
+  // }, [state.course.feedbacks]);
 
   useEffect(() => {
     if (state.course.feedbacks) {

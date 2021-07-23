@@ -24,6 +24,9 @@ function Comment() {
     content: '',
     ratingPoint: 1,
   });
+
+  const [isSending, setIsSending] = useState(false);
+
   const handleRatingChange = (e) => {
     setMessage({
       ...message,
@@ -32,6 +35,7 @@ function Comment() {
   };
 
   const onSubmit = (data) => {
+    setIsSending(true);
     const body = {
       ratingPoint: message.ratingPoint,
       content: data.content,
@@ -40,6 +44,7 @@ function Comment() {
     console.log('body', body);
     sendFeedBack(state.course._id, body).then((result) => {
       console.log(result);
+      setIsSending(false);
       dispatch({
         type: 'setCourse',
         payload: {
@@ -54,33 +59,38 @@ function Comment() {
 
   return (
     <div style={{ width: '100%' }}>
-      <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
-        <Grid container>
-          <Grid item xs={10}>
-            <RatingInput onChange={handleRatingChange} />
+      {!isSending && (
+        <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
+          <Grid container>
+            <Grid item xs={10}>
+              <RatingInput onChange={handleRatingChange} />
+            </Grid>
+            <Grid item xs={10}>
+              {errors.content && (
+                <span style={{ color: 'red' }}>This field was required</span>
+              )}
+              <TextField
+                {...register('content', { required: true })}
+                fullWidth
+              />
+            </Grid>
+            <Grid
+              item
+              xs={2}
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                width: '100%',
+              }}
+            >
+              <Button type="submit" variant="contained" color="primary">
+                Send
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={10}>
-            {errors.content && (
-              <span style={{ color: 'red' }}>This field was required</span>
-            )}
-            <TextField {...register('content', { required: true })} fullWidth />
-          </Grid>
-          <Grid
-            item
-            xs={2}
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-              width: '100%',
-            }}
-          >
-            <Button type="submit" variant="contained" color="primary">
-              Send
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+        </form>
+      )}
     </div>
   );
 }
