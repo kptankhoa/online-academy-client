@@ -13,14 +13,17 @@ import {
   AccordionSummary,
   AccordionDetails,
   Divider,
+  IconButton,
 } from '@material-ui/core';
 // import { List } from './components';
 import { useContext, useEffect, useState } from 'react';
 import { ItemList } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
 import { Loading } from 'components';
-import { getStudents } from 'pages/Management/utils';
+import AddIcon from '@material-ui/icons/Add';
+import { addLecturer, getStudents } from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddLecturerForm from '../Dialog/FormAddLecturer';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -54,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fefefe',
     position: 'relative',
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     maxHeight: '100%',
   },
   modelAccordion: {
@@ -67,6 +70,10 @@ function StudentManagement(props) {
   const { state, dispatch } = useContext(ManagementContext);
   const [modal, setModal] = useState({
     isOpen: false,
+    data: {},
+  });
+  const [form, setForm] = useState({
+    open: false,
     data: {},
   });
   // const [open, setOpen] = useState(false);
@@ -84,12 +91,25 @@ function StudentManagement(props) {
 
   const classes = useStyles();
 
-  console.log('modal', modal);
+  const handleSubmit = (data) => {
+    console.log('data', data);
+    try {
+      addLecturer(data).then((res) => {
+        dispatch({
+          type: 'setLecturers',
+          payload: {
+            lecturers: [...state.lecturers, res],
+          },
+        });
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const handleOpen = (id) => {
     if (state.lecturers) {
       const m = state.lecturers.find((d) => d._id === id);
-      console.log(m);
       return () => setModal({ isOpen: true, data: m });
     }
   };
@@ -141,6 +161,9 @@ function StudentManagement(props) {
                 }}
               >
                 Lecturers
+                <IconButton onClick={() => setForm({ open: true, data: {} })}>
+                  <AddIcon style={{ color: 'white' }} />
+                </IconButton>
               </Typography>
             }
           >
@@ -270,24 +293,6 @@ function StudentManagement(props) {
                         </Grid>
                       </AccordionDetails>
                     </Accordion>
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel2a-content"
-                        id="panel2a-header"
-                      >
-                        <Typography className={classes.heading}>
-                          Learning List
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Typography>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Suspendisse malesuada lacus ex, sit amet blandit
-                          leo lobortis eget.
-                        </Typography>
-                      </AccordionDetails>
-                    </Accordion>
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
@@ -298,6 +303,11 @@ function StudentManagement(props) {
           </div>
         </Fade>
       </Modal>
+      <AddLecturerForm
+        open={form.open}
+        onSubmit={handleSubmit}
+        onClose={() => setForm({ ...form, open: false })}
+      />
     </div>
   );
 }
