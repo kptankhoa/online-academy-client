@@ -13,7 +13,7 @@ function TabPanel(props) {
         width: '100%',
         padding: '0px 1px',
         overflowY: 'scroll',
-        marginBottom: 100,
+        marginBottom: 80,
       }}
       {...other}
     >

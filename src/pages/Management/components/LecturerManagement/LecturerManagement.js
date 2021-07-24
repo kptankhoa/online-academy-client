@@ -13,14 +13,21 @@ import {
   AccordionSummary,
   AccordionDetails,
   Divider,
+  IconButton,
 } from '@material-ui/core';
 // import { List } from './components';
 import { useContext, useEffect, useState } from 'react';
 import { ItemList } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
-import { Loading } from 'components';
-import { getStudents } from 'pages/Management/utils';
+import { BackdropLoading, Loading } from 'components';
+import AddIcon from '@material-ui/icons/Add';
+import {
+  addLecturer,
+  deleteLecturer,
+  getStudents,
+} from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddLecturerForm from '../Dialog/FormAddLecturer';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -54,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fefefe',
     position: 'relative',
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     maxHeight: '100%',
   },
   modelAccordion: {
@@ -65,10 +72,23 @@ const useStyles = makeStyles((theme) => ({
 
 function StudentManagement(props) {
   const { state, dispatch } = useContext(ManagementContext);
-  const [modal, setModal] = useState({
-    isOpen: false,
-    data: {},
+  const [page, setPage] = useState({
+    isModalOpen: false,
+    modal: {},
+    isFormOpen: false,
+    form: {},
+    isBackdropOpen: false,
   });
+  // const [modal, setModal] = useState({
+  //   isOpen: false,
+  //   data: {},
+  // });
+  // const [form, setForm] = useState({
+  //   open: false,
+  //   data: {},
+  // });
+
+  // const [backdrop, setBackdrop] = useState(false);
   // const [open, setOpen] = useState(false);
   // const [model, setModel] = useState({});
 
@@ -84,21 +104,88 @@ function StudentManagement(props) {
 
   const classes = useStyles();
 
-  console.log('modal', modal);
+  const handleDelete = (id) => {
+    return () => {
+      console.log('in');
+      setPage({
+        ...page,
+        isBackdropOpen: true,
+      });
+      deleteLecturer(id)
+        .then((res) => {
+          dispatch({
+            type: 'setLecturers',
+            payload: {
+              lecturers: state.lecturers.map((l) =>
+                l._id === id ? { ...l, status: 'DELETED' } : l
+              ),
+            },
+          });
+          setPage({
+            ...page,
+            isModalOpen: false,
+            isBackdropOpen: false,
+          });
+          // setModal({ ...modal, isOpen: false });
+          // setBackdrop(false);
+        })
+        .catch((error) => {
+          alert('error', error);
+        });
+    };
+  };
+
+  const handleSubmit = (data) => {
+    setPage({
+      ...page,
+      isBackdropOpen: true,
+    });
+    console.log('data', data);
+    try {
+      addLecturer(data).then((res) => {
+        dispatch({
+          type: 'setLecturers',
+          payload: {
+            lecturers: [...state.lecturers, res],
+          },
+        });
+        setPage({
+          ...page,
+          isFormOpen: false,
+          isBackdropOpen: false,
+        });
+      });
+    } catch (error) {
+      setPage({
+        ...page,
+        isFormOpen: false,
+        isBackdropOpen: false,
+      });
+      alert(error);
+    }
+  };
 
   const handleOpen = (id) => {
     if (state.lecturers) {
       const m = state.lecturers.find((d) => d._id === id);
-      console.log(m);
-      return () => setModal({ isOpen: true, data: m });
+      return () =>
+        setPage({
+          isModalOpen: true,
+          modal: m,
+        });
+      // return () => setModal({ isOpen: true, data: m });
     }
   };
 
   const handleClose = () => {
-    setModal({
-      ...modal,
-      isOpen: false,
+    setPage({
+      ...page,
+      isModalOpen: false,
     });
+    // setModal({
+    //   ...modal,
+    //   isOpen: false,
+    // });
   };
 
   const render = state.lecturers ? (
@@ -141,6 +228,14 @@ function StudentManagement(props) {
                 }}
               >
                 Lecturers
+                <IconButton
+                  onClick={() =>
+                    setPage({ ...page, isFormOpen: true, form: {} })
+                  }
+                >
+                  {/* <IconButton onClick={() => setForm({ open: true, data: {} })}> */}
+                  <AddIcon style={{ color: 'white' }} />
+                </IconButton>
               </Typography>
             }
           >
@@ -171,7 +266,7 @@ function StudentManagement(props) {
         </Grid>
       </Grid>
       <Modal
-        open={modal.isOpen}
+        open={page.isModalOpen}
         onClose={handleClose}
         className={classes.modal}
         aria-labelledby="simple-modal-title"
@@ -182,12 +277,12 @@ function StudentManagement(props) {
           timeout: 500,
         }}
       >
-        <Fade in={modal.isOpen}>
+        <Fade in={page.isModalOpen}>
           <div
             className={`${classes.paper} ${
-              modal.data.status === 'ACTIVE'
+              page.modal.status === 'ACTIVE'
                 ? classes.active
-                : modal.data.status === 'PENDING'
+                : page.modal.status === 'PENDING'
                 ? classes.pending
                 : classes.deleted
             }`}
@@ -203,9 +298,9 @@ function StudentManagement(props) {
                       height: 100,
                       width: 100,
                     }}
-                    src={modal.data.avatar}
+                    src={page.modal.avatar}
                   >
-                    {modal.data.fullName && modal.data.fullName.slice(0, 1)}
+                    {page.modal.fullName && page.modal.fullName.slice(0, 1)}
                   </Avatar>
                 </Grid>
                 <Grid item xs={9}>
@@ -218,16 +313,16 @@ function StudentManagement(props) {
                           }}
                           variant="h4"
                         >
-                          {modal.data.fullName}
+                          {page.modal.fullName}
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
                         <Typography variant="h5">
-                          {modal.data.username}
+                          {page.modal.username}
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <Typography>{modal.data.email}</Typography>
+                        <Typography>{page.modal.email}</Typography>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -247,8 +342,8 @@ function StudentManagement(props) {
                       <AccordionDetails>
                         <Grid container>
                           <Grid item xs={12}>
-                            {modal.data.teachingCourses &&
-                              modal.data.teachingCourses.map(
+                            {page.modal.teachingCourses &&
+                              page.modal.teachingCourses.map(
                                 (course, index) => {
                                   return index === 0 ? (
                                     <div>
@@ -270,34 +365,36 @@ function StudentManagement(props) {
                         </Grid>
                       </AccordionDetails>
                     </Accordion>
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel2a-content"
-                        id="panel2a-header"
-                      >
-                        <Typography className={classes.heading}>
-                          Learning List
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Typography>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Suspendisse malesuada lacus ex, sit amet blandit
-                          leo lobortis eget.
-                        </Typography>
-                      </AccordionDetails>
-                    </Accordion>
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
-                  <Button className="bot-button banned">Delete</Button>
+                  <Button
+                    className="bot-button banned"
+                    onClick={handleDelete(page.modal._id)}
+                  >
+                    Delete
+                  </Button>
                 </Grid>
               </Grid>
             </div>
           </div>
         </Fade>
       </Modal>
+      <AddLecturerForm
+        open={page.isFormOpen}
+        onSubmit={handleSubmit}
+        onClose={() =>
+          setPage({
+            ...page,
+            isFormOpen: false,
+          })
+        }
+        // onClose={() => setForm({ ...form, open: false })}
+      />
+      <BackdropLoading
+        style={{ display: 'fixed' }}
+        open={page.isBackdropOpen}
+      />
     </div>
   );
 }
