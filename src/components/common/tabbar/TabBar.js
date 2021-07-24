@@ -1,12 +1,13 @@
 import React, {useContext, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import TabItem from "./tabItem/TabItem";
 
 import "styles/other.style.css";
 import {authContext} from "provider/authProvider";
 
 function TabBar({className}) {
-  const [activeTabId, setActiveTabId] = useState(null);
+  const {pathname} = useLocation();
+  const [activeTabId, setActiveTabId] = useState(pathname.split("/").slice(-1)[0]);
   const {authState} = useContext(authContext);
 
   function renderTabItem(tabId, tabName) {

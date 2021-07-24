@@ -3,6 +3,8 @@ import LecturerDashboard from "pages/Lecturer/dashboard/LecturerDashboard";
 import {Route, Switch} from "react-router-dom";
 import CreateCourse from "pages/Lecturer/createCourse/CreateCourse";
 import CreateCourseProvider from "provider/createCourseProvider";
+import EditCourse from "../../../pages/Lecturer/editCourse/EditCourse";
+import EditCourseProvider from "../../../provider/editCourseProvider";
 
 function LecturerPageContent() {
   return (
@@ -17,6 +19,11 @@ function LecturerPageContent() {
               <CreateCourseProvider>
                 <CreateCourse className="mt-5"/>
               </CreateCourseProvider>
+            </Route>
+            <Route path="/lecturer/edit-courses">
+              <EditCourseProvider>
+                <EditCourse className="mt-5"/>
+              </EditCourseProvider>
             </Route>
             <Route path="/lecturer/*">
               404 not found

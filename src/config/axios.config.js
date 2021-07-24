@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = process.env.REACT_APP_ONLINE_HOST || 'https://online-academy-hcmus.herokuapp.com';
+const baseUrl = process.env.REACT_APP_HOST || 'https://online-academy-hcmus.herokuapp.com';
 
 export const academyAxios = axios.create({
   baseURL: baseUrl,
