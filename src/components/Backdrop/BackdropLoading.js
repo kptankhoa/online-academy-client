@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SimpleBackdrop({ open, onClose }) {
   const classes = useStyles();
   const handleClose = () => {
-    onClose(false);
+    onClose && onClose(false);
   };
   // const handleToggle = () => {
   //   onClose(!open);
