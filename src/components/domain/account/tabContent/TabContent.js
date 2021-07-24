@@ -5,6 +5,7 @@ import ProfilePicture from "../profilePicture/ProfilePicture";
 import MyLearning from "../myLearning/MyLearning";
 import Wishlist from "../wishlist/Wishlist";
 import Security from "../security/Security";
+import BasicInformation from "pages/Lecturer/editCourse/tabContent/basicInfomation/BasicInformation";
 
 function TabContent() {
   const {tabId} = useParams();
@@ -20,7 +21,13 @@ function TabContent() {
       case "security":
         return <Security/>;
       case "avatar":
-        return <ProfilePicture/>
+        return <ProfilePicture/>;
+      case "basic":
+        return <BasicInformation/>;
+      case "image":
+        return <div>image</div>;
+      case "video":
+        return <div>Video</div>;
       default:
         return <div className="text-center">Not found</div>;
     }
