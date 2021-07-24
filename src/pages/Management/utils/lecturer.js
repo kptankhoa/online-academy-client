@@ -38,3 +38,13 @@ export function addLecturer(body) {
       });
   });
 }
+
+export function deleteLecturer(lecturerId) {
+  return new Promise((resolve, reject) => {
+    axiosInstance.delete(`/admin/lecturers/${lecturerId}`).then((response) => {
+      if (response.status === 200) {
+        resolve(response.data);
+      }
+    });
+  });
+}
