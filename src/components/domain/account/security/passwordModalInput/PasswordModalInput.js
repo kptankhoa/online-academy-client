@@ -4,15 +4,15 @@ import {Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import {academyAxios} from "config/axios.config";
 import {authContext} from "provider/authProvider";
-import FullScreenLoading from "../../../../common/loading/FullScreenLoading";
+import FullScreenLoading from "components/common/loading/FullScreenLoading";
 
 function PasswordModalInput() {
   const {authState} = useContext(authContext);
-  const [show, setShow] = useState(false);
   const {register, handleSubmit, formState: {errors}, reset} = useForm();
   const ref = useRef(null);
-  const [message, setMessage] = useState("");
 
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   function onSubmit(data) {
@@ -92,7 +92,7 @@ function PasswordModalInput() {
                 <small className="text-color-error">{message}</small>
               </div>
               <div className="form-group">
-                <input type="submit" className="btn btn-outline-dark" value="Save"/>
+                <input type="submit" className="btn btn-dark rounded-0" value="Save"/>
               </div>
             </form>
           </div>
