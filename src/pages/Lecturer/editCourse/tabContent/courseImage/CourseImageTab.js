@@ -1,26 +1,18 @@
 import React, {useCallback, useContext, useRef, useState} from 'react';
-import {createCourseContext} from "provider/createCourseProvider";
-import FullScreenLoading from "components/common/loading/FullScreenLoading";
-import FormData from "form-data";
-import ReactCrop from "react-image-crop";
-import 'react-image-crop/dist/ReactCrop.css';
-import {SET_STATE} from "Reducer/createCourseReducer";
-import {academyAxios} from "config/axios.config";
 import {Modal} from "react-bootstrap";
-import {useHistory} from "react-router-dom";
+import {editCourseContext} from "provider/editCourseProvider";
+import ReactCrop from "react-image-crop";
 
-const StepTwo = () => {
-  const {state, dispatch} = useContext(createCourseContext);
+const CourseImageTab = () => {
+  const {state, event} = useContext(editCourseContext);
   const [imgUrl, setImgUrl] = useState("");
-  const [croppedImage, setCroppedImage] = useState(`${process.env.PUBLIC_URL}/no_image.jpg`);
-  const [croppedBlob, setCroppedBlob] = useState({});
+  const [croppedImage, setCroppedImage] = useState(state.course.courseImage);
+  const [croppedBlob, setCroppedBlob] = useState(null);
 
   const imgRef = useRef(null);
   const [crop, setCrop] = useState({unit: '%', height: 100, aspect: 16 / 9});
   const [completedCrop, setCompletedCrop] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  const history = useHistory();
 
   const changeHandler = (e) => {
     setImgUrl(URL.createObjectURL(e.target.files[0]));
@@ -28,38 +20,9 @@ const StepTwo = () => {
   };
 
   function onSubmit() {
-    dispatch({
-      type: SET_STATE,
-      payload: {
-        loading: true
-      }
-    });
-    const formData = new FormData();
-    formData.append('courseImage', croppedBlob);
-    academyAxios.post(`/courses/${state.newCourse._id}/courseImage`, formData, {
-      headers: {'Content-Type': 'multipart/form-data'}
-    }).then(response => {
-      if (response.status === 200) {
-        dispatch({
-          type: SET_STATE,
-          payload: {
-            currentStep: state.currentStep + 1,
-            loading: false,
-            newCourse: {...state.newCourse, courseImage: response.data.courseImage},
-            errorMessage: "",
-          }
-        });
-        history.push("/lecturer/create-course/3");
-      }
-    }).catch(error => {
-      dispatch({
-        type: SET_STATE,
-        payload: {
-          errorMessage: error.response.data.error_message,
-          loading: false
-        }
-      });
-    })
+    if (croppedBlob) {
+      event.updateCourseImage(croppedBlob);
+    }
   }
 
   const onImageLoaded = useCallback((img) => {
@@ -119,15 +82,14 @@ const StepTwo = () => {
   }
 
   return (
-    <div className="mt-5 text-center">
-      {state.loading && <FullScreenLoading/>}
+    <div className="mt-5">
       {state.errorMessage && (
         <div className="alert alert-danger d-flex align-items-center mb-2" role="alert">
           <i className="fas fa-exclamation-circle" style={{fontSize: 20}}/>&nbsp;&nbsp;
           <div>{state.errorMessage}</div>
         </div>
       )}
-      <div style={{width: 500, padding: 10, border: '1px solid #454545', margin: 'auto'}}>
+      <div style={{width: 500, padding: 10, border: '1px solid #454545'}}>
         <img src={croppedImage} alt="croppedImage" width="100%"/>
       </div>
 
@@ -159,6 +121,6 @@ const StepTwo = () => {
       </Modal>
     </div>
   );
-}
+};
 
-export default StepTwo;
+export default CourseImageTab;

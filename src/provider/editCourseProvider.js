@@ -84,12 +84,46 @@ const EditCourseProvider = ({children}) => {
     });
   }
 
+  function updateCourseImage(croppedBlob) {
+    dispatch({
+      type: SET_STATE,
+      payload: {
+        loading: true
+      }
+    });
+    const formData = new FormData();
+    formData.append('courseImage', croppedBlob);
+    academyAxios.post(`/courses/${state.course._id}/courseImage`, formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    }).then(response => {
+      if (response.status === 200) {
+        dispatch({
+          type: SET_STATE,
+          payload: {
+            loading: false,
+            course: {...state.course, courseImage: response.data.courseImage},
+            errorMessage: "",
+          }
+        });
+      }
+    }).catch(error => {
+      dispatch({
+        type: SET_STATE,
+        payload: {
+          errorMessage: error.response.data.error_message,
+          loading: false
+        }
+      });
+    })
+  }
+
   const value = {
     state: state,
     dispatch: dispatch,
     event: {
       changeDetailDes,
-      updateBasicInfo
+      updateBasicInfo,
+      updateCourseImage
     }
   }
   return (

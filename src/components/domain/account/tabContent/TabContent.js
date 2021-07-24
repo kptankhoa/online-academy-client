@@ -5,7 +5,7 @@ import ProfilePicture from "../profilePicture/ProfilePicture";
 import MyLearning from "../myLearning/MyLearning";
 import Wishlist from "../wishlist/Wishlist";
 import Security from "../security/Security";
-import BasicInformation from "pages/Lecturer/editCourse/basicInfomation/BasicInformation";
+import BasicInformation from "pages/Lecturer/editCourse/tabContent/basicInfomation/BasicInformation";
 
 function TabContent() {
   const {tabId} = useParams();

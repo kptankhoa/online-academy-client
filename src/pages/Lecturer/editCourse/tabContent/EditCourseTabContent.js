@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from "react-router-dom";
-import BasicInformation from "../basicInfomation/BasicInformation";
+import BasicInformation from "./basicInfomation/BasicInformation";
+import CourseImageTab from "./courseImage/CourseImageTab";
 
 const EditCourseTabContent = ({className}) => {
   const {tabId} = useParams();
@@ -10,7 +11,7 @@ const EditCourseTabContent = ({className}) => {
       case "basic":
         return <BasicInformation/>;
       case "image":
-        return <div>image</div>;
+        return <CourseImageTab/>;
       case "video":
         return <div>Video</div>;
       default:

@@ -3,8 +3,8 @@ import {Route, Switch, useRouteMatch} from "react-router-dom";
 import EditCourseTabBar from "components/domain/lecturer/EditCourseTabBar";
 import EditCourseTabContent from "./tabContent/EditCourseTabContent";
 import {editCourseContext} from "provider/editCourseProvider";
-import {academyAxios} from "../../../config/axios.config";
-import {GET_COURSE_DETAIL_SUCCESS, SET_ERROR_MESSAGE} from "../../../Reducer/editCourseReducer";
+import {academyAxios} from "config/axios.config";
+import {GET_COURSE_DETAIL_SUCCESS, SET_ERROR_MESSAGE} from "Reducer/editCourseReducer";
 import FullScreenLoading from "components/common/loading/FullScreenLoading";
 
 const EditCourse = ({className}) => {
