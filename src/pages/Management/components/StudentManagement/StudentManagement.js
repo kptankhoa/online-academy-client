@@ -306,12 +306,14 @@ function StudentManagement(props) {
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
-                  <Button
-                    className="bot-button banned"
-                    onClick={handleDeleteStudent(page.modal._id)}
-                  >
-                    Delete
-                  </Button>
+                  {page.modal.status === 'ACTIVE' && (
+                    <Button
+                      className="bot-button banned"
+                      onClick={handleDeleteStudent(page.modal._id)}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </Grid>
               </Grid>
             </div>

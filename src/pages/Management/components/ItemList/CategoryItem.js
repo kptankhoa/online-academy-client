@@ -185,9 +185,7 @@ function CategoryItem({
               alignItems: 'center',
             }}
           >
-            {noOptions ? (
-              <div>Options</div>
-            ) : (
+            {isDeleted === 'false' && (
               <Button
                 onClick={onClick}
                 style={{
