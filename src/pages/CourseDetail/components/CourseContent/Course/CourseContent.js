@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TocIcon from '@material-ui/icons/Toc';
+import parse from 'html-react-parser';
 
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -29,7 +30,7 @@ import useStyles from './courseDetail.style';
  * @returns
  */
 function CourseContent(props) {
-  const { detaildescription, ...rest } = props;
+  const { detailDescription, ...rest } = props;
   const [expanded, setExpanded] = useState(false);
   const { state, dispatch } = useContext(CourseDetailContext);
   const history = useHistory();
@@ -47,7 +48,7 @@ function CourseContent(props) {
           variant="outlined"
           className={classes.courseDetailDescription}
         >
-          {detaildescription}
+          {typeof (detailDescription) === "string" ? parse(detailDescription) : detailDescription}
         </Paper>
       </div>
 
