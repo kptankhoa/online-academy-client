@@ -10,3 +10,4 @@ export { default as TabPanel } from './TabOptions/TapPanel';
 export { default as AlertDialog } from './Dialog/AlertDialog';
 export { default as CourseItem } from './ItemList/CourseItem';
 export { default as FormDialog } from './Dialog/FormDialog';
+export { default as AddLecturerForm } from './Dialog/FormAddLecturer';

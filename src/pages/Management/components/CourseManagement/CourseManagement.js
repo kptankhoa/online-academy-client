@@ -18,8 +18,13 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { CourseItem } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
-import { Loading } from 'components';
-import { getSections, getStudents } from 'pages/Management/utils';
+import { BackdropLoading, Loading } from 'components';
+import {
+  deleteCourse,
+  deleteStudent,
+  getSections,
+  getStudents,
+} from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rating } from 'pages/CourseDetail/components';
 import { convertNumberWithComma } from 'utils/commonUtils';
@@ -67,10 +72,15 @@ const useStyles = makeStyles((theme) => ({
 
 function StudentManagement(props) {
   const { state, dispatch } = useContext(ManagementContext);
-  const [modal, setModal] = useState({
-    isOpen: false,
-    data: {},
+  const [page, setPage] = useState({
+    isModalOpen: false,
+    modal: {},
+    backdrop: false,
   });
+  // const [modal, setModal] = useState({
+  //   isOpen: false,
+  //   data: {},
+  // });
   // const [open, setOpen] = useState(false);
   // const [model, setModel] = useState({});
 
@@ -85,25 +95,59 @@ function StudentManagement(props) {
   // }, []);
 
   const classes = useStyles();
+  console.log('page', page);
 
-  console.log('modal', modal);
+  const handleDelete = (id) => {
+    return () => {
+      setPage({
+        ...page,
+        backdrop: true,
+        isModalOpen: false,
+      });
 
-  const handleOpen = (id) => {
-    if (state.courses) {
-      const m = state.courses.find((d) => d._id === id);
-      console.log(m);
-      return () => {
-        getSections(id).then((data) => {
-          setModal({ isOpen: true, data: m, sections: data });
+      deleteCourse(id).then((res) => {
+        dispatch({
+          type: 'setCourses',
+          payload: {
+            courses: state.courses.map((c) =>
+              c._id === id ? { ...c, status: 'DELETED' } : c
+            ),
+          },
         });
-      };
-    }
+        setPage({
+          ...page,
+          isModalOpen: false,
+          backdrop: false,
+        });
+      });
+    };
+  };
+  const handleOpen = (id) => {
+    return () => {
+      setPage({
+        ...page,
+        backdrop: true,
+      });
+      if (state.courses) {
+        const m = state.courses.find((d) => d._id === id);
+        console.log(m);
+        getSections(id).then((data) => {
+          setPage({
+            ...page,
+            isModalOpen: true,
+            modal: m,
+            sections: data,
+            backdrop: false,
+          });
+        });
+      }
+    };
   };
 
   const handleClose = () => {
-    setModal({
-      ...modal,
-      isOpen: false,
+    setPage({
+      ...page,
+      isModalOpen: false,
     });
   };
 
@@ -180,7 +224,7 @@ function StudentManagement(props) {
         </Grid>
       </Grid>
       <Modal
-        open={modal.isOpen}
+        open={page.isModalOpen}
         onClose={handleClose}
         className={classes.modal}
         aria-labelledby="simple-modal-title"
@@ -191,12 +235,12 @@ function StudentManagement(props) {
           timeout: 500,
         }}
       >
-        <Fade in={modal.isOpen}>
+        <Fade in={page.isModalOpen}>
           <div
             className={`${classes.paper} ${
-              modal.data.status === 'COMPLETED'
+              page.modal.status === 'COMPLETED'
                 ? classes.active
-                : modal.data.status === 'INCOMPLETE'
+                : page.modal.status === 'INCOMPLETE'
                 ? classes.pending
                 : classes.deleted
             }`}
@@ -205,7 +249,7 @@ function StudentManagement(props) {
               <Grid container>
                 <Grid item xs={12} style={{ width: '100%' }}>
                   <img
-                    src={modal.data.courseImage}
+                    src={page.modal.courseImage}
                     alt="Course"
                     style={{ width: '100%' }}
                   />
@@ -222,19 +266,19 @@ function StudentManagement(props) {
                 >
                   <div style={{ display: 'flex' }}>
                     <Typography style={{ padding: 7 }}>
-                      {modal.data.category && modal.data.category.categoryName}
+                      {page.modal.category && page.modal.category.categoryName}
                     </Typography>
                   </div>
                   <div style={{ display: 'flex' }}>
                     <Rating
-                      num={modal.data.ratingPoint}
-                      persons={modal.data.ratedNumber}
+                      num={page.modal.ratingPoint}
+                      persons={page.modal.ratedNumber}
                     />
                     <Typography style={{ marginLeft: 10, padding: 7 }}>
-                      Total: ({modal.data.totalHours}h)
+                      Total: ({page.modal.totalHours}h)
                     </Typography>
                     <Typography style={{ marginLeft: 10, padding: 7 }}>
-                      Views: {modal.data.view}
+                      Views: {page.modal.view}
                     </Typography>
                   </div>
                 </Grid>
@@ -253,22 +297,22 @@ function StudentManagement(props) {
                     style={{ color: 'orange', fontWeight: 'bold' }}
                     variant="h5"
                   >
-                    {convertNumberWithComma(modal.data.price)}VND
+                    {convertNumberWithComma(page.modal.price)}VND
                   </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
                   <Typography variant="h3">
-                    Course Name: {modal.data.courseName}
+                    Course Name: {page.modal.courseName}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
                   <Typography variant="h6">
-                    <b>Brief Description:</b> {modal.data.briefDescription}
+                    <b>Brief Description:</b> {page.modal.briefDescription}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
                   <Typography>
-                    <b>Detail Description:</b> {modal.data.detailDescription}
+                    <b>Detail Description:</b> {page.modal.detailDescription}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
@@ -286,8 +330,8 @@ function StudentManagement(props) {
                       <AccordionDetails>
                         <Grid container>
                           <Grid item xs={12}>
-                            {modal.data.courseLecturers &&
-                              modal.data.courseLecturers.map(
+                            {page.modal.courseLecturers &&
+                              page.modal.courseLecturers.map(
                                 (lecturer, index) => {
                                   const render = (
                                     <Grid container style={{ padding: 5 }}>
@@ -329,8 +373,8 @@ function StudentManagement(props) {
                       </AccordionSummary>
                       <AccordionDetails>
                         <Grid container>
-                          {modal.sections &&
-                            modal.sections.map((section) => {
+                          {page.sections &&
+                            page.sections.map((section) => {
                               return (
                                 <Grid item xs={12}>
                                   <Accordion>
@@ -382,13 +426,21 @@ function StudentManagement(props) {
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
-                  <Button className="bot-button banned">Delete</Button>
+                  {page.modal.status !== 'DELETED' && (
+                    <Button
+                      className="bot-button banned"
+                      onClick={handleDelete(page.modal._id)}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </Grid>
               </Grid>
             </div>
           </div>
         </Fade>
       </Modal>
+      <BackdropLoading open={page.backdrop} />
     </div>
   );
 }
