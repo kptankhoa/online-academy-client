@@ -4,7 +4,7 @@ import StepOne from "./step/StepOne";
 import StepTwo from "./step/StepTwo";
 import {createCourseContext} from "../../../provider/createCourseProvider";
 import {Redirect, Route, Switch} from "react-router-dom";
-import StepThree from "./step/StepThree";
+import UploadVideo from "./step/UploadVideo";
 import UploadVideoProvider from "../../../provider/uploadVideoProvider";
 
 function CreateCourse({className}) {
@@ -44,7 +44,7 @@ function CreateCourse({className}) {
                 Upload videos
               </h4>
               <UploadVideoProvider>
-                <StepThree/>
+                <UploadVideo/>
               </UploadVideoProvider>
             </>
           ) : (
