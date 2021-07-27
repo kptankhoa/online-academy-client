@@ -4,7 +4,7 @@ import NewSectionForm from "components/domain/lecturer/newSectionForm/NewSection
 import {uploadVideoContext} from "provider/uploadVideoProvider";
 import {useHistory} from "react-router-dom";
 
-const StepThree = () => {
+const UploadVideo = () => {
   const {state, event} = useContext(uploadVideoContext);
   const history = useHistory();
 
@@ -60,4 +60,4 @@ const StepThree = () => {
   );
 };
 
-export default StepThree;
+export default UploadVideo;
