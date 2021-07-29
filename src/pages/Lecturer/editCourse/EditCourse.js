@@ -4,14 +4,19 @@ import EditCourseTabBar from "components/domain/lecturer/EditCourseTabBar";
 import EditCourseTabContent from "./tabContent/EditCourseTabContent";
 import {editCourseContext} from "provider/editCourseProvider";
 import {academyAxios} from "config/axios.config";
-import {GET_COURSE_DETAIL_SUCCESS, SET_ERROR_MESSAGE} from "Reducer/editCourseReducer";
-import FullScreenLoading from "components/common/loading/FullScreenLoading";
+import {GET_COURSE_DETAIL_SUCCESS, SET_ERROR_MESSAGE, SET_STATE} from "Reducer/editCourseReducer";
 
 const EditCourse = ({className}) => {
   const {params: {courseId}, url} = useRouteMatch("/lecturer/edit-courses/:courseId");
   const {state, dispatch} = useContext(editCourseContext);
 
   useEffect(() => {
+    // dispatch({
+    //   type: SET_STATE,
+    //   payload: {
+    //     loading: true
+    //   }
+    // });
     academyAxios.get(`/lecturers/courses/${courseId}`)
       .then(response => {
         if (response.status === 200) {
@@ -56,7 +61,7 @@ const EditCourse = ({className}) => {
           </Route>
         </Switch>
       </div>
-      {state.loading && <FullScreenLoading/>}
+      {/*{state.loading && <FullScreenLoading/>}*/}
     </div>
   );
 };

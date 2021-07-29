@@ -23,7 +23,7 @@ function CreateCourse({className}) {
           <StepOne/>
         </Route>
         <Route path="/lecturer/create-course/2">
-          {state.newCourse ? (
+          {state.course ? (
             <>
               <h4 className="text-center font-weight-bold text-monospace">
                 Upload course image
@@ -38,13 +38,13 @@ function CreateCourse({className}) {
           )}
         </Route>
         <Route path="/lecturer/create-course/3">
-          {state.newCourse ? (
+          {state.course ? (
             <>
               <h4 className="text-center font-weight-bold text-monospace">
                 Upload videos
               </h4>
               <UploadVideoProvider>
-                <UploadVideo/>
+                <UploadVideo courseId={state.course._id} className="mt-5"/>
               </UploadVideoProvider>
             </>
           ) : (

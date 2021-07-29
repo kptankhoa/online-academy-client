@@ -1,5 +1,9 @@
 .hover-color:hover {
-  /*color: #3498db;*/
+  color: #3498db;
+}
+
+.hover-bold:hover {
+  font-weight: bold;
 }
 
 .hover-border-bottom:hover {
