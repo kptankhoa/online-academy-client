@@ -1,19 +1,26 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import SectionView from "components/domain/lecturer/sectionView/SectionView";
 import NewSectionForm from "components/domain/lecturer/newSectionForm/NewSectionForm";
 import {uploadVideoContext} from "provider/uploadVideoProvider";
 import {useHistory} from "react-router-dom";
 
-const StepThree = () => {
+const UploadVideo = ({courseId, className, defaultSections, onUploaded}) => {
   const {state, event} = useContext(uploadVideoContext);
   const history = useHistory();
+
+  useEffect(() => {
+    if (defaultSections && defaultSections.length) {
+      event.setState({sections: defaultSections});
+    }
+  }, []);
 
   function onDone() {
     history.push("/lecturer/dashboard");
   }
 
+  const classes = className || "";
   return (
-    <div className="mt-5">
+    <div className={classes}>
 
       <div className="mb-3 text-right">
         <button
@@ -36,18 +43,21 @@ const StepThree = () => {
           key={index}
           className="mb-5"
           sectionId={section._id}
+          courseId={courseId}
           title={section.title}
           order={section.order}
           lessons={section.lessons}
+          onUploaded={onUploaded}
         />
       ))}
 
       {state.sectionFormVisibility ? (
-        state.sections.length === 0 ? (
-          <NewSectionForm className="mb-5" cancelable={false}/>
-        ) : (
-          <NewSectionForm className="mb-5"/>
-        )
+        <NewSectionForm
+          className="mb-5"
+          courseId={courseId}
+          cancelable={!!state.sections.length}
+          onUploaded={onUploaded}
+        />
       ) : (
         <button
           onClick={event.showSectionForm}
@@ -60,4 +70,4 @@ const StepThree = () => {
   );
 };
 
-export default StepThree;
+export default UploadVideo;

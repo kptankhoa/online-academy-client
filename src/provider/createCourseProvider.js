@@ -7,7 +7,8 @@ export const initialState = {
   categories: [],
   detailDes: "",
   loading: false,
-  newCourse: null,
+  course: null,
+  sections: [],
   errorMessage: "",
   currentStep: 1,
   totalStep: 3

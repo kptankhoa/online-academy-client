@@ -4,7 +4,7 @@ import StepOne from "./step/StepOne";
 import StepTwo from "./step/StepTwo";
 import {createCourseContext} from "../../../provider/createCourseProvider";
 import {Redirect, Route, Switch} from "react-router-dom";
-import StepThree from "./step/StepThree";
+import UploadVideo from "./step/UploadVideo";
 import UploadVideoProvider from "../../../provider/uploadVideoProvider";
 
 function CreateCourse({className}) {
@@ -23,7 +23,7 @@ function CreateCourse({className}) {
           <StepOne/>
         </Route>
         <Route path="/lecturer/create-course/2">
-          {state.newCourse ? (
+          {state.course ? (
             <>
               <h4 className="text-center font-weight-bold text-monospace">
                 Upload course image
@@ -38,13 +38,13 @@ function CreateCourse({className}) {
           )}
         </Route>
         <Route path="/lecturer/create-course/3">
-          {state.newCourse ? (
+          {state.course ? (
             <>
               <h4 className="text-center font-weight-bold text-monospace">
                 Upload videos
               </h4>
               <UploadVideoProvider>
-                <StepThree/>
+                <UploadVideo courseId={state.course._id} className="mt-5"/>
               </UploadVideoProvider>
             </>
           ) : (

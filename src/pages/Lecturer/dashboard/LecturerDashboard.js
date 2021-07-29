@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import CourseList from "components/common/list/courseList/CourseList";
 import {getTokenPayload} from "utils/commonUtils";
 import {academyAxios} from "config/axios.config";
+import CourseListItem from "../../../components/common/listItem/courseListItem/CourseListItem";
 
 function LecturerDashboard({className}) {
   const [loading, setLoading] = useState(true);
   const [teachingCourses, setTeachingCourses] = useState([]);
   const decoded = getTokenPayload();
+  const history = useHistory();
 
   useEffect(() => {
     academyAxios.get(`/lecturers/${decoded.userId}/courses`)
@@ -18,6 +20,10 @@ function LecturerDashboard({className}) {
         }
       });
   }, [decoded.userId]);
+
+  function handleClick(courseId) {
+    history.push(`/lecturer/edit-courses/${courseId}/basic`);
+  }
 
   const classes = "lecturer-dashboard " + (className ? className : "");
   return (
@@ -40,7 +46,23 @@ function LecturerDashboard({className}) {
           </div>
         </div>
       ) : (
-        <CourseList listData={teachingCourses} className='mt-4'/>
+        // <CourseList listData={teachingCourses} className='mt-4'/>
+        teachingCourses ? teachingCourses.map((item, index) => (
+          <div key={index}>
+            <div className="list-item-wrapper">
+              <CourseListItem data={item}/>
+              <div className="option-wrapper">
+                <button
+                  onClick={() => handleClick(item._id)}
+                  style={{color: '#2980b9'}}
+                  className="pure-button font-weight-bold text-color-primary d-flex justify-content-center align-items-center w-100 h-100">
+                  Edit / Manage course
+                </button>
+              </div>
+            </div>
+            <hr/>
+          </div>
+        )) : ''
       )}
     </div>
   );

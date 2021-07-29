@@ -1,10 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {uploadVideoContext} from "provider/uploadVideoProvider";
-import {createCourseContext} from "provider/createCourseProvider";
 
-const NewLessonForm = ({className, onCancel, parentSectionId}) => {
-  const {state: createCourseState} = useContext(createCourseContext);
+const NewLessonForm = ({className, onCancel, parentSectionId, courseId, onUploaded}) => {
   const {state: uploadState, event} = useContext(uploadVideoContext);
   const {register, handleSubmit} = useForm();
   const [lessonUrl, setLessonUrl] = useState("");
@@ -19,14 +17,15 @@ const NewLessonForm = ({className, onCancel, parentSectionId}) => {
     const order = parentSection.lessons ? (parentSection.lessons.length + 1) : 1;
 
     event.postLesson({
-      courseId: createCourseState.newCourse._id,
+      courseId: courseId,
       sectionId: parentSectionId,
       title: data.title,
       totalLength: duration,
       videoUrl: lessonUrl,
       order: order,
       // isPreview: true
-    }, hideForm);
+    }, onUploaded);
+    hideForm();
   }
 
   const onProgress = (bytes_uploaded, bytes_total) => {
@@ -34,7 +33,7 @@ const NewLessonForm = ({className, onCancel, parentSectionId}) => {
     console.log(bytes_uploaded, bytes_total, percentage + '%');
   }
 
-  const onUploaded = (uri) => {
+  const onVideoUploaded = (uri) => {
     console.log('Your video URI is: ' + uri);
     const id = uri.split("/").slice(-1)[0];
     setLessonUrl(`https://vimeo.com/${id}`);
@@ -43,7 +42,7 @@ const NewLessonForm = ({className, onCancel, parentSectionId}) => {
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
     getVideoDuration(file);
-    event.uploadVideo(file, onProgress, onUploaded);
+    event.uploadVideo(file, onProgress, onVideoUploaded);
   }
 
   const getVideoDuration = (file) => {

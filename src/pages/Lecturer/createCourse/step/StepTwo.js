@@ -36,7 +36,7 @@ const StepTwo = () => {
     });
     const formData = new FormData();
     formData.append('courseImage', croppedBlob);
-    academyAxios.post(`/courses/${state.newCourse._id}/courseImage`, formData, {
+    academyAxios.post(`/courses/${state.course._id}/courseImage`, formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     }).then(response => {
       if (response.status === 200) {
@@ -45,7 +45,7 @@ const StepTwo = () => {
           payload: {
             currentStep: state.currentStep + 1,
             loading: false,
-            newCourse: {...state.newCourse, courseImage: response.data.courseImage},
+            course: {...state.course, courseImage: response.data.courseImage},
             errorMessage: "",
           }
         });

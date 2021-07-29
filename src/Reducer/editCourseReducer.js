@@ -2,6 +2,8 @@ export const UPDATE_BASIC_INFO_SUCCESS = "UPDATE_BASIC_INFO_SUCCESS";
 export const SET_STATE = "SET_STATE";
 export const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 export const GET_COURSE_DETAIL_SUCCESS = "GET_COURSE_DETAIL_SUCCESS";
+export const NEW_SECTION = "NEW_SECTION";
+export const NEW_LESSON = "NEW_LESSON";
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -30,6 +32,11 @@ export function reducer(state, action) {
         errorMessage: "",
         detailDes: course.detailDescription
       }
+    case NEW_SECTION:
+      return {...state, sections: [...state.sections, action.payload.section]};
+    case NEW_LESSON:
+      const newSections = [...state.sections];
+      return {...state, sections: newSections};
     default:
       return state;
   }

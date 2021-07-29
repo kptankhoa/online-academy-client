@@ -2,6 +2,10 @@
   color: #3498db;
 }
 
+.hover-bold:hover {
+  font-weight: bold;
+}
+
 .hover-border-bottom:hover {
   border-bottom: 5px solid #454545;
   margin-bottom: -5px;

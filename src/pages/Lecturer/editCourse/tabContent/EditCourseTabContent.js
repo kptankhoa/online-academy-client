@@ -2,6 +2,7 @@ import React from 'react';
 import {useParams} from "react-router-dom";
 import BasicInformation from "./basicInfomation/BasicInformation";
 import CourseImageTab from "./courseImage/CourseImageTab";
+import UploadVideoTab from "./uploadVideo/UploadVideoTab";
 
 const EditCourseTabContent = ({className}) => {
   const {tabId} = useParams();
@@ -13,7 +14,7 @@ const EditCourseTabContent = ({className}) => {
       case "image":
         return <CourseImageTab/>;
       case "video":
-        return <div>Video</div>;
+        return <UploadVideoTab/>;
       default:
         return <div className="text-center">Not found</div>;
     }
