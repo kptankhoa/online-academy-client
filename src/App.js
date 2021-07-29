@@ -1,4 +1,4 @@
-import React, { Suspense, useReducer } from 'react';
+import React, {Suspense, useReducer} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,7 +6,7 @@ import {
   Redirect,
   useLocation,
 } from 'react-router-dom';
-import { administratorRoute, publicRoute } from './pages/routes';
+import {administratorRoute, publicRoute} from './pages/routes';
 import Login from './pages/loginv2';
 import SignUp from './pages/SignUp';
 import UserPage from './pages/Account';
@@ -27,22 +27,22 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Suspense fallback={<div>Loading...</div>}>
-          <AppContext.Provider value={{ state, dispatch }}>
+          <AppContext.Provider value={{state, dispatch}}>
             <Switch>
               <UnAuthRoute path="/login" exact={true}>
-                <Login />
+                <Login/>
               </UnAuthRoute>
 
               <UnAuthRoute path="/signup" exact={true}>
-                <SignUp />
+                <SignUp/>
               </UnAuthRoute>
 
               <PrivateRoute path="/user">
-                <UserPage />
+                <UserPage/>
               </PrivateRoute>
 
               <LecturerRoute path="/lecturer">
-                <LecturerPage />
+                <LecturerPage/>
               </LecturerRoute>
 
               {publicRoute.map((ro, i) => {
@@ -67,7 +67,7 @@ export default function App() {
               })}
 
               <Route path="*">
-                <NoMatch />
+                <NoMatch/>
               </Route>
             </Switch>
           </AppContext.Provider>
@@ -89,7 +89,7 @@ function NoMatch() {
   );
 }
 
-function PrivateRoute({ children, ...rest }) {
+function PrivateRoute({children, ...rest}) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -113,11 +113,11 @@ function PrivateRoute({ children, ...rest }) {
   }
 }
 
-function LecturerRoute({ children, ...rest }) {
+function LecturerRoute({children, ...rest}) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
-  const decoded = jwt_decode(token);
+  const decoded = token ? jwt_decode(token) : null;
 
   if (!token) {
     return (
@@ -152,7 +152,7 @@ function LecturerRoute({ children, ...rest }) {
   }
 }
 
-function UnAuthRoute({ children, ...rest }) {
+function UnAuthRoute({children, ...rest}) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -175,11 +175,11 @@ function UnAuthRoute({ children, ...rest }) {
   );
 }
 
-function PublicRoute({ ...rest }) {
+function PublicRoute({...rest}) {
   return <Route {...rest} />;
 }
 
-function AdminRoute({ children, ...rest }) {
+function AdminRoute({children, ...rest}) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );

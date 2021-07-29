@@ -51,7 +51,7 @@ const UploadVideoProvider = ({children}) => {
     )
   }
 
-  function postLesson(data, callback) {
+  function postLesson(data) {
     academyAxios.post("/lessons", {...data})
       .then(response => {
         if (response.status === 201) {
@@ -62,7 +62,10 @@ const UploadVideoProvider = ({children}) => {
               sectionId: data.sectionId
             }
           });
-          callback();
+          // callback({
+          //   type: "lesson",
+          //   data: response.data
+          // });
         }
       })
       .catch(error => {
@@ -75,7 +78,7 @@ const UploadVideoProvider = ({children}) => {
       });
   }
 
-  function postSection({courseId, title, order}) {
+  function postSection({courseId, title, order}, callback = undefined) {
     academyAxios.post("/sections", {courseId, title, order})
       .then(response => {
         if (response.status === 201) {
@@ -85,9 +88,16 @@ const UploadVideoProvider = ({children}) => {
               section: response.data,
             }
           });
+          if (callback) {
+            callback({
+              type: "section",
+              data: response.data
+            });
+          }
         }
       })
       .catch(error => {
+        console.log(error);
         dispatch({
           type: SET_ERROR_MESSAGE,
           payload: {
@@ -95,6 +105,16 @@ const UploadVideoProvider = ({children}) => {
           }
         });
       });
+  }
+
+  function setState(data) {
+    console.log("default sections: ", data);
+    dispatch({
+      type: SET_STATE,
+      payload: {
+        ...data
+      }
+    });
   }
 
   /* context value */
@@ -105,7 +125,8 @@ const UploadVideoProvider = ({children}) => {
       hideSectionForm,
       postSection,
       uploadVideo,
-      postLesson
+      postLesson,
+      setState
     }
   }
   return (

@@ -1,22 +1,18 @@
 import React, {useContext} from 'react';
 import {useForm} from "react-hook-form";
 
-import "styles/text.style.css"
-import {uploadVideoContext} from "../../../../provider/uploadVideoProvider";
-import {createCourseContext} from "../../../../provider/createCourseProvider";
+import {uploadVideoContext} from "provider/uploadVideoProvider";
 
-const NewSectionForm = ({className, cancelable}) => {
-  // const [loading, setLoading] = useState(false);
-  const {state: createCourseState} = useContext(createCourseContext);
+const NewSectionForm = ({className, cancelable, courseId, onUploaded}) => {
   const {register, handleSubmit} = useForm();
   const {state, event} = useContext(uploadVideoContext);
 
   const onSubmit = (data) => {
     event.postSection({
-      courseId: createCourseState.newCourse._id,
+      courseId: courseId,
       title: data.title,
       order: state.sections.length + 1
-    });
+    }, onUploaded);
     event.hideSectionForm();
   }
 
