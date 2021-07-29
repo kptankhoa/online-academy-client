@@ -46,6 +46,10 @@ function CreateCourse({className}) {
               <UploadVideoProvider>
                 <UploadVideo courseId={state.course._id} className="mt-5"/>
               </UploadVideoProvider>
+
+              {/*<div className="text-center">*/}
+              {/*  <button className="pure-button btn-dark">Done</button>*/}
+              {/*</div>*/}
             </>
           ) : (
             <Redirect
