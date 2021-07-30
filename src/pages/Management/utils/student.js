@@ -11,12 +11,26 @@ export function getStudents() {
   });
 }
 
-export function getCourse(courseId) {
+export function deleteStudent(studentId) {
   return new Promise((resolve, reject) => {
-    axiosInstance.get(`/courses/${courseId}`).then((response) => {
+    axiosInstance.delete(`/admin/users/${studentId}`).then((response) => {
       if (response.status === 200) {
         resolve(response.data);
       }
     });
+  }).catch(function (error) {
+    if (error.response) {
+      // Request made and server responded
+      alert('error' + error.response.data.detail[0].instancePath);
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
   });
 }

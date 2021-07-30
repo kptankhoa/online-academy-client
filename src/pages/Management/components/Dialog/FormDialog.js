@@ -85,7 +85,7 @@ export default function FormDialog({ open, onClose, onSubmit }) {
               Cancel
             </Button>
             <Button onClick={handleSubmit} color="primary">
-              Subscribe
+              OK
             </Button>
           </DialogActions>
         </form>
