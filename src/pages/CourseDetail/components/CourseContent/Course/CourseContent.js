@@ -30,7 +30,7 @@ import useStyles from './courseDetail.style';
  * @returns
  */
 function CourseContent(props) {
-  const { detailDescription, ...rest } = props;
+  const { detaildescription, ...rest } = props;
   const [expanded, setExpanded] = useState(false);
   const { state, dispatch } = useContext(CourseDetailContext);
   const history = useHistory();
@@ -48,7 +48,7 @@ function CourseContent(props) {
           variant="outlined"
           className={classes.courseDetailDescription}
         >
-          {typeof (detailDescription) === "string" ? parse(detailDescription) : detailDescription}
+          {typeof (detaildescription) === "string" ? parse(detaildescription) : detaildescription}
         </Paper>
       </div>
 
