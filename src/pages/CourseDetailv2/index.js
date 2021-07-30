@@ -19,6 +19,7 @@ import CourseDescription from './components/Course/CourseDescription';
 import SimilarCourses from './components/Course/SimilarCourses';
 import Instructors from './components/Instructor/Instructors';
 import Feedbacks from './components/Feedback/Feedbacks';
+import { isStudent } from './utils/isStudent';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -53,7 +54,7 @@ const CourseDetail = () => {
         payload: r.data,
       });
     });
-    if (localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN)) {
+    if (isStudent()) {
       getLearningList().then((result) => {
         const list = result.filter((course) => {
           return course._id === courseId;

@@ -8,6 +8,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/all';
 import { enrollCourse } from 'pages/CourseDetailv2/utils/enroll';
 import { addToWishList, removeFromWishList } from 'pages/CourseDetailv2/utils/wishList';
 import { convertNumberWithComma } from 'utils/commonUtils';
+import { isStudent } from 'pages/CourseDetailv2/utils/isStudent';
 
 const TopContainer = () => {
   const classes = useStyles();
@@ -47,6 +48,39 @@ const TopContainer = () => {
       )
     }
   };
+
+  const renderButtons = () => (
+    isStudent() &&  (
+      <div>
+        {isInWishList ? (
+          <Button
+            variant='contained' className={classes.buttonT}
+            onClick={onUnWishListBtnClick}>
+            <AiFillHeart style={{ fontSize: '1.3em' }} />&nbsp;Wishlisted
+          </Button>
+        ) : (
+          <Button
+            variant='outlined' className={classes.buttonF}
+            onClick={onWishListBtnClick}>
+            <AiOutlineHeart style={{ fontSize: '1.3em' }} />&nbsp;Wishlist
+          </Button>
+        )}
+        {isEnrolled ? (
+          <Button
+            variant='contained' className={classes.buttonT}
+            onClick={() => alert('You have already enrolled in this course!')}>
+            Enrolled
+          </Button>
+        ) : (
+          <Button
+            variant='outlined' className={classes.buttonF}
+            onClick={onEnrollBtnClick}>
+            Enroll
+          </Button>
+        )}
+      </div>
+    )
+  );
   return (
     <div className={`container-fluid text-white p-4 ${classes.topContainer}`}>
       <div className='container-xl'>
@@ -67,34 +101,7 @@ const TopContainer = () => {
                   <small>Last Updated: {moment(new Date(course.updatedAt).getTime()).format('MM/YYYY')}</small>
                 </div>
                 {renderPrice(course)}
-                <div>
-                  {isInWishList ? (
-                    <Button
-                      variant='contained' className={classes.buttonT}
-                      onClick={onUnWishListBtnClick}>
-                      <AiFillHeart style={{ fontSize: '1.3em' }} />&nbsp;Wishlisted
-                    </Button>
-                  ) : (
-                    <Button
-                      variant='outlined' className={classes.buttonF}
-                      onClick={onWishListBtnClick}>
-                      <AiOutlineHeart style={{ fontSize: '1.3em' }} />&nbsp;Wishlist
-                    </Button>
-                  )}
-                  {isEnrolled ? (
-                    <Button
-                      variant='contained' className={classes.buttonT}
-                      onClick={() => alert('You have already enrolled in this course!')}>
-                      Enrolled
-                    </Button>
-                  ) : (
-                    <Button
-                      variant='outlined' className={classes.buttonF}
-                      onClick={onEnrollBtnClick}>
-                      Enroll
-                    </Button>
-                  )}
-                </div>
+                {renderButtons()}
               </Grid>
               <Grid item md={4}>
                 <img className={classes.courseImg} src={course.courseImage} alt='CourseImage' />

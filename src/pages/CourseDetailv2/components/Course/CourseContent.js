@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Grid, withStyles
 } from '@material-ui/core';
@@ -10,6 +10,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useHistory } from 'react-router-dom';
 import Button from 'components/common/button/pureButton/Button';
 import CourseContext from '../../CourseContext';
+import ReactPlayer from 'react-player';
+import { isStudent } from '../../utils/isStudent';
 
 const Accordion = withStyles({
   root: {
@@ -53,20 +55,21 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 const CourseContent = () => {
-  const { state: { course, sections } } = useContext(CourseContext);
+  const { state: { course, sections, isEnrolled } } = useContext(CourseContext);
   const history = useHistory();
   const onClickHandler = (lesson) => {
-    const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
-    if (token) {
+    if (isStudent() && isEnrolled) {
       history.push(`/courses/${course._id}/lessons/${lesson._id}`);
     } else {
-      alert('Log In to see this lesson!');
+      alert('You have to enroll in this course first!');
     }
   };
   const [expanded, setExpanded] = React.useState('');
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoUrl, setVideoUrl] = useState('');
 
   const renderAccordion = (section, index) => {
     return (
@@ -79,12 +82,18 @@ const CourseContent = () => {
         </AccordionSummary>
         {section.lessons.map(lesson => (
           <AccordionDetails key={lesson._id}>
-            <div className='d-flex align-items-center'>
-              <Button style={{ fontSize: '14px' }}
-                      className='w-100 text-left'
-                      onClick={() => onClickHandler(lesson)}>
+            <div className='d-flex align-items-center justify-content-between w-100'>
+              <Button
+                style={{ fontSize: '14px' }}
+                onClick={() => onClickHandler(lesson)}>
                 {lesson.title}
               </Button>
+              {lesson.isPreview && (
+                <Button
+                  style={{ color: '#67a199', fontWeight: 'bold' }}
+                  onClick={() => onPreviewBtnClick(lesson.videoUrl)}>
+                  Preview
+                </Button>)}
             </div>
           </AccordionDetails>
         ))}
@@ -92,21 +101,38 @@ const CourseContent = () => {
     );
   };
 
+  const onPreviewBtnClick = (url) => {
+    setVideoUrl(url);
+    setShowVideoModal(true);
+  };
+
   return (
-    <Grid container>
-      {sections && (
-        <Grid item md={8} style={{ marginTop: '10px' }}>
-          <h4 className='mt-3 font-weight-bold'>Course Content:</h4>
-          {sections.length ?
-            sections.map((section, index) => renderAccordion(section, index))
-            : (
-              <div>
-                No content available now
-              </div>
-            )}
-        </Grid>
+    <>
+      <Grid container>
+        {sections && (
+          <Grid item md={8} style={{ marginTop: '10px' }}>
+            <h4 className='mt-3 font-weight-bold'>Course Content:</h4>
+            {sections.length ?
+              sections.map((section, index) => renderAccordion(section, index))
+              : (
+                <div>
+                  No content available now
+                </div>
+              )}
+          </Grid>
+        )}
+      </Grid>
+      {showVideoModal && (
+        <div className='video-modal'>
+          <button className='pure-button p-0 pt-2' onClick={() => setShowVideoModal(false)}>
+            <i className='far fa-times-circle' style={{ fontSize: 40, color: '#eee' }} />
+          </button>
+          <div className='video-wrapper'>
+            <ReactPlayer url={videoUrl} width='100%' height='100%' />
+          </div>
+        </div>
       )}
-    </Grid>
+    </>
   );
 };
 

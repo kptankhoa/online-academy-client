@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import { axiosInstance } from 'utils/auth';
 import Navbar from 'components/domain/menu/NavBar';
 import Footer from 'components/domain/footer/Footer';
 import LessonDetail from './components/LessonDetail';
@@ -9,6 +8,7 @@ import CourseInfo from './components/CourseInfo';
 import SectionNav from './components/SectionNav';
 import reducer, { SET_COURSE, SET_LESSON, SET_SECTIONS } from './lessonViewReducer';
 import LessonViewContext from './lessonViewContext';
+import { academyAxios } from 'config/axios.config';
 
 const LessonView = () => {
   const { courseId, lessonId } = useParams();
@@ -22,7 +22,19 @@ const LessonView = () => {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    axiosInstance.get(`/courses/${courseId}/lessons/${lessonId}`)
+    academyAxios.get(`/courses/${courseId}`)
+      .then(r => dispatch({
+        type: SET_COURSE,
+        payload: r.data
+      }));
+    academyAxios.get(`/courses/${courseId}/sections`)
+      .then(r => dispatch({
+        type: SET_SECTIONS,
+        payload: r.data
+      }));
+  }, []);
+  useEffect(() => {
+    academyAxios.get(`/courses/${courseId}/lessons/${lessonId}`)
       .then(r => {
         dispatch({
           type: SET_LESSON,
@@ -30,17 +42,7 @@ const LessonView = () => {
         });
         setLoading(false);
       });
-    axiosInstance.get(`/courses/${courseId}`)
-      .then(r => dispatch({
-        type: SET_COURSE,
-        payload: r.data
-      }));
-    axiosInstance.get(`/courses/${courseId}/sections`)
-      .then(r => dispatch({
-        type: SET_SECTIONS,
-        payload: r.data
-      }));
-  }, []);
+  }, [lessonId])
   useEffect(() => {
     setIsEnrolled(!(Object.keys(state.lesson).length === 0));
   }, [state.lesson]);
@@ -60,7 +62,7 @@ const LessonView = () => {
   const postProgress = () => {
     if (token) {
       const decoded = jwt_decode(token);
-      axiosInstance.post(`/progresses`, {
+      academyAxios.post(`/progresses`, {
         userId: decoded.userId,
         courseId,
         lessonId,
