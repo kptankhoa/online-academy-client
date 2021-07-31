@@ -1,5 +1,11 @@
 import React, {createContext, useEffect, useReducer} from 'react';
-import {reducer, SET_ERROR_MESSAGE, SET_STATE} from "../Reducer/editCourseReducer";
+import {
+  GET_COURSE_DETAIL_SUCCESS,
+  MARK_COURSE_COMPLETE,
+  reducer,
+  SET_ERROR_MESSAGE,
+  SET_STATE
+} from "../Reducer/editCourseReducer";
 import {academyAxios} from "../config/axios.config";
 
 const initialValue = {
@@ -117,13 +123,62 @@ const EditCourseProvider = ({children}) => {
     })
   }
 
+  function getCourseDetailInfo(courseId) {
+    academyAxios.get(`/lecturers/courses/${courseId}`)
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response.data);
+          dispatch({
+            type: GET_COURSE_DETAIL_SUCCESS,
+            payload: {
+              course: response.data
+            }
+          });
+        }
+      })
+      .catch(error => {
+        dispatch({
+          type: SET_ERROR_MESSAGE,
+          payload: {
+            errorMessage: error.response.data
+          }
+        });
+      });
+  }
+
+  function markCourseComplete(courseId) {
+    dispatch({
+      type: SET_STATE,
+      payload: {
+        loading: true
+      }
+    });
+    academyAxios.post(`/courses/${courseId}/completion`).then(response => {
+      if (response.status === 200) {
+        dispatch({
+          type: MARK_COURSE_COMPLETE,
+          payload: {}
+        });
+      }
+    }).catch(error => {
+      dispatch({
+        type: SET_ERROR_MESSAGE,
+        payload: {
+          errorMessage: error.response.data
+        }
+      });
+    })
+  }
+
   const value = {
     state: state,
     dispatch: dispatch,
     event: {
       changeDetailDes,
       updateBasicInfo,
-      updateCourseImage
+      updateCourseImage,
+      getCourseDetailInfo,
+      markCourseComplete
     }
   }
   return (

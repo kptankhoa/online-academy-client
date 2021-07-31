@@ -43,7 +43,7 @@ const StepOne = () => {
         dispatch({
           type: SET_STATE,
           payload: {
-            newCourse: response.data,
+            course: response.data,
             loading: false,
             errorMessage: "",
             currentStep: state.currentStep + 1

@@ -2,19 +2,17 @@ import React, {useContext} from 'react';
 import {useForm} from "react-hook-form";
 
 import {uploadVideoContext} from "provider/uploadVideoProvider";
-import {createCourseContext} from "provider/createCourseProvider";
 
-const NewSectionForm = ({className, cancelable}) => {
-  const {state: createCourseState} = useContext(createCourseContext);
+const NewSectionForm = ({className, cancelable, courseId, onUploaded}) => {
   const {register, handleSubmit} = useForm();
   const {state, event} = useContext(uploadVideoContext);
 
   const onSubmit = (data) => {
     event.postSection({
-      courseId: createCourseState.newCourse._id,
+      courseId: courseId,
       title: data.title,
       order: state.sections.length + 1
-    });
+    }, onUploaded);
     event.hideSectionForm();
   }
 

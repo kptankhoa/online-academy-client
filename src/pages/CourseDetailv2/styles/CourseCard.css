@@ -1,0 +1,14 @@
+.course-card2 {
+    /*width: 100%;*/
+    color: #454545;
+}
+
+.course-category, .course-lecture {
+    font-size: 12px;
+    color: gray;
+}
+
+.image-wrapper2 {
+    height: 150px;
+    overflow: hidden;
+}

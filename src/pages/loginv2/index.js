@@ -1,4 +1,4 @@
-import { Button, Container, Link } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import LoginForm from 'pages/loginv2/components/loginForm';
 import NavBar from 'components/domain/menu/NavBar';
 import Footer from 'components/domain/footer/Footer';

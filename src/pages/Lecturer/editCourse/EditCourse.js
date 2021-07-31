@@ -3,41 +3,34 @@ import {Route, Switch, useRouteMatch} from "react-router-dom";
 import EditCourseTabBar from "components/domain/lecturer/EditCourseTabBar";
 import EditCourseTabContent from "./tabContent/EditCourseTabContent";
 import {editCourseContext} from "provider/editCourseProvider";
-import {academyAxios} from "config/axios.config";
-import {GET_COURSE_DETAIL_SUCCESS, SET_ERROR_MESSAGE} from "Reducer/editCourseReducer";
-import FullScreenLoading from "components/common/loading/FullScreenLoading";
+import FullScreenLoading from "../../../components/common/loading/FullScreenLoading";
 
 const EditCourse = ({className}) => {
   const {params: {courseId}, url} = useRouteMatch("/lecturer/edit-courses/:courseId");
-  const {state, dispatch} = useContext(editCourseContext);
+  const {state, event} = useContext(editCourseContext);
 
   useEffect(() => {
-    academyAxios.get(`/lecturers/courses/${courseId}`)
-      .then(response => {
-        if (response.status === 200) {
-          console.log(response.data);
-          dispatch({
-            type: GET_COURSE_DETAIL_SUCCESS,
-            payload: {
-              course: response.data
-            }
-          });
-        }
-      })
-      .catch(error => {
-        dispatch({
-          type: SET_ERROR_MESSAGE,
-          payload: {
-            errorMessage: error.response.data.error
-          }
-        });
-      });
-  }, [courseId, dispatch]);
+    event.getCourseDetailInfo(courseId);
+  }, []);
+
+  function onComplete() {
+    event.markCourseComplete(courseId);
+  }
 
   const classes = "edit-course " + (className || "");
   return (
     <div className={classes}>
-      <h2 className="font-weight-bold">Edit Course Information</h2>
+      <div className="d-flex justify-content-between align-items-center">
+        <h2 className="font-weight-bold">Edit Course Information</h2>
+        {state.course && state.course.status === "INCOMPLETE" ? (
+          <button
+            onClick={onComplete}
+            className="pure-button btn-outline-success font-weight-bold py-2 transition-all">
+            <i className="fas fa-check-circle"/>&nbsp;
+            Mark as complete
+          </button>
+        ) : ""}
+      </div>
 
       <EditCourseTabBar className="mt-4" url={url}/>
 

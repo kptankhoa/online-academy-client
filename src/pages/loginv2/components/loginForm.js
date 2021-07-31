@@ -9,9 +9,9 @@ import {useContext, useState} from 'react';
 import {Login} from 'pages/loginv2/login.action';
 import LoginButton from 'pages/Login/components/LoginButton';
 import jwt_decode from 'jwt-decode';
-import {academyAxios} from '../../../config/axios.config';
-import {LOGIN_SUCCESS} from '../../../Reducer/authReducer';
-import {authContext} from '../../../provider/authProvider';
+import {academyAxios} from 'config/axios.config';
+import {LOGIN_SUCCESS} from 'Reducer/authReducer';
+import {authContext} from 'provider/authProvider';
 
 const LoginForm = function ({ username }) {
   const history = useHistory();
@@ -100,7 +100,6 @@ const LoginForm = function ({ username }) {
         variant='contained'
         loading={loading}
         color="primary"
-        // color="secondary"
       />
     </form>
   );
