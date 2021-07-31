@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TocIcon from '@material-ui/icons/Toc';
+import parse from 'html-react-parser';
 
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -47,7 +48,7 @@ function CourseContent(props) {
           variant="outlined"
           className={classes.courseDetailDescription}
         >
-          {detaildescription}
+          {typeof (detaildescription) === "string" ? parse(detaildescription) : detaildescription}
         </Paper>
       </div>
 

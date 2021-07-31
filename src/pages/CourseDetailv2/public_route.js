@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 const route = {
-  path: '/courses/v1/:courseId',
+  path: '/courses/:courseId',
   name: 'Course Detail',
   component: lazy(()=>import('.'))
 }
