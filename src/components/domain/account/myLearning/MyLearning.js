@@ -21,7 +21,7 @@ function MyLearning() {
       });
   }, [decoded.userId]);
   return (
-    <div className="d-flex flex-wrap align-items-center">
+    <div className="d-flex flex-wrap">
       {!loading ? (
         <>
           {learningList.map((course, index) => (
