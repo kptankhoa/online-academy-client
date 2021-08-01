@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import LessonViewContext from 'pages/Lesson/lessonViewContext';
 import {useHistory} from 'react-router-dom';
+import { lessonContext } from 'provider/lessonProvider';
 
 const CourseInfo = () => {
-  const { state } = useContext(LessonViewContext);
+  const { lessonState } = useContext(lessonContext);
   const history = useHistory();
-  const course = state.course;
+  const course = lessonState.course;
   const onClickHandler = () => {
     history.push(`/courses/${course._id}`)
   }
