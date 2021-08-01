@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useHistory } from 'react-router-dom';
 import Button from 'components/common/button/pureButton/Button';
-import LessonViewContext from '../lessonViewContext';
+import { lessonContext } from 'provider/lessonProvider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SectionNav(props) {
   const classes = useStyles();
-  const { courseId, setLesson } = props;
-  const { state } = useContext(LessonViewContext);
-  const sections = state.sections;
+  const { courseId, postProgress } = props;
+  const { lessonState } = useContext(lessonContext);
+  const sections = lessonState.sections;
   const history = useHistory();
   const onClickHandler = (lesson) => {
     history.push(`/courses/${courseId}/lessons/${lesson._id}`);
-    setLesson(lesson);
+    postProgress()
   };
   const renderAccordion = (section) => {
     return (

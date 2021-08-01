@@ -13,6 +13,31 @@ const CourseCard = ({courseData, className, style}) => {
     history.push(`/courses/${courseData._id}`);
   }
 
+  const renderPrice = ({ price, promotionalPrice }) => {
+    if (promotionalPrice && promotionalPrice < price) {
+      return (
+        <div>
+          {convertNumberWithComma(promotionalPrice)}vnd
+          &nbsp;
+          <span style={{
+            fontSize: 'smaller',
+            fontWeight: 'normal',
+            textDecoration: 'line-through',
+            color: '#696969'
+          }}>
+            {convertNumberWithComma(price)}vnd
+          </span>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {convertNumberWithComma(price)}vnd
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={classes} style={style}>
       <button className='pure-button p-0 text-left' style={{color: '#454545'}} onClick={handleClick}>
@@ -30,7 +55,7 @@ const CourseCard = ({courseData, className, style}) => {
               <div className='course-category'>{courseData.category.categoryName}</div>
               <div className='course-lecture'>{courseData.courseLecturers[0].fullName}</div>
               <CourseRating ratingPoint={courseData.ratingPoint} ratedNumber={courseData.ratedNumber}/>
-              <div className='course-price font-weight-bold'>{convertNumberWithComma(courseData.price)}vnd</div>
+              <div className='course-price font-weight-bold'>{renderPrice(courseData)}</div>
             </div>
           </div>
         </div>
