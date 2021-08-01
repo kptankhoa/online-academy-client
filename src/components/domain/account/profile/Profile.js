@@ -1,34 +1,43 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {academyAxios} from "config/axios.config";
 
-import "styles/other.style.css";
 import {authContext} from "provider/authProvider";
 import {UPDATE_USER_INFO} from "Reducer/authReducer";
 import FullScreenLoading from "../../../common/loading/FullScreenLoading";
+import ReactQuill from "react-quill";
 
 function Profile() {
   const {authState, dispatch} = useContext(authContext);
   const {register, handleSubmit, formState: {errors}} = useForm();
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (authState.userInfo && authState.userInfo.type === "lecturer") {
+      setDescription(authState.userInfo.description);
+    }
+  }, [authState.userInfo]);
 
   const onSubmit = (data) => {
     setLoading(true);
     const url = authState.userInfo.type === "student" ? `/users/${authState.userInfo._id}` :
       `/lecturers/${authState.userInfo._id}`;
-    academyAxios.patch(url, {
+
+    const dataToPost = {
       fullName: data.fullName,
       phone: data.phone,
       address: data.address
-    }).then(response => {
+    }
+    if (description) {
+      dataToPost.description = description;
+    }
+
+    academyAxios.patch(url, dataToPost).then(response => {
       if (response.status === 200) {
         dispatch({
           type: UPDATE_USER_INFO,
-          payload: {
-            fullName: data.fullName,
-            phone: data.phone,
-            address: data.address
-          }
+          payload: dataToPost
         })
       }
     }).catch(error => {
@@ -37,6 +46,10 @@ function Profile() {
       setLoading(false);
     })
   };
+
+  function handleChange(value) {
+    setDescription(value);
+  }
 
   return (
     <div>
@@ -73,6 +86,17 @@ function Profile() {
                      {...register("address", {required: true})} defaultValue={authState.userInfo.address}/>
               <small className="text-color-error">{errors.address?.type === 'required' && "Address is required"}</small>
             </div>
+
+            {authState.userInfo.type === "lecturer" && (
+              <div className="form-group">
+                <label htmlFor="description" className="">Description</label>
+                <ReactQuill
+                  theme="snow"
+                  value={description}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
 
             <div className="text-center">
               <input type="submit" className="btn btn-outline-dark" value="Save"/>
