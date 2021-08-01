@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { getDataFromAcademyApi } from 'services/academyApi';
+import React, {useContext, useEffect, useState} from 'react';
+import {getDataFromAcademyApi} from 'services/academyApi';
 import Pagination from 'components/common/pagination/Pagination';
 import CourseList from 'components/common/list/courseList/CourseList';
-import { Link, useLocation } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import 'components/domain/listPage/ListPageContent.css';
-import { academyAxios } from 'config/axios.config';
+import {academyAxios} from 'config/axios.config';
+import AppContext from "../../../Context/AppContext";
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+// function useQuery() {
+//   return new URLSearchParams(useLocation().search);
+// }
 
 const SearchResult = () => {
   const [courseQueryResultInfo, setCourseQueryResultInfo] = useState({});
@@ -19,8 +20,9 @@ const SearchResult = () => {
   const [page2, setPage2] = useState(1);
   const [sortBy, setSortBy] = useState('default');
   const [category, setCategory] = useState(undefined);
-  let query = useQuery();
-  let keyword = query.get('q');
+  const {state} = useContext(AppContext);
+  // let query = useQuery();
+  let keyword = state.query;
   useEffect(() => {
     academyAxios.get('/api/search/exactCategory', {
       params: {
@@ -32,13 +34,9 @@ const SearchResult = () => {
   }, [keyword]);
   useEffect(() => {
     setLoading1(true);
-    getDataFromAcademyApi('/api/search/course', {
-      params: {
-        keyword,
-        page: page1,
-        sortBy: sortBy !== 'default' ? sortBy : ''
-      }
-    }).then(data => {
+    const url = `/api/search/course?keyword=${keyword}`;
+    const encodedUrl = encodeURI(url).replace(/\+/g, '%2B');
+    getDataFromAcademyApi(encodedUrl).then(data => {
       setLoading1(false);
       setCourseQueryResultInfo(data);
     });
@@ -62,7 +60,7 @@ const SearchResult = () => {
   }, [keyword]);
   const title1 = `Courses that contain "${keyword}"`;
   const title2 = `Courses by categories that contain "${keyword}"`;
-  const renderPagination = ({ totalPages, page, prevPage, nextPage }, setPage) => (
+  const renderPagination = ({totalPages, page, prevPage, nextPage}, setPage) => (
     <Pagination
       totalPage={totalPages}
       currentPage={page}
@@ -76,7 +74,7 @@ const SearchResult = () => {
       <div className='row'>
         <div className='col-6 m-auto p-0'>
           {loading ? (
-            <div className='d-flex justify-content-center align-items-center' style={{ height: 200 }}>
+            <div className='d-flex justify-content-center align-items-center' style={{height: 200}}>
               <div className='spinner-grow spinner' role='status'>
                 <span className='sr-only'>Loading...</span>
               </div>
@@ -89,7 +87,7 @@ const SearchResult = () => {
                 </div>
                 {Object.keys(coursesInfo).length > 0 ? (
                   <>
-                    <CourseList listData={coursesInfo.docs} className='mt-3' />
+                    <CourseList listData={coursesInfo.docs} className='mt-3'/>
                     {renderPagination(coursesInfo, setPage)}
                   </>
                 ) : ''}
@@ -126,7 +124,7 @@ const SearchResult = () => {
         </div>
         <div className='row'>
           <div className='col-6 m-auto p-0'>
-          {category && renderCategoryLink()}
+            {category && renderCategoryLink()}
           </div>
         </div>
       </div>
