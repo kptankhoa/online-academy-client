@@ -27,7 +27,7 @@ const TopContainer = () => {
   };
 
   const renderPrice = ({ price, promotionalPrice }) => {
-    if (promotionalPrice && promotionalPrice < price) {
+    if (promotionalPrice < price) {
       return (
         <div className={classes.promotionalPrice}>
           Price:&nbsp;

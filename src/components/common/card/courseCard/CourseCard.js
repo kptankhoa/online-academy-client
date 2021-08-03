@@ -14,7 +14,7 @@ export default function CourseCard({ courseData, className, style }) {
   }
 
   const renderPrice = ({ price, promotionalPrice }) => {
-    if (promotionalPrice && promotionalPrice < price) {
+    if (promotionalPrice < price) {
       return (
         <div>
           {convertNumberWithComma(promotionalPrice)}vnd
