@@ -1,10 +1,10 @@
 import {
-  Grid,
+  // Grid,
   Typography,
   Grow,
   Divider,
-  Badge,
-  CircularProgress,
+  // Badge,
+  // CircularProgress,
   IconButton,
 } from '@material-ui/core';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -12,8 +12,8 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
-import Rating from './Rating';
+import { useContext, useEffect, useState } from 'react';
+// import Rating from './Rating';
 import Feed from './Feed';
 
 import CourseDetailContext from '../../CourseDetailContext';
@@ -23,7 +23,7 @@ import Comment from './Comment';
 const LIMIT_PAGE = 5;
 
 function FeedBack(props) {
-  const { state, dispatch } = useContext(CourseDetailContext);
+  const { state } = useContext(CourseDetailContext);
 
   const [FeedBack, setFeedBack] = useState({
     feedBacks: state.course.feedbacks,

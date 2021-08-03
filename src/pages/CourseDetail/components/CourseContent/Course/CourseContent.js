@@ -6,9 +6,9 @@ import {
   AccordionDetails,
   List,
   ListItem,
-  Link,
+  // Link,
   Grid,
-  Fade,
+  // Fade,
   Slide,
   Button,
 } from '@material-ui/core';
@@ -30,9 +30,9 @@ import useStyles from './courseDetail.style';
  * @returns
  */
 function CourseContent(props) {
-  const { detaildescription, ...rest } = props;
+  const { detaildescription } = props;
   const [expanded, setExpanded] = useState(false);
-  const { state, dispatch } = useContext(CourseDetailContext);
+  const { state } = useContext(CourseDetailContext);
   const history = useHistory();
 
   // const list =[{a, true}]
@@ -48,7 +48,9 @@ function CourseContent(props) {
           variant="outlined"
           className={classes.courseDetailDescription}
         >
-          {typeof (detaildescription) === "string" ? parse(detaildescription) : detaildescription}
+          {typeof detaildescription === 'string'
+            ? parse(detaildescription)
+            : detaildescription}
         </Paper>
       </div>
 

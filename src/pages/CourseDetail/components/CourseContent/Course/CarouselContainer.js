@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -10,7 +10,7 @@ import 'swiper/components/pagination/pagination.min.css';
 
 // import Swiper core and required modules
 import SwiperCore, { Pagination } from 'swiper/core';
-import CourseInfo from './CourseInfo';
+// import CourseInfo from './CourseInfo';
 import { Typography } from '@material-ui/core';
 
 import CourseDetailContext from '../../../CourseDetailContext';

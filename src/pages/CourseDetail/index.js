@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import CourseDetail from './components/CourseContent/Course/CourseDetail';
 import RegisterCourseForm from './components/Register/RegisterCourseForm';

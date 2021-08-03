@@ -1,6 +1,7 @@
 import {
   Backdrop,
   Button,
+  Divider,
   Fade,
   Grid,
   makeStyles,
@@ -23,7 +24,9 @@ function CategoryItem({
   categoryName,
   level,
   isDeleted,
-  onClick,
+  onDeleteClicked,
+  onReverseClicked,
+  onUpdateClicked,
   style,
   noOptions,
   ...rest
@@ -102,7 +105,7 @@ function CategoryItem({
             {noOptions ? (
               <div>Options</div>
             ) : (
-              <Button onClick={onClick}>Detail</Button>
+              <Button onClick={onDeleteClicked}>Detail</Button>
             )}
           </Grid>
         </Grid>
@@ -144,7 +147,7 @@ function CategoryItem({
               {categoryName}
             </Typography>
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={2} className={classes.item}>
             <Typography noWrap style={{ fontWeight: fontWeight }}>
               {level}
             </Typography>
@@ -178,27 +181,58 @@ function CategoryItem({
           </Grid>
           <Grid
             item
-            xs={2}
+            xs={3}
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            {isDeleted === 'false' && (
+            {isDeleted === 'false' ? (
+              <div style={{ display: 'flex' }}>
+                <Button
+                  onClick={onDeleteClicked}
+                  style={{
+                    textTransform: 'none',
+                    fontWeight: 'bolder',
+                    borderRadius: 10,
+                    color: 'white',
+                    backgroundColor: 'red',
+                    fontSize: 12,
+                  }}
+                >
+                  <DeleteIcon style={{ fontSize: 12 }} />
+                  Delete
+                </Button>
+                <Divider orientation="vertical" flexItem />
+                <Button
+                  onClick={onUpdateClicked}
+                  style={{
+                    textTransform: 'none',
+                    fontWeight: 'bolder',
+                    borderRadius: 10,
+                    color: 'white',
+                    backgroundColor: 'blue',
+                    fontSize: 12,
+                  }}
+                >
+                  {/* <DeleteIcon style={{ fontSize: 12 }} /> */}
+                  Update
+                </Button>
+              </div>
+            ) : (
               <Button
-                onClick={onClick}
+                onClick={onReverseClicked}
                 style={{
                   textTransform: 'none',
                   fontWeight: 'bolder',
                   borderRadius: 10,
                   color: 'white',
-                  backgroundColor: 'red',
+                  backgroundColor: 'blue',
                   fontSize: 12,
                 }}
               >
-                <DeleteIcon style={{ fontSize: 12 }} />
-                Delete
+                Reverse
               </Button>
             )}
           </Grid>

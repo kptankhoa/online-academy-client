@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import ReactPlayer from 'react-player';
 
-import { useStyles } from './Button.style';
+// import { useStyles } from './Button.style';
 import Loading from 'components/Loading';
 
 export default function CustomButton({
@@ -18,7 +14,7 @@ export default function CustomButton({
   failedComponent,
   ...rest
 }) {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const [state, setState] = useState(null);
 

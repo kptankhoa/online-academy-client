@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Logo from './logo/Logo';
 import SearchBar from './searchBar/SearchBar';
 import CategoryNav from './categoryNav/CategoryNav';
