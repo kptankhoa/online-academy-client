@@ -1,4 +1,4 @@
-import React, {Suspense, useReducer} from 'react';
+import React, { Suspense, useReducer } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,7 +6,7 @@ import {
   Redirect,
   useLocation,
 } from 'react-router-dom';
-import {administratorRoute, publicRoute} from './pages/routes';
+import { administratorRoute, publicRoute } from './pages/routes';
 import Login from './pages/loginv2';
 import SignUp from './pages/SignUp';
 import UserPage from './pages/Account';
@@ -15,6 +15,7 @@ import reducer from './Reducer/AppReducer';
 import AuthProvider from './provider/authProvider';
 import jwt_decode from 'jwt-decode';
 import LecturerPage from './pages/Lecturer/LecturerPage';
+import LessonProvider from './provider/lessonProvider';
 
 export default function App() {
   const initialState = {
@@ -25,54 +26,56 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <Router>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AppContext.Provider value={{state, dispatch}}>
-            <Switch>
-              <UnAuthRoute path="/login" exact={true}>
-                <Login/>
-              </UnAuthRoute>
+      <LessonProvider>
+        <Router>
+          <Suspense fallback={<div>Loading...</div>}>
+            <AppContext.Provider value={{ state, dispatch }}>
+              <Switch>
+                <UnAuthRoute path='/login' exact={true}>
+                  <Login />
+                </UnAuthRoute>
 
-              <UnAuthRoute path="/signup" exact={true}>
-                <SignUp/>
-              </UnAuthRoute>
+                <UnAuthRoute path='/signup' exact={true}>
+                  <SignUp />
+                </UnAuthRoute>
 
-              <PrivateRoute path="/user">
-                <UserPage/>
-              </PrivateRoute>
+                <PrivateRoute path='/user'>
+                  <UserPage />
+                </PrivateRoute>
 
-              <LecturerRoute path="/lecturer">
-                <LecturerPage/>
-              </LecturerRoute>
+                <LecturerRoute path='/lecturer'>
+                  <LecturerPage />
+                </LecturerRoute>
 
-              {publicRoute.map((ro, i) => {
-                return (
-                  <PublicRoute
-                    key={i}
-                    path={ro.path}
-                    component={ro.component}
-                    exact={true}
-                  />
-                );
-              })}
-              {administratorRoute.map((ro, i) => {
-                return (
-                  <AdminRoute
-                    key={i}
-                    path={ro.path}
-                    component={ro.component}
-                    exact={true}
-                  />
-                );
-              })}
+                {publicRoute.map((ro, i) => {
+                  return (
+                    <PublicRoute
+                      key={i}
+                      path={ro.path}
+                      component={ro.component}
+                      exact={true}
+                    />
+                  );
+                })}
+                {administratorRoute.map((ro, i) => {
+                  return (
+                    <AdminRoute
+                      key={i}
+                      path={ro.path}
+                      component={ro.component}
+                      exact={true}
+                    />
+                  );
+                })}
 
-              <Route path="*">
-                <NoMatch/>
-              </Route>
-            </Switch>
-          </AppContext.Provider>
-        </Suspense>
-      </Router>
+                <Route path='*'>
+                  <NoMatch />
+                </Route>
+              </Switch>
+            </AppContext.Provider>
+          </Suspense>
+        </Router>
+      </LessonProvider>
     </AuthProvider>
   );
 }
@@ -89,7 +92,7 @@ function NoMatch() {
   );
 }
 
-function PrivateRoute({children, ...rest}) {
+function PrivateRoute({ children, ...rest }) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -103,7 +106,7 @@ function PrivateRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/login'
               // state: { from: location }
             }}
           />
@@ -113,7 +116,7 @@ function PrivateRoute({children, ...rest}) {
   }
 }
 
-function LecturerRoute({children, ...rest}) {
+function LecturerRoute({ children, ...rest }) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -126,7 +129,7 @@ function LecturerRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/login'
               // state: { from: location }
             }}
           />
@@ -142,7 +145,7 @@ function LecturerRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/'
               // state: { from: location }
             }}
           />
@@ -152,7 +155,7 @@ function LecturerRoute({children, ...rest}) {
   }
 }
 
-function UnAuthRoute({children, ...rest}) {
+function UnAuthRoute({ children, ...rest }) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -165,7 +168,7 @@ function UnAuthRoute({children, ...rest}) {
         ) : (
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/'
               // state: { from: location }
             }}
           />
@@ -175,11 +178,11 @@ function UnAuthRoute({children, ...rest}) {
   );
 }
 
-function PublicRoute({...rest}) {
+function PublicRoute({ ...rest }) {
   return <Route {...rest} />;
 }
 
-function AdminRoute({children, ...rest}) {
+function AdminRoute({ children, ...rest }) {
   const token = localStorage.getItem(
     process.env.REACT_APP_STORAGE_ACCESS_TOKEN
   );
@@ -192,7 +195,7 @@ function AdminRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/login'
               // state: { from: location }
             }}
           />
@@ -208,7 +211,7 @@ function AdminRoute({children, ...rest}) {
         children={
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/'
               // state: { from: location }
             }}
           />
