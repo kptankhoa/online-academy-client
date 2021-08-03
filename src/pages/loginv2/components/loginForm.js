@@ -13,9 +13,9 @@ import {academyAxios} from 'config/axios.config';
 import {LOGIN_SUCCESS} from 'Reducer/authReducer';
 import {authContext} from 'provider/authProvider';
 
-const LoginForm = function ({ username }) {
+const LoginForm = function ({username}) {
   const history = useHistory();
-  const {dispatch} = useContext(authContext);
+  const {event, dispatch} = useContext(authContext);
   const {
     register,
     handleSubmit,
@@ -28,6 +28,7 @@ const LoginForm = function ({ username }) {
       const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
       if (token) {
         const decoded = jwt_decode(token);
+        event.enableTokenRefreshLoop(decoded.type);
         const url = decoded.type === "student" ? `/users/${decoded.userId}` : `/lecturers/${decoded.userId}`;
         academyAxios.get(url).then(response => {
           if (response.status === 200) {
@@ -71,7 +72,7 @@ const LoginForm = function ({ username }) {
           defaultValue={username}
         />
       </FormControl>
-      <FormControl fullWidth className='m-2' >
+      <FormControl fullWidth className='m-2'>
         <InputLabel
           htmlFor='password'
         >

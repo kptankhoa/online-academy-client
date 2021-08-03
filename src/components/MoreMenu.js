@@ -30,7 +30,7 @@ function MoreMenu(props) {
 
   const isMenuOpen = Boolean(state.anchorEl);
 
-  console.log('menuId', menuId, 'state', state);
+  // console.log('menuId', menuId, 'state', state);
 
   const LoggedMenu = (
     <Menu

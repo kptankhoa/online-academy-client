@@ -53,9 +53,9 @@ function CourseDescription(props) {
 
     if (getCurrentUser()) {
       getLearningList().then((result) => {
-        console.log('result', result);
+        // console.log('result', result);
         const list = result.filter((course) => {
-          console.log(course._id, courseId);
+          // console.log(course._id, courseId);
           return course._id === courseId;
         });
 
