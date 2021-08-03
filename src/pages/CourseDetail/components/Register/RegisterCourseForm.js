@@ -1,31 +1,25 @@
-import { Container } from 'react-bootstrap';
 import {
   Card,
   CardHeader,
   CardActionArea,
   CardActions,
-  Button,
   Snackbar,
-  Slide,
+  // Slide,
   Link,
 } from '@material-ui/core';
 import useStyles from '../../styles/register.style';
 import { CardContent } from '@material-ui/core';
 import ReactPlayer from 'react-player';
-import screenfull from 'screenfull';
-import { findDOMNode } from 'react-dom';
 import { useContext, useRef, useState } from 'react';
 import { List } from '@material-ui/core';
 import { ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
-import { Typography } from '@material-ui/core';
 import Rating from '../FeedBack/Rating';
 import Money from '../CourseContent/Course/Money';
 
 import CourseDetailContext from '../../CourseDetailContext';
 import { CustomButton, Loading } from 'components';
 import { getCurrentUser } from 'utils';
-import { axiosInstance } from 'utils/auth';
 import MuiAlert from '@material-ui/lab/Alert';
 import { addToWishList, enroll, getPreviewUrl } from 'pages/CourseDetail/utils';
 
@@ -33,9 +27,9 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function SlideTransition(props) {
-  return <Slide {...props} direction="up" />;
-}
+// function SlideTransition(props) {
+//   return <Slide {...props} direction="up" />;
+// }
 
 /**
  *
@@ -45,7 +39,7 @@ function SlideTransition(props) {
 function RegisterCourseForm(props) {
   const classes = useStyles();
   const ref = useRef();
-  const { state, dispatch } = useContext(CourseDetailContext);
+  const { state } = useContext(CourseDetailContext);
   const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen(true);

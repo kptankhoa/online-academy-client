@@ -1,15 +1,15 @@
-import { Label, Star, StarBorder } from '@material-ui/icons';
-import { Controller, useForm } from 'react-hook-form';
+// import { Label, Star, StarBorder } from '@material-ui/icons';
+import { useForm } from 'react-hook-form';
 import { RatingInput } from '..';
 
-import Rating from 'react-rating-stars-component';
+// import Rating from 'react-rating-stars-component';
 import { useContext, useState } from 'react';
 import { getCurrentUser } from 'utils';
 import { sendFeedBack } from 'pages/CourseDetail/utils';
 import CourseDetailContext from 'pages/CourseDetail/CourseDetailContext';
 
 const { TextField, Button, Grid } = require('@material-ui/core');
-const { CustomButton } = require('components');
+// const { CustomButton } = require('components');
 
 function Comment() {
   const { state, dispatch } = useContext(CourseDetailContext);
@@ -17,7 +17,7 @@ function Comment() {
     register,
     handleSubmit,
     formState: { errors },
-    control,
+    // control,
   } = useForm();
 
   const [message, setMessage] = useState({

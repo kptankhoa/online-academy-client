@@ -18,8 +18,12 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { ItemList } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
-import { Loading } from 'components';
-import { deleteStudent, getStudents } from 'pages/Management/utils';
+import { BackdropLoading, Loading } from 'components';
+import {
+  deleteStudent,
+  getStudents,
+  reverseUser,
+} from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fefefe',
     position: 'relative',
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     maxHeight: '100%',
   },
   modelAccordion: {
@@ -68,6 +72,7 @@ function StudentManagement(props) {
   const [page, setPage] = useState({
     isModalOpen: false,
     modal: {},
+    backdrop: false,
   });
 
   // const [open, setOpen] = useState(false);
@@ -101,6 +106,31 @@ function StudentManagement(props) {
         setPage({
           ...page,
           isModalOpen: false,
+        });
+      });
+    };
+  };
+
+  const handleReverse = (id) => {
+    return async () => {
+      setPage({
+        ...page,
+        isModalOpen: false,
+        backdrop: true,
+      });
+      reverseUser(id).then((result) => {
+        setPage({
+          ...page,
+          backdrop: false,
+          isModalOpen: false,
+        });
+        dispatch({
+          type: 'setStudents',
+          payload: {
+            students: state.students.map((course) =>
+              course._id === id ? { ...course, status: 'ACTIVE' } : course
+            ),
+          },
         });
       });
     };
@@ -306,12 +336,19 @@ function StudentManagement(props) {
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
-                  {page.modal.status === 'ACTIVE' && (
+                  {page.modal.status === 'ACTIVE' ? (
                     <Button
                       className="bot-button banned"
                       onClick={handleDeleteStudent(page.modal._id)}
                     >
                       Delete
+                    </Button>
+                  ) : (
+                    <Button
+                      className="bot-button active"
+                      onClick={handleReverse(page.modal._id)}
+                    >
+                      Reverse
                     </Button>
                   )}
                 </Grid>
@@ -320,6 +357,8 @@ function StudentManagement(props) {
           </div>
         </Fade>
       </Modal>
+
+      <BackdropLoading open={page.backdrop} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import useStyles from './courseDetail.style';
 import { Grid } from '@material-ui/core';
 import { Suspense, useContext } from 'react';
 
-import RegisterCourseForm from '../../Register/RegisterCourseForm';
+// import RegisterCourseForm from '../../Register/RegisterCourseForm';
 import CourseDetailContext from 'pages/CourseDetail/CourseDetailContext';
 
 /**
@@ -16,7 +16,7 @@ function CourseDetail(props) {
     props;
 
   const classes = useStyles();
-  const { state, dispatch } = useContext(CourseDetailContext);
+  const { dispatch } = useContext(CourseDetailContext);
 
   const onWrongsImage = () => {
     dispatch({

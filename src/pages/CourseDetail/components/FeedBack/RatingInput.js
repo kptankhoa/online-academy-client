@@ -1,10 +1,10 @@
 import { IconButton } from '@material-ui/core';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import StarHalfIcon from '@material-ui/icons/StarHalf';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import { useEffect, useRef, useState } from 'react';
+// import StarHalfIcon from '@material-ui/icons/StarHalf';
+// import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { useEffect, useState } from 'react';
 
 function RatingInput({ type, value, onChange }) {
   const [object, setObject] = useState(value || 1);

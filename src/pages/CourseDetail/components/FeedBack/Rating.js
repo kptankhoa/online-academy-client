@@ -3,7 +3,7 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 function drawStar(point, persons) {
   if (point >= 0 && point <= 5) {

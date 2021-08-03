@@ -25,6 +25,7 @@ import {
   addLecturer,
   deleteLecturer,
   getStudents,
+  reverseLecturer,
 } from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddLecturerForm from '../Dialog/FormAddLecturer';
@@ -103,6 +104,31 @@ function StudentManagement(props) {
   // }, []);
 
   const classes = useStyles();
+
+  const handleReverse = (id) => {
+    return async () => {
+      setPage({
+        ...page,
+        isModalOpen: false,
+        isBackdropOpen: true,
+      });
+      reverseLecturer(id).then((result) => {
+        setPage({
+          ...page,
+          isBackdropOpen: false,
+          isModalOpen: false,
+        });
+        dispatch({
+          type: 'setLecturers',
+          payload: {
+            lecturers: state.lecturers.map((course) =>
+              course._id === id ? { ...course, status: 'ACTIVE' } : course
+            ),
+          },
+        });
+      });
+    };
+  };
 
   const handleDelete = (id) => {
     return () => {
@@ -368,12 +394,19 @@ function StudentManagement(props) {
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
-                  {page.modal.status === 'ACTIVE' && (
+                  {page.modal.status === 'ACTIVE' ? (
                     <Button
                       className="bot-button banned"
                       onClick={handleDelete(page.modal._id)}
                     >
                       Delete
+                    </Button>
+                  ) : (
+                    <Button
+                      className="bot-button active"
+                      onClick={handleReverse(page.modal._id)}
+                    >
+                      Reverse
                     </Button>
                   )}
                 </Grid>
