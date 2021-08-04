@@ -5,7 +5,7 @@ export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 export function reducer(state, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log("auth reducer: login success: ", action.payload);
+      // console.log("auth reducer: login success: ", action.payload);
       return {...state, authenticated: true, userInfo: action.payload};
     case LOGOUT_SUCCESS:
       return {...state, authenticated: false, userInfo: null};

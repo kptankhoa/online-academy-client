@@ -5,12 +5,11 @@ import CategoryNav from './categoryNav/CategoryNav';
 
 import UserNav from './userNav/UserNav';
 import Button from '../../common/button/pureButton/Button';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import WishListButton from '../../common/button/wishListButton/WishListButton';
 
 import './NavBar.css';
-import '../../../styles/text.style.css';
-import { getCurrentUser } from 'utils';
+import {getCurrentUser} from 'utils';
 
 export default function NavBar() {
   const accessToken = localStorage.getItem(
@@ -18,17 +17,17 @@ export default function NavBar() {
   );
   return (
     <div className="menu d-flex align-items-center">
-      <Logo />
-      <CategoryNav />
-      <SearchBar />
+      <Logo/>
+      <CategoryNav/>
+      <SearchBar/>
       {accessToken ? (
         <>
-          {getCurrentUser().type !== 'admin' && (
+          {getCurrentUser().type === 'student' && (
             <Link to="/user/wishlist">
-              <WishListButton size={20} />
+              <WishListButton size={20}/>
             </Link>
           )}
-          <UserNav />
+          <UserNav/>
         </>
       ) : (
         <>

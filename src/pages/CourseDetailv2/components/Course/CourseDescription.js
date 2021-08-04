@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import Button from 'components/common/button/pureButton/Button';
 import useStyles from 'pages/CourseDetailv2/styles/CourseDescription.styles';
-import CourseContext from '../../CourseContext';
+import CourseContext from 'pages/CourseDetailv2/CourseContext';
 import parse from 'html-react-parser';
 
 const CourseDescription = () => {

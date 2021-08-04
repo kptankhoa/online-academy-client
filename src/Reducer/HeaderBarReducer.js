@@ -1,6 +1,6 @@
 export default function reducer(state, action) {
   // action = { type, payload }
-  console.log(action);
+  // console.log(action);
   switch (action.type) {
     case 'setAnchorEl':
       return {

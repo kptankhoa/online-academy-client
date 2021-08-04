@@ -22,7 +22,7 @@ SwiperCore.use([Pagination]);
 
 export default function CarouselContainer() {
   const { state } = useContext(CourseDetailContext);
-  console.log('state', state);
+  // console.log('state', state);
 
   return (
     <>

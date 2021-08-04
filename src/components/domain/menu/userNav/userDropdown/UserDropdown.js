@@ -1,23 +1,24 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import UserInfoCard from 'components/common/card/userInfoCard/UserInfoCard';
 import Button from 'components/common/button/pureButton/Button';
 
 import 'styles/text.style.css';
 import 'styles/pseudo.style.css';
-import { Link, useHistory } from 'react-router-dom';
-import { academyAxios } from 'config/axios.config';
-import { authContext } from 'provider/authProvider';
-import { LOGOUT_SUCCESS } from 'Reducer/authReducer';
+import {Link, useHistory} from 'react-router-dom';
+import {academyAxios} from 'config/axios.config';
+import {authContext} from 'provider/authProvider';
+import {LOGOUT_SUCCESS} from 'Reducer/authReducer';
 
-function UserDropdown({ userInfo }) {
+function UserDropdown({userInfo}) {
   const history = useHistory();
-  const { authState, dispatch } = useContext(authContext);
+  const {authState, dispatch, event} = useContext(authContext);
 
   function handleLogOut() {
     academyAxios.post('/auth/logout').then(() => {
+      event.disableTokenRefreshLoop();
       localStorage.removeItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
       localStorage.removeItem(process.env.REACT_APP_STORAGE_REFRESH_TOKEN);
-      dispatch({ type: LOGOUT_SUCCESS });
+      dispatch({type: LOGOUT_SUCCESS});
       history.push('/login');
     });
   }

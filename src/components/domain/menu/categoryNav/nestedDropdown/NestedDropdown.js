@@ -10,7 +10,7 @@ export default function NestedDropdown({data}) {
   const history = useHistory();
 
   function onMouseEnterHandler(e) {
-    console.log(e.target.id);
+    // console.log(e.target.id);
     switch (e.target.id) {
       case 'web':
         setCategories(data.web);

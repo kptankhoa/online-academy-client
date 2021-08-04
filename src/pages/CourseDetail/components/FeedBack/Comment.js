@@ -41,9 +41,9 @@ function Comment() {
       content: data.content,
       userId: getCurrentUser().userId,
     };
-    console.log('body', body);
+    // console.log('body', body);
     sendFeedBack(state.course._id, body).then((result) => {
-      console.log(result);
+      // console.log(result);
       setIsSending(false);
       dispatch({
         type: 'setCourse',

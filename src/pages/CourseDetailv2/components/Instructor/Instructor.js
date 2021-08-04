@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { Avatar, Grid } from '@material-ui/core';
 import { AiFillHome, AiTwotonePhone, MdEmail } from 'react-icons/all';
 import Button from 'components/common/button/pureButton/Button';
-import useStyles from 'pages/CourseDetailv2/styles/Instructor.styles'
+import useStyles from 'pages/CourseDetailv2/styles/Instructor.styles';
+import parse from 'html-react-parser';
+
 const Instructor = ({lecturer}) => {
   const {fullName, address, email, avatar, description, phone} = lecturer;
   const [more, setMore] = useState(false);
   const classes = useStyles();
+  const renderDescription = (description) => {
+    return typeof (description) === 'string' ? parse(description) : description;
+  };
 
   return (
     <Grid container>
@@ -38,7 +43,7 @@ const Instructor = ({lecturer}) => {
       </Grid>
       <Grid item xs={12} className="my-3">
         <div className={more ? classes.descMore : classes.descLess}>
-          {description}
+          {renderDescription(description)}
         </div>
         <Button className={classes.readBtn} onClick={() => setMore(!more)}>
           {more ? 'Show less' : 'Show more'}

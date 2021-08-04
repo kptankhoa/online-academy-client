@@ -26,9 +26,8 @@ const TopContainer = () => {
     await removeFromWishList(dispatch, course);
   };
 
-  const renderPrice = (course) => {
-    const { price, promotionalPrice } = course;
-    if (promotionalPrice) {
+  const renderPrice = ({ price, promotionalPrice }) => {
+    if (promotionalPrice < price) {
       return (
         <div className={classes.promotionalPrice}>
           Price:&nbsp;

@@ -22,7 +22,7 @@ function TabPanel(props) {
   useEffect(() => {
     async function getList() {
       const res = await axiosInstance.get('/categories');
-      console.log(res.data);
+      // console.log(res.data);
       dispatch({
         type: 'setCategories',
         payload: {

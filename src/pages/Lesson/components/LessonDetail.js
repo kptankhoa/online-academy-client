@@ -1,11 +1,11 @@
 import React, { useContext, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import LessonViewContext from 'pages/Lesson/lessonViewContext';
+import { SET_PROGRESS } from '../lessonViewReducer';
+import { lessonContext } from 'provider/lessonProvider';
 
-const LessonDetail = (props) => {
-  const { state } = useContext(LessonViewContext);
-  const lesson = state.lesson;
-  const { setProgress } = props;
+const LessonDetail = () => {
+  const { lessonState, dispatch } = useContext(lessonContext);
+  const lesson = lessonState.lesson;
   const player = useRef(null);
   const startAt = lesson.progress ? (lesson.progress.progress ? lesson.progress.progress : lesson.progress) : 0;
   return (
@@ -17,7 +17,7 @@ const LessonDetail = (props) => {
             url={`${lesson.videoUrl}`}
             ref={player}
             width="1080px" height="608px"
-            onProgress={(progress)=> setProgress(progress)}
+            onProgress={(progress)=> dispatch({type: SET_PROGRESS, payload: progress})}
             onReady={() => player.current.seekTo(startAt)}
           />
         </div>

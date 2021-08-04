@@ -30,12 +30,14 @@ const StepOne = () => {
         loading: true
       }
     });
+    const price = parseInt(data.price);
+    const promotionalPrice = data.promotionalPrice ? parseInt(data.promotionalPrice) : price;
     academyAxios.post(`/lecturers/${authState.userInfo._id}/courses`, {
       courseName: data.courseName,
       courseImage: "https://www.nssf.or.ke/wp-content/themes/fund/images/no.image.600x300.png",
       category: data.category,
-      price: parseInt(data.price),
-      promotionalPrice: parseInt(data.promotionalPrice),
+      price: price,
+      promotionalPrice: promotionalPrice,
       briefDescription: data.briefDescription,
       detailDescription: state.detailDes
     }).then(response => {
@@ -111,10 +113,10 @@ const StepOne = () => {
         <div className="form-group mt-3">
           <label htmlFor="promotional-price" className="">Promotional Price</label>
           <input id="promotional-price" className="form-control" type="number" min={0}
-                 {...register("promotionalPrice", {required: true})}/>
-          <small className="text-color-error">
-            {errors.promotionalPrice?.type === 'required' && "Promotional price is required"}
-          </small>
+                 {...register("promotionalPrice", {required: false})}/>
+          {/*<small className="text-color-error">*/}
+          {/*  {errors.promotionalPrice?.type === 'required' && "Promotional price is required"}*/}
+          {/*</small>*/}
         </div>
 
         {/* Brief Description */}

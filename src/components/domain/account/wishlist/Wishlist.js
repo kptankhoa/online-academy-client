@@ -12,7 +12,7 @@ function Wishlist() {
     academyAxios.get(`/users/${decoded.userId}/wishList`)
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data);
+          // console.log(response.data);
           setWishlist(response.data);
         }
         setLoading(false);

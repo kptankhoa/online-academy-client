@@ -12,10 +12,8 @@ function convertNumberWithComma(number) {
 }
 
 function getTokenPayload() {
-  const token = localStorage.getItem(
-    process.env.REACT_APP_STORAGE_ACCESS_TOKEN
-  );
-  return jwt_decode(token);
+  const token = localStorage.getItem(process.env.REACT_APP_STORAGE_ACCESS_TOKEN);
+  return token ? jwt_decode(token) : null;
 }
 
 const renderDescription = (description) => {

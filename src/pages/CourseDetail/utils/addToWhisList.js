@@ -2,7 +2,7 @@ import { axiosInstance } from 'utils/auth';
 async function addToWishList(userId, courseId) {
   const body = { courseId: courseId };
   try {
-    console.log('body', body);
+    // console.log('body', body);
     const res = await axiosInstance.post(`/users/${userId}/wishList`, body);
 
     console.log('res enroll', res);

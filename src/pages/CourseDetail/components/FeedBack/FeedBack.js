@@ -97,7 +97,7 @@ function FeedBack(props) {
     });
   }
   function onLeft_Clicked(e) {
-    console.log(FeedBack);
+    // console.log(FeedBack);
     const currentPage = FeedBack.currentPage - 1;
 
     const index = (currentPage - 1) * LIMIT_PAGE;
@@ -163,7 +163,7 @@ function FeedBack(props) {
     render = <Loading></Loading>;
   }
 
-  console.log(FeedBack);
+  // console.log(FeedBack);
 
   return (
     <div style={{ display: 'block' }}>
