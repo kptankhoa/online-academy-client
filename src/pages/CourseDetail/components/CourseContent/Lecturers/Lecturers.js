@@ -8,7 +8,7 @@ import CourseDetailContext from '../../../CourseDetailContext';
 
 import { Loading } from '../../../../../components';
 function Lecturers(params) {
-  const { state, dispatch } = useContext(CourseDetailContext);
+  const { state } = useContext(CourseDetailContext);
 
   const Lecturer = state.course.courseLecturers ? (
     <List style={{ position: 'static' }}>

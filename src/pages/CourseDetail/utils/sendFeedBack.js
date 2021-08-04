@@ -1,5 +1,4 @@
 import { academyAxios } from 'config/axios.config';
-import { axiosInstance } from 'utils/auth';
 
 function sendFeedBack(courseId, body) {
   return new Promise((resolve, reject) => {

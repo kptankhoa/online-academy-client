@@ -11,3 +11,4 @@ export { default as AlertDialog } from './Dialog/AlertDialog';
 export { default as CourseItem } from './ItemList/CourseItem';
 export { default as FormDialog } from './Dialog/FormDialog';
 export { default as AddLecturerForm } from './Dialog/FormAddLecturer';
+export { default as UpdateCategoryForm } from './Dialog/UpdateCategoryForm';

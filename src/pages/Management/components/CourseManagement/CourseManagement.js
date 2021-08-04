@@ -28,6 +28,8 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rating } from 'pages/CourseDetail/components';
 import { convertNumberWithComma } from 'utils/commonUtils';
+import { renderHTML } from '../../../../utils';
+import { reverseCourse } from '../../utils/course';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fefefe',
     position: 'relative',
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     maxHeight: '100%',
   },
   modelAccordion: {
@@ -151,6 +153,30 @@ function StudentManagement(props) {
     });
   };
 
+  const handleReverse = (id) => {
+    return async () => {
+      setPage({
+        ...page,
+        isModalOpen: false,
+        backdrop: true,
+      });
+      reverseCourse(id).then((result) => {
+        setPage({
+          ...page,
+          backdrop: false,
+          isModalOpen: false,
+        });
+        dispatch({
+          type: 'setCourses',
+          payload: {
+            courses: state.courses.map((course) =>
+              course._id === id ? { ...course, status: 'COMPLETED' } : course
+            ),
+          },
+        });
+      });
+    };
+  };
   const render = state.courses ? (
     state.courses.map((course) => (
       <Grid item xs={12} key={course._id}>
@@ -312,7 +338,8 @@ function StudentManagement(props) {
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
                   <Typography>
-                    <b>Detail Description:</b> {page.modal.detailDescription}
+                    <b>Detail Description:</b>{' '}
+                    {renderHTML(page.modal.detailDescription)}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} style={{ width: '100%' }}>
@@ -426,12 +453,19 @@ function StudentManagement(props) {
                   </div>
                 </Grid>
                 <Grid item xs={12} className="center" style={{ marginTop: 10 }}>
-                  {page.modal.status !== 'DELETED' && (
+                  {page.modal.status !== 'DELETED' ? (
                     <Button
                       className="bot-button banned"
                       onClick={handleDelete(page.modal._id)}
                     >
                       Delete
+                    </Button>
+                  ) : (
+                    <Button
+                      className="bot-button active"
+                      onClick={handleReverse(page.modal._id)}
+                    >
+                      Reverse
                     </Button>
                   )}
                 </Grid>

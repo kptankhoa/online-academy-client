@@ -4,10 +4,10 @@ import {
   CardContent,
   CardMedia,
   Divider,
-  Paper,
+  // Paper,
   Typography,
 } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Rating } from '../..';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import Money from './Money';

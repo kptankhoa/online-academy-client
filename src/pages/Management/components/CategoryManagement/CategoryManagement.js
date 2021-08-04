@@ -17,13 +17,19 @@ import {
 } from '@material-ui/core';
 // import { List } from './components';
 import { useContext, useEffect, useState } from 'react';
-import { AlertDialog, CategoryItem } from '..';
+import { AlertDialog, CategoryItem, UpdateCategoryForm } from '..';
 import ManagementContext from 'pages/Management/ManagementContext';
-import { Loading } from 'components';
-import { deleteCategory, getStudents } from 'pages/Management/utils';
+import { BackdropLoading, Loading } from 'components';
+import {
+  deleteCategory,
+  getStudents,
+  reverseCategory,
+  updateCategory,
+} from 'pages/Management/utils';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import FormDialog from '../Dialog/FormDialog';
+import { TramRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -77,6 +83,11 @@ function CategoryManagement(props) {
     open: false,
     data: {},
   });
+
+  const [update, setUpdate] = useState({
+    open: false,
+    data: {},
+  });
   // const [open, setOpen] = useState(false);
   // const [model, setModel] = useState({});
 
@@ -92,7 +103,7 @@ function CategoryManagement(props) {
 
   const classes = useStyles();
 
-  console.log('modal', modal);
+  // console.log('modal', modal);
 
   const handleSubmit = (data) => {
     dispatch({
@@ -107,8 +118,51 @@ function CategoryManagement(props) {
     });
   };
 
+  const handleUpdateSubmit = (data) => {
+    setModal({
+      ...modal,
+      isOpen: true,
+    });
+
+    setUpdate({
+      ...update,
+      open: false,
+    });
+    updateCategory(data)
+      .then((result) => {
+        dispatch({
+          type: 'setCategories',
+          payload: {
+            categories: state.categories.map((c) =>
+              c._id === data._id ? { ...c, ...result } : c
+            ),
+          },
+        });
+        setModal({
+          ...modal,
+          isOpen: false,
+        });
+      })
+      .catch((error) => {
+        alert('error' + error.response.data);
+      });
+  };
+
+  const handleOpenUpdateForm = (id) => () => {
+    const data = state.categories.find((c) => c._id === id);
+    setUpdate({
+      ...update,
+      data: data,
+      open: true,
+    });
+  };
+
   const handleDetele = (id) => {
-    return () =>
+    return () => {
+      setModal({
+        ...modal,
+        isOpen: true,
+      });
       deleteCategory(id).then((res) => {
         if (state.categories) {
           const c = state.categories.map((d) =>
@@ -126,21 +180,48 @@ function CategoryManagement(props) {
           });
         }
       });
+    };
   };
 
-  const handleOpen = (id) => {
-    if (state.categories) {
-      const m = state.categories.find((d) => d._id === id);
-      return () => setModal({ isOpen: true, data: m });
-    }
+  // const handleOpen = (id) => {
+  //   if (state.categories) {
+  //     const m = state.categories.find((d) => d._id === id);
+  //     return () => setModal({ isOpen: true, data: m });
+  //   }
+  // };
+
+  const handleReverse = (id) => {
+    return () => {
+      setModal({
+        ...modal,
+        isOpen: true,
+      });
+      reverseCategory(id).then((res) => {
+        if (state.categories) {
+          const c = state.categories.map((c) =>
+            c._id === id ? { ...c, isDeleted: false } : c
+          );
+          dispatch({
+            type: 'setCategories',
+            payload: {
+              categories: c,
+            },
+          });
+          setModal({
+            ...modal,
+            isOpen: false,
+          });
+        }
+      });
+    };
   };
 
-  const handleClose = () => {
-    setModal({
-      ...modal,
-      isOpen: false,
-    });
-  };
+  // const handleClose = () => {
+  //   setModal({
+  //     ...modal,
+  //     isOpen: false,
+  //   });
+  // };
 
   const render = state.categories ? (
     state.categories.map((category) => (
@@ -148,7 +229,9 @@ function CategoryManagement(props) {
         <CategoryItem
           categoryName={category.categoryName}
           itemId={category._id}
-          onClick={handleOpen(category._id)}
+          onDeleteClicked={handleDetele(category._id)}
+          onReverseClicked={handleReverse(category._id)}
+          onUpdateClicked={handleOpenUpdateForm(category._id)}
           isDeleted={category.isDeleted ? 'true' : 'false'}
           level={category.level}
           // style={{ border: 'solid 1px blue' }}
@@ -212,16 +295,23 @@ function CategoryManagement(props) {
           </List>
         </Grid>
       </Grid>
-      <AlertDialog
+      {/* <AlertDialog
         open={modal.isOpen}
         onAgree={handleDetele(modal.data._id)}
         onDis={handleClose}
         onClose={handleClose}
-      />
+      /> */}
+      <BackdropLoading open={modal.isOpen} />
       <FormDialog
         open={form.open}
         onClose={(open) => setForm({ open: open })}
         onSubmit={handleSubmit}
+      />
+      <UpdateCategoryForm
+        open={update.open}
+        onClose={(open) => setUpdate({ ...update, open: open })}
+        onSubmit={handleUpdateSubmit}
+        defaultValue={update.data}
       />
     </div>
   );
