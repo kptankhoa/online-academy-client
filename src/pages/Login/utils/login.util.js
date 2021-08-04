@@ -1,9 +1,8 @@
-import { axiosInstanceDefault } from '../../../utils/auth';
-import { setAccessTokenToHeader } from '../../../config/axios.config';
+import {academyAxios, setAccessTokenToHeader} from '../../../config/axios.config';
 
 export async function Login(data) {
   try {
-    const res = await axiosInstanceDefault.post('/admin/login', data);
+    const res = await academyAxios.post('/admin/login', data);
 
     if (res.status === 200) {
       const { accessToken, refreshToken } = res.data;

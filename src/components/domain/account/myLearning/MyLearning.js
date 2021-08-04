@@ -14,7 +14,7 @@ function MyLearning() {
     academyAxios.get(`/users/${decoded.userId}/registeredList`)
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data);
+          // console.log(response.data);
           setLearningList(response.data);
         }
         setLoading(false);

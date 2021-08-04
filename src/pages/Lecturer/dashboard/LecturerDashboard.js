@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useHistory} from "react-router-dom";
-import CourseList from "components/common/list/courseList/CourseList";
 import {getTokenPayload} from "utils/commonUtils";
 import {academyAxios} from "config/axios.config";
 import CourseListItem from "../../../components/common/listItem/courseListItem/CourseListItem";
@@ -12,13 +11,15 @@ function LecturerDashboard({className}) {
   const history = useHistory();
 
   useEffect(() => {
-    academyAxios.get(`/lecturers/${decoded.userId}/courses`)
-      .then(response => {
-        if (response.status === 200) {
-          setTeachingCourses(response.data);
-          setLoading(false);
-        }
-      });
+    if (decoded.userId) {
+      academyAxios.get(`/lecturers/${decoded.userId}/courses`)
+        .then(response => {
+          if (response.status === 200) {
+            setTeachingCourses(response.data);
+            setLoading(false);
+          }
+        });
+    }
   }, [decoded.userId]);
 
   function handleClick(courseId) {
