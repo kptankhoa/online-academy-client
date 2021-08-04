@@ -36,7 +36,12 @@ const SearchResult = () => {
     setLoading1(true);
     const url = `/api/search/course?keyword=${keyword}`;
     const encodedUrl = encodeURI(url).replace(/\+/g, '%2B');
-    getDataFromAcademyApi(encodedUrl).then(data => {
+    getDataFromAcademyApi(encodedUrl, {
+      params: {
+        page: page1,
+        sortBy: sortBy !== 'default' ? sortBy : ''
+      }
+    }).then(data => {
       setLoading1(false);
       setCourseQueryResultInfo(data);
     });
