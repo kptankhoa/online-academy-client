@@ -74,7 +74,7 @@ function AuthProvider(props) {
         url = url.concat("/lecturer");
         break;
       case "admin":
-        url = url.concat("/admin");
+        url = "/admin/refreshToken";
         break;
       default:
         break;
@@ -95,7 +95,7 @@ function AuthProvider(props) {
 
   function reAuthenticate(userType) {
     refreshAccessToken(userType).then((newToken) => {
-      console.log("New token: ", newToken);
+      // console.log("New token: ", newToken);
       saveTokenToStorage(newToken);
       setAccessTokenToHeader(newToken);
       getUserInfo(userType, getTokenPayload().userId);
