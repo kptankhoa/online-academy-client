@@ -16,14 +16,19 @@ const SignUpForm = (props) => {
     formState: { errors }
   } = useForm();
   const onSubmit = handleSubmit(async (data) => {
-    setLoading(true);
-    setEmail(data.email);
-    setUsername(data.username);
-    const res = await signUp(data);
-    if (res) {
-      setSignedUp(true);
+    if(data.username !== 'admin') {
+      setLoading(true);
+      setEmail(data.email);
+      setUsername(data.username);
+      const res = await signUp(data);
+      if (res) {
+        setSignedUp(true);
+      } else {
+        alert('Cannot sign up! Try another email or username!');
+        setLoading(false);
+      }
     } else {
-      alert('Cannot sign up! Try another email or username!');
+      alert('Cannot register username "admin" ');
       setLoading(false);
     }
   });
