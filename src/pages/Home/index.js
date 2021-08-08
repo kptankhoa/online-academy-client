@@ -5,7 +5,7 @@ import Footer from "../../components/domain/footer/Footer";
 
 const Home = function () {
   return (
-    <div className='home-page d-flex flex-column'>
+    <div className='home-page d-flex flex-column min-vh-100'>
       <NavBar/>
       <HomeContent/>
       <Footer/>

@@ -81,7 +81,7 @@ const CourseDetail = () => {
   },[courseId]);
 
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100">
       <NavBar />
       <CourseContext.Provider value={{state, dispatch}}>
         <TopContainer />

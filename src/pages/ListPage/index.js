@@ -5,7 +5,7 @@ import ListPageContent from "../../components/domain/listPage/ListPageContent";
 
 export default function List() {
   return (
-    <div className='d-flex flex-column'>
+    <div className='d-flex flex-column min-vh-100'>
       <NavBar/>
       <ListPageContent/>
       <Footer/>

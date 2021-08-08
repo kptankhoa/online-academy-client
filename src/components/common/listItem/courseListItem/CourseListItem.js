@@ -25,7 +25,7 @@ function CourseListItem({data}) {
             </div>
             <div className='course-category'>{data.category.categoryName}</div>
             <div className='course-lecture'>{data.courseLecturers[0].fullName}</div>
-            <CourseRating ratingPoint={data.ratingPoint} ratedNumber={data.ratedNumber}/>
+            <CourseRating ratingPoint={data.ratingPoint} ratedNumber={data.feedbacks.length}/>
           </div>
           <div className='ml-5'>
             {data.hasOwnProperty('promotionalPrice') ? (

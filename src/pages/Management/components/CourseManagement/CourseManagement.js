@@ -185,7 +185,7 @@ function StudentManagement(props) {
           category={course.category && course.category.categoryName}
           courseName={course.courseName}
           onClick={handleOpen(course._id)}
-          ratedNumber={course.ratedNumber}
+          ratedNumber={course.feedbacks.length}
           soldNumber={course.soldNumber}
           key={course._id}
           status={course.status}

@@ -29,7 +29,20 @@ const LoginForm = function ({username}) {
       if (token) {
         const decoded = jwt_decode(token);
         event.enableTokenRefreshLoop(decoded.type);
-        const url = decoded.type === "student" ? `/users/${decoded.userId}` : `/lecturers/${decoded.userId}`;
+        let url;
+        switch (decoded.type) {
+          case "admin":
+            url = `admin/${decoded.userId}`;
+            break;
+          case "student":
+            url = `/users/${decoded.userId}`;
+            break;
+          case "lecturer":
+            url = `/lecturers/${decoded.userId}`;
+            break;
+          default:
+            break;
+        }
         academyAxios.get(url).then(response => {
           if (response.status === 200) {
             dispatch({

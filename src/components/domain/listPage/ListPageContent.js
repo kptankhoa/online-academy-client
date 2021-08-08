@@ -5,19 +5,13 @@ import { useParams } from 'react-router-dom';
 import Pagination from '../../common/pagination/Pagination';
 import './ListPageContent.css';
 
-// function useQuery() {
-//   return new URLSearchParams(useLocation().search);
-// }
 export default function ListPageContent() {
   const [courseListInfo, setCourseListInfo] = useState({});
   const [category, setCategory] = useState({});
   const [loading, setLoading] = useState(true);
   const { categoryId } = useParams();
   const [page, setPage] = useState(1);
-  // let query = useQuery();
-  // let page = query.get('page');
   useEffect(() => {
-    // setLoading(false);
     setPage(1);
     getDataFromAcademyApi(`/categories/${categoryId}`).then(data => {
       setCategory(data);

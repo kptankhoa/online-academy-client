@@ -6,8 +6,8 @@ function CourseList({listData, className}) {
   return (
     <div className={classes}>
       {listData ? listData.map((item, index) => (
-        <div key={index}>
-          <CourseListItem data={item}/>
+        <div>
+          <CourseListItem data={item} key={index}/>
           <hr/>
         </div>
       )) : ''}

@@ -21,17 +21,6 @@ function Login() {
       >
         <h3>Sign In</h3>
         <LoginForm username={username} />
-        <Button
-          style={{
-            backgroundColor: 'inherit',
-            textTransform: 'none',
-            textDecoration: 'underline',
-            color: 'blue',
-          }}
-          onClick={() => history.push('/login/admin')}
-        >
-          Log as Administrator
-        </Button>
       </Container>
       <Footer />
     </>

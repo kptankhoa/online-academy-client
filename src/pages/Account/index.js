@@ -5,7 +5,7 @@ import UserPageContent from "../../components/domain/account/UserPageContent";
 
 function UserPage() {
   return (
-    <div className='user-page d-flex flex-column'>
+    <div className='user-page d-flex flex-column min-vh-100'>
       <NavBar/>
       <UserPageContent/>
       <Footer/>

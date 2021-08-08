@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useHistory } from 'react-router-dom';
 import Button from 'components/common/button/pureButton/Button';
 import { lessonContext } from 'provider/lessonProvider';
+import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,11 @@ export default function SectionNav(props) {
     history.push(`/courses/${courseId}/lessons/${lesson._id}`);
     postProgress()
   };
+  const renderPercentage = (percentage) => (
+      <>
+        {Math.round(percentage * 100)}%
+      </>
+    );
   const renderAccordion = (section) => {
     return (
       <Accordion key={section._id}>
@@ -41,11 +47,17 @@ export default function SectionNav(props) {
         </AccordionSummary>
         {section.lessons.map(lesson => (
           <AccordionDetails key={lesson._id}>
-            <div className="d-flex align-items-center">
-              {lesson.progress && lesson.progress.isFinish && <i className='fas fa-check-square' style={{color: '#2ecc71'}}></i>}
-              <Button style={{ fontSize: '14px' }} className='w-100 text-left'
+            <div className="d-flex align-items-center w-100">
+              <Button style={{ fontSize: '14px' }} className='w-100 pure-button d-flex justify-content-between'
                       onClick={() => onClickHandler(lesson)} >
-                {lesson.title}
+                <span>
+                  {lesson.progress && lesson.progress.isFinish && <i className='fas fa-check-square' style={{color: '#2ecc71'}}></i>}
+                  &nbsp;
+                  {lesson.title}
+                </span>
+                <span>
+                  {lesson.progress ? renderPercentage(lesson.progress.progress/lesson.totalLength) : '0%'}
+                </span>
               </Button>
             </div>
           </AccordionDetails>

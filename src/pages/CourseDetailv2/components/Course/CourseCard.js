@@ -54,7 +54,7 @@ const CourseCard = ({courseData, className, style}) => {
               </div>
               <div className='course-category'>{courseData.category.categoryName}</div>
               <div className='course-lecture'>{courseData.courseLecturers[0].fullName}</div>
-              <CourseRating ratingPoint={courseData.ratingPoint} ratedNumber={courseData.ratedNumber}/>
+              <CourseRating ratingPoint={courseData.ratingPoint} ratedNumber={courseData.feedbacks ? courseData.feedbacks.length : 0}/>
               <div className='course-price font-weight-bold'>{renderPrice(courseData)}</div>
             </div>
           </div>

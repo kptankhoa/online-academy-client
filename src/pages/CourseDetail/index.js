@@ -83,7 +83,7 @@ function CourseDescription(props) {
     }
   }, [courseId]);
   return (
-    <div>
+    <div className='d-flex flex-column min-vh-100'>
       <NavBar />
       <CourseDetailContext.Provider value={{ state, dispatch }}>
         <Grid container justify="center">
