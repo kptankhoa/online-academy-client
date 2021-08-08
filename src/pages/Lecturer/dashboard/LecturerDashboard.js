@@ -47,23 +47,24 @@ function LecturerDashboard({className}) {
           </div>
         </div>
       ) : (
-        // <CourseList listData={teachingCourses} className='mt-4'/>
-        teachingCourses ? teachingCourses.map((item, index) => (
-          <div key={index}>
-            <div className="list-item-wrapper">
-              <CourseListItem data={item}/>
-              <div className="option-wrapper">
-                <button
-                  onClick={() => handleClick(item._id)}
-                  style={{color: '#2980b9'}}
-                  className="pure-button font-weight-bold text-color-primary d-flex justify-content-center align-items-center w-100 h-100">
-                  Edit / Manage course
-                </button>
+        <div className='mt-4'>
+          {teachingCourses ? teachingCourses.map((item, index) => (
+            <div key={index}>
+              <div className="list-item-wrapper">
+                <CourseListItem data={item}/>
+                <div className="option-wrapper">
+                  <button
+                    onClick={() => handleClick(item._id)}
+                    style={{color: '#2980b9'}}
+                    className="pure-button font-weight-bold text-color-primary d-flex justify-content-center align-items-center w-100 h-100">
+                    Edit / Manage course
+                  </button>
+                </div>
               </div>
+              <hr/>
             </div>
-            <hr/>
-          </div>
-        )) : ''
+          )) : ''}
+        </div>
       )}
     </div>
   );

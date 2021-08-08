@@ -5,7 +5,7 @@ import Footer from "../../components/domain/footer/Footer";
 
 function LecturerPage() {
   return (
-    <div className="lecturer-dashboard d-flex flex-column">
+    <div className="lecturer-dashboard d-flex flex-column min-vh-100">
       <NavBar/>
       <LecturerPageContent/>
       <Footer/>

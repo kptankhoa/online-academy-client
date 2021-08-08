@@ -95,7 +95,6 @@ function AuthProvider(props) {
 
   function reAuthenticate(userType) {
     refreshAccessToken(userType).then((newToken) => {
-      // console.log("New token: ", newToken);
       saveTokenToStorage(newToken);
       setAccessTokenToHeader(newToken);
       getUserInfo(userType, getTokenPayload().userId);

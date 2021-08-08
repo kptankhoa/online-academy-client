@@ -5,7 +5,7 @@ import SearchResult from './components/SearchResult';
 
 const SearchView = () => {
   return (
-    <div className='d-flex flex-column'>
+    <div className='d-flex flex-column min-vh-100'>
       <NavBar/>
       <SearchResult/>
       <Footer/>
