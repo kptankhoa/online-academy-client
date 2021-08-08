@@ -83,16 +83,18 @@ const CourseDetail = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <NavBar />
-      <CourseContext.Provider value={{state, dispatch}}>
-        <TopContainer />
-        <div className='container-xl'>
-          <CourseContent />
-          <CourseDescription />
-          <SimilarCourses />
-          <Instructors />
-          <Feedbacks />
-        </div>
-      </CourseContext.Provider>
+      <div className="flex-grow-1">
+        <CourseContext.Provider value={{state, dispatch}}>
+          <TopContainer />
+          <div className='container-xl'>
+            <CourseContent />
+            <CourseDescription />
+            <SimilarCourses />
+            <Instructors />
+            <Feedbacks />
+          </div>
+        </CourseContext.Provider>
+      </div>
       <Footer />
     </div>
   );
