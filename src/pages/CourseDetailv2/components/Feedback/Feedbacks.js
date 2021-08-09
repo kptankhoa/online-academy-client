@@ -10,11 +10,18 @@ const Feedbacks = () => {
   const { state: { course, isEnrolled } } = useContext(CourseContext);
   const [amount, setAmount] = useState(5);
   const renderFeedbacks = (feedbacks, amount) => {
-    const fromNewest = feedbacks.slice(0).reverse();
+    feedbacks.sort((firstEl, secondEl) => {
+      if (firstEl.createdAt > secondEl.createdAt) {
+        return -1;
+      } else if (firstEl.createdAt < secondEl.createdAt) {
+        return 1;
+      }
+      return 0;
+    });
     return (
       <div>
-        {fromNewest.length ?
-          fromNewest.map((feedback, index) => {
+        {feedbacks.length ?
+          feedbacks.map((feedback, index) => {
             if (index < amount) {
               return (
                 <Feedback key={feedback._id} feedback={feedback} />
