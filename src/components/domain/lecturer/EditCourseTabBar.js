@@ -10,7 +10,7 @@ const EditCourseTabBar = ({className, url}) => {
     const itemUrl = `${url}/${tabId}`;
     if (tabId === activeTabId) {
       return <Link to={itemUrl}>
-        <TabItem id={tabId} className="active" setActiveTab={setActiveTabId}>{tabName}</TabItem>
+        <TabItem id={tabId} className="tab-active" setActiveTab={setActiveTabId}>{tabName}</TabItem>
       </Link>;
     } else {
       return <Link to={itemUrl}>

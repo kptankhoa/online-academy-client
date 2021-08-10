@@ -2,7 +2,6 @@ import React, {useContext, useState} from 'react';
 import {Link, useLocation} from "react-router-dom";
 import TabItem from "./tabItem/TabItem";
 
-import "styles/other.style.css";
 import {authContext} from "provider/authProvider";
 
 function TabBar({className}) {
@@ -13,7 +12,7 @@ function TabBar({className}) {
   function renderTabItem(tabId, tabName) {
     if (tabId === activeTabId) {
       return <Link to={`/user/${tabId}`}>
-        <TabItem id={tabId} className="active" setActiveTab={setActiveTabId}>{tabName}</TabItem>
+        <TabItem id={tabId} className="tab-active" setActiveTab={setActiveTabId}>{tabName}</TabItem>
       </Link>;
     } else {
       return <Link to={`/user/${tabId}`}>
