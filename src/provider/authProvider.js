@@ -88,16 +88,18 @@ function AuthProvider(props) {
         return response.data.accessToken;
       }
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
+      return null;
     }
-    return null;
   }
 
   function reAuthenticate(userType) {
     refreshAccessToken(userType).then((newToken) => {
-      saveTokenToStorage(newToken);
-      setAccessTokenToHeader(newToken);
-      getUserInfo(userType, getTokenPayload().userId);
+      if (newToken) {
+        saveTokenToStorage(newToken);
+        setAccessTokenToHeader(newToken);
+        getUserInfo(userType, getTokenPayload().userId);
+      }
     });
   }
 
