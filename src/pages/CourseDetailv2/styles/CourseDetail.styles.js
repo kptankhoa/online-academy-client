@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#8cd1c8',
     cursor: 'pointer',
     '&:hover': {
+      color: '#5da39a',
       textDecoration: 'underline',
     }
   },

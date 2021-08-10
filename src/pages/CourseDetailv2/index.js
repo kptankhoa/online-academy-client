@@ -8,7 +8,6 @@ import reducer, {
   SET_SECTION
 } from './CourseReducer';
 import NavBar from 'components/domain/menu/NavBar';
-import { axiosInstance } from '../../utils/auth';
 import { getLearningList } from '../CourseDetail/utils';
 import getWishList from '../CourseDetail/utils/getWishList';
 import CourseContext from './CourseContext';
@@ -20,6 +19,7 @@ import SimilarCourses from './components/Course/SimilarCourses';
 import Instructors from './components/Instructor/Instructors';
 import Feedbacks from './components/Feedback/Feedbacks';
 import { isStudent } from './utils/isStudent';
+import { academyAxios } from 'config/axios.config';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -34,7 +34,7 @@ const CourseDetail = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { renderTrigger } = state;
   useEffect(() => {
-    axiosInstance.get(`/courses/${courseId}`).then(r => {
+    academyAxios.get(`/courses/${courseId}`).then(r => {
       dispatch({
         type: SET_COURSE,
         payload: r.data,
@@ -42,13 +42,13 @@ const CourseDetail = () => {
     });
   }, [courseId, renderTrigger])
   useEffect(() => {
-    axiosInstance.get(`/statistics/same-course/${courseId}`).then(r => {
+    academyAxios.get(`/statistics/same-course/${courseId}`).then(r => {
       dispatch({
         type: SET_SAME_COURSES,
         payload: r.data,
       });
     });
-    axiosInstance.get(`/courses/${courseId}/unAuthSections`).then(r => {
+    academyAxios.get(`/courses/${courseId}/unAuthSections`).then(r => {
       dispatch({
         type: SET_SECTION,
         payload: r.data,

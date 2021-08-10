@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Avatar, Grid } from '@material-ui/core';
-import { AiFillHome, AiTwotonePhone, MdEmail } from 'react-icons/all';
+import { AiFillHome, AiTwotonePhone, IoIosArrowDown, IoIosArrowUp, MdEmail } from 'react-icons/all';
 import Button from 'components/common/button/pureButton/Button';
 import useStyles from 'pages/CourseDetailv2/styles/Instructor.styles';
 import parse from 'html-react-parser';
@@ -46,7 +46,17 @@ const Instructor = ({lecturer}) => {
           {renderDescription(description)}
         </div>
         <Button className={classes.readBtn} onClick={() => setMore(!more)}>
-          {more ? 'Show less' : 'Show more'}
+          {more ? (
+            <>
+              Show less&nbsp;
+              <IoIosArrowUp style={{fontSize: 'smaller'}}/>
+            </>
+          ) : (
+            <>
+              Show more&nbsp;
+              <IoIosArrowDown style={{fontSize: 'smaller'}}/>
+            </>
+          )}
         </Button>
       </Grid>
     </Grid>

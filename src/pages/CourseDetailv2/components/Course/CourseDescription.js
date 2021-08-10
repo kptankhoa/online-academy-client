@@ -4,6 +4,7 @@ import Button from 'components/common/button/pureButton/Button';
 import useStyles from 'pages/CourseDetailv2/styles/CourseDescription.styles';
 import CourseContext from 'pages/CourseDetailv2/CourseContext';
 import parse from 'html-react-parser';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/all';
 
 const CourseDescription = () => {
   const classes = useStyles();
@@ -22,7 +23,17 @@ const CourseDescription = () => {
             {renderDescription(course.detailDescription)}
           </div>
           <Button className={classes.readBtn} onClick={() => setMore(!more)}>
-            {more ? 'Show less' : 'Show more'}
+            {more ? (
+              <>
+                Show less&nbsp;
+                <IoIosArrowUp style={{fontSize: 'smaller'}}/>
+              </>
+            ) : (
+              <>
+                Show more&nbsp;
+                <IoIosArrowDown style={{fontSize: 'smaller'}}/>
+              </>
+            )}
           </Button>
         </Grid>
       )}

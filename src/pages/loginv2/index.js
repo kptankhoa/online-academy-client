@@ -1,14 +1,13 @@
-import { Button, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import LoginForm from 'pages/loginv2/components/loginForm';
 import NavBar from 'components/domain/menu/NavBar';
 import Footer from 'components/domain/footer/Footer';
 import useStyles from './index.styles';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function Login() {
   const classes = useStyles();
   const location = useLocation();
-  const history = useHistory();
   const username = location.state ? location.state.username : '';
   return (
     <>

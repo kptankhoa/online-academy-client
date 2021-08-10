@@ -87,7 +87,7 @@ const TopContainer = () => {
           {course && (
             <>
               <Grid item md={8}>
-                <h2>{course.courseName}</h2>
+                <h2><b>{course.courseName}</b></h2>
                 <p>{course.briefDescription}</p>
                 <div className='mb-2 d-flex'>
                   <CourseRating ratingPoint={course.ratingPoint} ratedNumber={course.feedbacks.length} />
@@ -98,6 +98,9 @@ const TopContainer = () => {
                 </div>
                 <div>
                   <small>Last Updated: {moment(new Date(course.updatedAt).getTime()).format('MM/YYYY')}</small>
+                </div>
+                <div>
+                  <p className='my-0'>Sold number: {course.soldNumber}</p>
                 </div>
                 {renderPrice(course)}
                 {renderButtons()}
