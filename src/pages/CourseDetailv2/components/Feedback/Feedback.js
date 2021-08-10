@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { academyAxios } from 'config/axios.config';
+import React from 'react';
 import { Avatar, Grid } from '@material-ui/core';
 import useStyles from 'pages/CourseDetailv2/styles/Feedback.styles';
 import FeedbackRating from './FeedbackRating';
 import moment from 'moment';
 
 const Feedback = ({ feedback }) => {
-  const [user, setUser] = useState(null);
+  const user = feedback.userId;
   const classes = useStyles();
-
-  useEffect(() => {
-    academyAxios.get(`/users/${feedback.userId}`)
-      .then(r => setUser(r.data));
-  }, [feedback]);
 
   return user && (
     <>

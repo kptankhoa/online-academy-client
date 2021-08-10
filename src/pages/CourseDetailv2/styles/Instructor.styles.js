@@ -6,6 +6,7 @@ const useStyles = makeStyles(() => ({
     color: '#67a199',
     cursor: 'pointer',
     '&:hover': {
+      color: '#385c57',
       textDecoration: 'underline',
     }
   },
@@ -30,6 +31,9 @@ const useStyles = makeStyles(() => ({
   readBtn: {
     padding: 0,
     color: '#67a199',
+    '&:hover': {
+      color: '#385c57',
+    }
   }
 }));
 

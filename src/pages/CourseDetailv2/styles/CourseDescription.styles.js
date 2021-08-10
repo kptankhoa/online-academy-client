@@ -22,6 +22,9 @@ const useStyles = makeStyles(() => ({
   readBtn: {
     padding: 0,
     color: '#67a199',
+    '&:hover': {
+      color: '#385c57',
+    }
   }
 }));
 
