@@ -2,12 +2,9 @@ import React from 'react';
 import PaginationItem from "./paginationItem/PaginationItem";
 
 import './Pagination.css';
-// import {useHistory, useRouteMatch} from "react-router-dom";
 
 function Pagination(props) {
   const classes = 'custom-pagination ' + (props.className ? props.className : '');
-  // const history = useHistory();
-  // let {url} = useRouteMatch();
 
   function gotoPage(page) {
     // history.push(`${url}?page=${page}`);
@@ -41,7 +38,7 @@ function Pagination(props) {
     );
 
     const current = currentPage ?
-      <PaginationItem className='primary-color mx-2 active'>
+      <PaginationItem className='primary-color mx-2 page-active'>
         {currentPage}
       </PaginationItem> : '';
 

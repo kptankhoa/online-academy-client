@@ -10,19 +10,21 @@ function Login() {
   const location = useLocation();
   const username = location.state ? location.state.username : '';
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <NavBar />
-      <Container
-        align="center"
-        height={1}
-        component="main"
-        className={classes.root}
-      >
-        <h3>Sign In</h3>
-        <LoginForm username={username} />
-      </Container>
+      <div className="flex-grow-1">
+        <Container
+          align="center"
+          height={1}
+          component="main"
+          className={classes.root}
+        >
+          <h3>Sign In</h3>
+          <LoginForm username={username} />
+        </Container>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 }
 
