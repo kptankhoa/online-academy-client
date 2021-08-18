@@ -52,13 +52,16 @@ const LoginForm = function ({username}) {
                 type: decoded.type
               }
             });
-            history.push('/');
+            if(decoded.type === 'admin') {
+              history.push('/admin/managements')
+            } else {
+              history.push('/');
+            }
           }
         });
       }
-      history.push('/');
     } else {
-      alert('error');
+      alert('Username or password is incorrect!');
       setLoading(false);
     }
   });
