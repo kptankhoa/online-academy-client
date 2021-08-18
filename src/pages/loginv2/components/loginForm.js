@@ -13,7 +13,7 @@ import {academyAxios} from 'config/axios.config';
 import {LOGIN_SUCCESS} from 'Reducer/authReducer';
 import {authContext} from 'provider/authProvider';
 
-const LoginForm = function ({username}) {
+const LoginForm = function ({username, handleError}) {
   const history = useHistory();
   const {event, dispatch} = useContext(authContext);
   const {
@@ -52,13 +52,17 @@ const LoginForm = function ({username}) {
                 type: decoded.type
               }
             });
-            history.push('/');
+            if (decoded.type === 'admin') {
+              history.push('/admin/managements')
+            } else {
+              history.push('/');
+            }
           }
         });
       }
-      history.push('/');
     } else {
-      alert('error');
+      // alert('Username or password is incorrect!');
+      handleError("Username or password is incorrect!");
       setLoading(false);
     }
   });
