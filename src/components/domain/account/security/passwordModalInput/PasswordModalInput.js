@@ -6,7 +6,7 @@ import {academyAxios} from "config/axios.config";
 import {authContext} from "provider/authProvider";
 import FullScreenLoading from "components/common/loading/FullScreenLoading";
 
-function PasswordModalInput() {
+function PasswordModalInput({handleError}) {
   const {authState} = useContext(authContext);
   const {register, handleSubmit, formState: {errors}, reset} = useForm();
   const ref = useRef(null);
@@ -29,9 +29,11 @@ function PasswordModalInput() {
         newPassword: data.newPassword
       }).then(response => {
         if (response.status === 200) {
+          handleError("");
         }
       }).catch(error => {
-        console.log(error.response.data.error);
+        // console.log(error.response.data.error);
+        handleError(error.response.data.error);
       }).finally(() => {
         setLoading(false);
       })
