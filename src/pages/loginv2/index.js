@@ -25,7 +25,7 @@ function Login() {
           component="main"
           className={classes.root}
         >
-          <h3>Sign In</h3>
+          <h3 className="font-weight-bold">Sign In</h3>
           {errorMessage && (
             <div className="alert alert-danger d-flex align-items-center mb-2" role="alert">
               <i className="fas fa-exclamation-circle" style={{fontSize: 20}}/>&nbsp;&nbsp;
